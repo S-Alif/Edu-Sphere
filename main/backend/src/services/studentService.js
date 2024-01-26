@@ -1,6 +1,5 @@
 const database = require('../../database')
 const { v4 } = require('uuid');
-const { encryptPass } = require('../helpers/passEncryptor');
 
 // create
 exports.create = async (req) => {
