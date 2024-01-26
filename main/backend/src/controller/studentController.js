@@ -6,6 +6,11 @@ exports.registerStudent = async (req, res) => {
   res.status(200).json(result);
 }
 
+// login account
+exports.loginAccount = async (req, res) => {
+
+}
+
 // updating account
 exports.updateAccount = async (req, res) => {
 

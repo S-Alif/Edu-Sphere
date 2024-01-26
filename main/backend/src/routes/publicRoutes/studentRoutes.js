@@ -6,7 +6,7 @@ const student = require('../../controller/studentController')
 
 // student routes
 router.post('/create', student.registerStudent)
-router.post('/login')
+router.post('/login', student.loginAccount)
 router.post('/update')
 
 module.exports = router

@@ -5,6 +5,11 @@ exports.registerInstructor = async (req, res) => {
   
 }
 
+// login account
+exports.loginAccount = async (req, res) => {
+  
+}
+
 // updating account
 exports.updateAccount = async (req, res) => {
 
