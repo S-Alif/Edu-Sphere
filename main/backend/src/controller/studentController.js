@@ -8,7 +8,8 @@ exports.registerStudent = async (req, res) => {
 
 // login account
 exports.loginAccount = async (req, res) => {
-
+  const result = await student.login(req);
+  res.status(200).json(result);
 }
 
 // updating account

@@ -1,5 +1,6 @@
 const database = require('../../database')
 const { v4 } = require('uuid')
+const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 
 // create
 exports.create = async (req) => {
@@ -19,9 +20,21 @@ exports.create = async (req) => {
 // login
 exports.login = async (req) => {
   try {
+    let query = `SELECT \`id\`, \`pass\`, \`isTeacher\` FROM \`eduspshere\`.\`students\` WHERE \`email\` = '${req.body.email}';`;
+
+    let result = await database.execute(query)
+
+    // compare pass
+    let password = result[0][0]
+    let compPass = await comparePass(password.pass, req.body.pass)
+
+    if(compPass){
+      return { status: 1, code: 200, data: result[0][0] }
+    }
+    return { status: 0, code: 200, data: "invalid password" }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "could not log in", errorCode: error };
   }
 }
 
