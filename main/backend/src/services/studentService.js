@@ -45,10 +45,14 @@ exports.login = async (req) => {
 // update
 exports.update = async (req) => {
   try {
-    console.log(req.headers)
+    let query = "UPDATE students SET firstName = ?,lastName = ?, phone = ?, profileImg = ? WHERE id = ?";
+    let data = [req.body.firstName, req.body.lastName, req.body.phone, req.body.profileImg, req.headers.id]
+
+    let result = await database.execute(query, data)
+    return { status: 1, code: 200, data: "Account updated" }
 
   } catch (error) {
-
+    return { status: 1, code: 200, data: "could not update account", errorCode: error }
   }
 }
 
