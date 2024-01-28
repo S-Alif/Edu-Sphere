@@ -35,7 +35,8 @@ exports.loginAccount = async (req, res) => {
 
 // updating account
 exports.updateAccount = async (req, res) => {
-
+  const result = await student.update(req);
+  res.status(200).json(result);
 }
 
 // deleting account
