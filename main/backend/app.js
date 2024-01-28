@@ -4,6 +4,7 @@ const cors = require('cors')
 const hpp = require('hpp')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
+const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv').config()
 
 const mainRoute = require('./src/routes/mainRoute')
@@ -16,6 +17,7 @@ app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }))
+app.use(cookieParser())
 app.use(helmet())
 app.use(hpp())
 
