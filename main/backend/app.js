@@ -12,7 +12,10 @@ const mainRoute = require('./src/routes/mainRoute')
 const app = express()
 
 // add security
-app.use(cors())
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
 app.use(helmet())
 app.use(hpp())
 
