@@ -11,5 +11,7 @@ const authVerification = require('../../middleware/authVerification')
 router.post('/create', student.registerStudent)
 router.post('/login', student.loginAccount)
 router.post('/update', authVerification, student.updateAccount)
+router.post('/delete', authVerification, student.deleteAccount)
+router.get('/user', authVerification, student.getAccount)
 
 module.exports = router
