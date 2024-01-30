@@ -15,7 +15,7 @@ exports.loginAccount = async (req, res) => {
     let cookie = cookieMaker({
       email: result['data']['email'],
       id: result['data']['id'],
-      isTeacher: result['data']['isTeacher']
+      role: result['data']['role']
     })
 
     res.status(200).cookie("token", cookie.token, cookie.cookieOption).json({
@@ -23,7 +23,7 @@ exports.loginAccount = async (req, res) => {
       code: result['code'],
       data: {
         uid: result.data['id'],
-        isTeacher: result.data['isTeacher']
+        role: result.data['role']
       }
     })
 

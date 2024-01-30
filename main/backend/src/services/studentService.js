@@ -24,7 +24,7 @@ exports.create = async (req) => {
 // login
 exports.login = async (req) => {
   try {
-    let query = `SELECT \`id\`, \`pass\`, \`isTeacher\`, \`email\` FROM \`eduspshere\`.\`students\` WHERE \`email\` = '${req.body.email}';`;
+    let query = `SELECT \`id\`, \`pass\`, \`role\`, \`email\` FROM \`eduspshere\`.\`students\` WHERE \`email\` = '${req.body.email}';`;
 
     let result = await database.execute(query)
 
