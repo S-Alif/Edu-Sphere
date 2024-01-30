@@ -41,10 +41,12 @@ exports.updateAccount = async (req, res) => {
 
 // deleting account
 exports.deleteAccount = async (req, res) => {
-
+  const result = await student.delete(req);
+  res.status(200).json(result);
 }
 
 // updating account
 exports.getAccount = async (req, res) => {
-
+  const result = await student.getData(req);
+  res.status(200).json(result);
 }
