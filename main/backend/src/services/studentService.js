@@ -6,7 +6,7 @@ const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 exports.create = async (req) => {
   try {
     let uniqueId = v4();
-    let string = "INSERT INTO `eduspshere`.`students` (`id`, `firstName`, `lastName`, `email`, `pass`, `phone`, `profileImg`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    let string = "INSERT INTO `students` (`id`, `firstName`, `lastName`, `email`, `pass`, `phone`, `profileImg`) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     // encrypt password
     let enPass = encryptPass(req.body.pass)
