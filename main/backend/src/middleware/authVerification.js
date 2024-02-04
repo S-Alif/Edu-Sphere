@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     else {
       req.headers.email = decoded['email']
       req.headers.id = decoded['id']
-      req.headers.isTeacher = decoded['isTeacher']
+      req.headers.role = decoded['role']
       next()
     }
   }
