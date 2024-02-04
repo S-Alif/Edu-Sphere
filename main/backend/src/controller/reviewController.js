@@ -6,19 +6,19 @@ const review = require('../services/reviewService')
 
 // review create
 exports.instructorReviewCreate = async (req, res) => {
-    const result = await course.instructorReviewCreate(req);
+    const result = await review.postInstructorReview(req);
     res.status(200).json(result);
 }
 
 // review delete
 exports.instructorReviewDelete = async (req, res) => {
-    const result = await course.instructorReviewDelete(req);
+    const result = await review.deleteInstructorReview(req);
     res.status(200).json(result);
 }
 
 // review create
 exports.instructorReview = async (req, res) => {
-    const result = await course.instructorReview(req);
+    const result = await review.getInstructorReview(req);
     res.status(200).json(result);
 }
 
@@ -29,18 +29,18 @@ exports.instructorReview = async (req, res) => {
 
 // review create
 exports.courseReviewCreate = async (req, res) => {
-    const result = await course.courseReviewCreate(req);
+    const result = await review.postCourseReview(req);
     res.status(200).json(result);
 }
 
 // review delete
 exports.courseReviewDelete = async (req, res) => {
-    const result = await course.courseReviewDelete(req);
+    const result = await review.deleteCourseReview(req);
     res.status(200).json(result);
 }
 
 // review create
 exports.courseReview = async (req, res) => {
-    const result = await course.courseReview(req);
+    const result = await review.getCourseReview(req);
     res.status(200).json(result);
 }
