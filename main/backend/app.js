@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv').config()
 
 const mainRoute = require('./src/routes/mainRoute')
+const adminRoute = require('./src/routes/adminRoutes')
 
 // declare app
 const app = express()
@@ -30,7 +31,7 @@ app.use(limiter);
 
 // route connection
 app.use('/public', mainRoute)
-// app.use('/admin')
+app.use('/admin', adminRoute)
 
 
 
