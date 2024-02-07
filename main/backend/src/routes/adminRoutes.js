@@ -13,6 +13,7 @@ router.post('/login', admin.login)
 router.post('/register', admin.register)
 router.post('/update', adminAuth, admin.update)
 router.delete('/delete', adminAuth, admin.delete)
+router.get('/user', adminAuth, admin.profile)
 
 
 module.exports = router
