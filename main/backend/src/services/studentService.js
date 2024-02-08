@@ -60,24 +60,52 @@ exports.update = async (req) => {
     return { status: 0, code: 403, data: "Not Allowed" }
 
   } catch (error) {
-    return { status: 1, code: 200, data: "something went wrong", errorCode: error }
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
   }
 }
 
 // delete
 exports.delete = async (req) => {
   try {
+    if(req.headers.role == 0){
+      var id = req.headers.id
+    }
+    // for admin
+    if (req.headers.role == "11") {
+      id = req.body.stdId
+    }
+
+    let query = `UPDATE student SET active = 0, updateDate = ? WHERE id = ${id} and active = 1;`;
+    let data = [getCurrentDateTime(), req.headers.id]
+
+    let result = await database.execute(query, data)
+
+    if (result[0]["affectedRows"] == 1) {
+      return { status: 1, code: 200, data: "Account deleted" }
+    }
+    return { status: 0, code: 200, data: "could not delete account" }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
   }
 }
 
 // get data
 exports.getData = async (req) => {
   try {
+    if (req.headers.role == 0) {
+      var id = req.headers.id
+    }
+    // for admin
+    if (req.headers.role == "11") {
+      id = req.body.stdId
+    }
+    let query = `SELECT id, firstName, lastName, email, phone, profileImg, registerDate, updateDate FROM student WHERE id = '${id}';`
+
+    let result = await database.execute(query)
+    return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
   }
 }
