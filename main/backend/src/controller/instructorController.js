@@ -1,3 +1,4 @@
+const { cookieMaker } = require('../helpers/helper');
 const instructor = require('../services/instructorService')
 
 // registration
@@ -8,7 +9,28 @@ exports.registerInstructor = async (req, res) => {
 
 // login account
 exports.loginAccount = async (req, res) => {
-  
+  const result = await instructor.login(req);
+
+  if(result.status == 1){
+    let cookie = cookieMaker({
+      email: result['data']['email'],
+      id: result['data']['id'],
+      role: result['data']['role']
+    })
+
+    res.status(200).cookie("token", cookie.token, cookie.cookieOption).json({
+      status: result['status'],
+      code: result['code'],
+      data: {
+        uid: result.data['id'],
+        role: result.data['role']
+      }
+    })
+
+    return
+  }
+
+  res.status(200).json(result);
 }
 
 // updating account
