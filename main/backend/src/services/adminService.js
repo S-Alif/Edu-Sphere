@@ -1,6 +1,7 @@
 const database = require('../../database')
 const { v4 } = require('uuid')
 const { encryptPass, comparePass } = require('../helpers/passEncryptor')
+const { getCurrentDate } = require('../helpers/helper')
 
 
 // register
@@ -11,9 +12,8 @@ exports.registerAdmin = async (req) => {
 
     // encrypt password
     let enPass = encryptPass(req.body.pass)
-    let date = new Date().toISOString().split('T')[0];
 
-    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, req.body.address, req.body.profileImg]
+    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, getCurrentDate(), req.body.address, req.body.profileImg]
 
     let result = await database.execute(query, data)
 

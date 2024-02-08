@@ -11,3 +11,16 @@ exports.cookieMaker = (data) => {
 
   return { token: createToken(data), cookieOption }
 }
+
+// datetime format
+exports.getCurrentDateTime = () => {
+  const currentDate = new Date()
+  const sqlDateTime = currentDate.toISOString().slice(0, 19).replace('T', ' ')
+  return sqlDateTime
+}
+
+// date format
+exports.getCurrentDate = () => {
+  let date = new Date().toISOString().split('T')[0]
+  return date
+}
