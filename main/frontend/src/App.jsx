@@ -3,7 +3,7 @@
 const App = () => {
   return (
     <>
-      <div>hello world</div>
+      <div className="">hello world</div>
     </>
   );
 };
