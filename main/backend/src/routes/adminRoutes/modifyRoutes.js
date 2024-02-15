@@ -13,5 +13,9 @@ router.post('/update-sub/:id', adminAuth, subject.subjectUpdate)
 router.post('/delete-sub/:id', adminAuth, subject.subjectDelete)
 router.get('/get-all-sub', adminAuth, subject.getAllSubject)
 
+// instructors
+router.get('/get-instructors', adminAuth)
+router.get('/get-instructors/:id', adminAuth)
+router.post('/instructor/:id', adminAuth)
 
 module.exports = router
