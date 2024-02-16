@@ -50,3 +50,9 @@ exports.getAccount = async (req, res) => {
     const result = await instructor.getData(req);
     res.status(200).json(result);
 }
+
+// get all instructors
+exports.getAllInstructors = async (req, res) => {
+  let result = await instructor.getInstructors(req)
+  res.status(200).json(result)
+}
