@@ -121,10 +121,10 @@ exports.getData = async (req) => {
 exports.getInstructors = async (req) => {
   try {
 
-    let query = `SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, forClass, registerDate, updateDate FROM instructor;`
+    let query = "SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, forClass, registerDate, updateDate FROM instructor;"
 
     let result = await database.execute(query)
-    return { status: 1, code: 200, data: result[0][0] }
+    return { status: 1, code: 200, data: result[0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error }
