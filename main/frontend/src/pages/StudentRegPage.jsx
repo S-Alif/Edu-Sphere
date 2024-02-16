@@ -3,7 +3,7 @@
 const StudentRegPage = () => {
     return (
         <div>
-            
+            student registration
         </div>
     );
 };
