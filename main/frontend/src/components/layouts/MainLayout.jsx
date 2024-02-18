@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../Footer";
 import Navbar from "../Navbar";
+import { Toaster } from "sonner";
 
 
 const MainLayout = () => {
     return (
         <>
-            <Navbar/>
+            <Navbar />
                 <Outlet />
-            <Footer />            
+                <Toaster visibleToasts={5} richColors={true} closeButton={true} />
+            <Footer />
         </>
     );
 };
