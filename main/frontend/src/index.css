@@ -1,6 +1,6 @@
+/* import design css */
+@import "./assets/css/loginPage.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* import design css */
-@import "./assets/css/loginPage.css"
