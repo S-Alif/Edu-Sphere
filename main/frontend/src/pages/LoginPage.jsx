@@ -24,7 +24,7 @@ const LoginPage = () => {
             result = await studentLogin({ email, pass })
         }
 
-        if (result != 0) {
+        if (result == 1) {
             setEmail("")
             setPass("")
             setDisabler(false)
@@ -59,12 +59,12 @@ const LoginPage = () => {
 
                             <div className="w-full">
                                 <label htmlFor="email" className='font-semibold'>Email</label>
-                                <input type="email" className='form-control input input-bordered border-emerald-500 mt-4 mb-6 w-full' name='email' id='email' placeholder='enter your email' autoComplete='false' onChange={(e) => setEmail(e.target.value)} required />
+                                <input type="email" className='form-control input input-bordered border-emerald-500 mt-4 mb-6 w-full' name='email' id='email' placeholder='enter your email' autoComplete='false' value={email} onChange={(e) => setEmail(e.target.value)} required />
                             </div>
 
                             <div className="w-full">
                                 <label htmlFor="pass" className='font-semibold'>Password</label>
-                                <input type="password" className='form-control input input-bordered border-emerald-500 w-full mt-4' name='pass' id='pass' placeholder='enter your password' onChange={(e) => setPass(e.target.value)} required minLength={8} />
+                                <input type="password" className='form-control input input-bordered border-emerald-500 w-full mt-4' name='pass' id='pass' placeholder='enter your password' value={pass} onChange={(e) => setPass(e.target.value)} required minLength={8} />
                             </div>
 
                             <button type='submit' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>

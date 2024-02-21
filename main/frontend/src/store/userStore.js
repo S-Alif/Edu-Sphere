@@ -21,9 +21,11 @@ const userStore = create((set) => ({
       }
       else {
         errorAlert(result.data['data'])
+        return result.data['status']
       }
     } catch (error) {
       errorAlert("Something went wrong")
+      return 0
     }
   },
 
