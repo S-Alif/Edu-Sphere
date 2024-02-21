@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { create } from 'zustand'
 import { instructorEndpoint, studentEndpoint } from '../helpers/apiEndpoints'
+import { errorAlert, successAlert } from './../helpers/alertMsg';
 
 const userStore = create((set) => ({
 
@@ -13,13 +14,16 @@ const userStore = create((set) => ({
       if (result.data['status'] == 1) {
         // show success msg == here
         sessionStorage.setItem("user", JSON.stringify(result.data['data']))
-        set({user: result.data['data']})
+        set({ user: result.data['data'] })
+
+        successAlert("Login Success")
+        return result.data['status']
       }
-      else{
-        // show error msg
+      else {
+        errorAlert(result.data['data'])
       }
     } catch (error) {
-      // show error msg from frontend
+      errorAlert("Something went wrong")
     }
   },
 

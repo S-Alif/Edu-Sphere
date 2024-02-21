@@ -1,11 +1,23 @@
 // import image
 import { useState } from 'react';
 import loginPageIllustration from '../assets/imgs/login-illustration-1.jpg'
+import userStore from '../store/userStore';
 
 const LoginPage = () => {
 
+    const { studentLogin } = userStore()
+
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
+
+    const loginSubmit = async (e) => {
+        e.preventDefault()
+
+        let result = await studentLogin({ email, pass })
+        if (result != 0) {
+            // navigate to profile
+        }
+    }
 
     return (
         <>
@@ -22,7 +34,7 @@ const LoginPage = () => {
                         <h1 className='text-3xl font-bold'>Welcome to <span className='text-emerald-500'>eduSphere</span></h1>
                         <p className='pt-1 text-slate-400'>Login to your account</p>
 
-                        <form action="" className='pt-8 w-full'>
+                        <form action="" className='pt-8 w-full' onSubmit={loginSubmit}>
 
                             <div className="w-full">
                                 <label htmlFor="email" className='font-semibold'>Email</label>
@@ -34,7 +46,7 @@ const LoginPage = () => {
                                 <input type="password" className='form-control input input-bordered border-emerald-500 w-full mt-4' name='pass' id='pass' placeholder='enter your password' onChange={(e) => setPass(e.target.value)} required minLength={8} />
                             </div>
 
-                            <button type='button' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>Login</button>
+                            <button type='submit' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>Login</button>
 
                         </form>
 
