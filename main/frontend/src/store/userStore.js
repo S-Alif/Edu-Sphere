@@ -35,12 +35,15 @@ const userStore = create((set) => ({
         // show success msg == here
         sessionStorage.setItem("user", JSON.stringify(result.data['data']))
         set({ user: result.data['data'] })
+
+        successAlert("Login Success")
+        return result.data['status']
       }
       else {
-        // show error msg
+        errorAlert(result.data['data'])
       }
     } catch (error) {
-      // show error msg from frontend
+      errorAlert("Something went wrong")
     }
   },
 

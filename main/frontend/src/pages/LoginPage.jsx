@@ -5,18 +5,32 @@ import userStore from '../store/userStore';
 
 const LoginPage = () => {
 
-    const { studentLogin } = userStore()
+    const { studentLogin, instrutorLogin } = userStore()
 
+    const [logger, setLogger] = useState(false)
+    const [disabler, setDisabler] = useState(false)
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
 
+    // login submit
     const loginSubmit = async (e) => {
         e.preventDefault()
 
-        let result = await studentLogin({ email, pass })
+        setDisabler(true)
+        if (logger) {
+            var result = await instrutorLogin({ email, pass })
+        }
+        else {
+            result = await studentLogin({ email, pass })
+        }
+
         if (result != 0) {
+            setEmail("")
+            setPass("")
+            setDisabler(false)
             // navigate to profile
         }
+        setDisabler(false)
     }
 
     return (
@@ -29,11 +43,18 @@ const LoginPage = () => {
                     </div>
 
                     {/* form content */}
-                    <div className="form-content py-8 lg:py-20 px-4 lg:px-20 shadow-lg lg:shadow-none my-12 lg:my-0">
+                    <div className="form-content py-8 lg:py-10 px-4 lg:px-20 shadow-lg lg:shadow-none my-2 lg:my-0">
 
                         <h1 className='text-3xl font-bold'>Welcome to <span className='text-emerald-500'>eduSphere</span></h1>
                         <p className='pt-1 text-slate-400'>Login to your account</p>
 
+                        {/* party indicator */}
+                        <div className="w-full pt-8">
+                            <button className={`btn ${!logger ? "" : "btn-outline"} btn-success text-white mr-5 ${disabler && "btn-disabled"}`} onClick={() => setLogger(false)}>Student</button>
+                            <button className={`btn ${!logger ? "btn-outline" : ""} btn-success text-white ${disabler && "btn-disabled"}`} onClick={() => setLogger(true)}>Instructor</button>
+                        </div>
+
+                        {/* form */}
                         <form action="" className='pt-8 w-full' onSubmit={loginSubmit}>
 
                             <div className="w-full">
@@ -46,7 +67,12 @@ const LoginPage = () => {
                                 <input type="password" className='form-control input input-bordered border-emerald-500 w-full mt-4' name='pass' id='pass' placeholder='enter your password' onChange={(e) => setPass(e.target.value)} required minLength={8} />
                             </div>
 
-                            <button type='submit' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>Login</button>
+                            <button type='submit' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>
+                                Login
+                                {
+                                    disabler && <span className="loading loading-spinner loading-xs ml-2"></span>
+                                }
+                            </button>
 
                         </form>
 
