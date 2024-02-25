@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import loginPageIllustration from '../assets/imgs/login-illustration-1.jpg'
 import userStore from '../store/userStore';
+import { NavLink } from 'react-router-dom';
 
 const LoginPage = () => {
 
@@ -78,13 +79,13 @@ const LoginPage = () => {
 
                         {/* route to registration */}
                         <div className="pt-6">
-                            <div>
+                            <div>  
                                 Don&apos;t have an account !!
                                 <details className="dropdown lg:dropdown-right">
                                     <summary className="m-1 btn bg-transparent hover:bg-emerald-500 hover:text-white border-2 border-emerald-500">Register as</summary>
                                     <ul className="p-2 shadow-lg menu dropdown-content z-[1] rounded-box w-52 bg-slate-100">
-                                        <li><button className='hover:bg-emerald-500 hover:text-white'>Student</button></li>
-                                        <li><button className='hover:bg-emerald-500 hover:text-white'>Instructor</button></li>
+                                        <li><NavLink to={"/student-register"} className='hover:bg-emerald-500 hover:text-white'>Student</NavLink></li>
+                                        <li><NavLink to={"/instructor-register"} className='hover:bg-emerald-500 hover:text-white'>Instructor</NavLink></li>
                                     </ul>
                                 </details>
                             </div>
