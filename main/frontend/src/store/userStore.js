@@ -49,6 +49,25 @@ const userStore = create((set) => ({
     }
   },
 
+  // student registration
+  studentRegistration: async (data) => {
+    try {
+      let result = await axios.post(studentEndpoint + "/create", data)
+      if (result.data['status'] == 1) {
+        successAlert(result.data['data'])
+        return result.data['status']
+      }
+      else {
+        errorAlert(result.data['data'])
+        return 0
+      }
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  }
+
 }))
 
 export default userStore
