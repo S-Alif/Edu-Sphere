@@ -1,7 +1,8 @@
 const database = require('../../database')
 const { v4 } = require('uuid')
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
-const { getCurrentDateTime } = require('../helpers/helper')
+const { getCurrentDateTime } = require('../helpers/helper');
+const { imageUploader } = require('../helpers/ImageUploader');
 
 // create
 exports.create = async (req) => {
@@ -13,7 +14,9 @@ exports.create = async (req) => {
     let enPass = encryptPass(req.body.pass)
     let date = getCurrentDateTime()
 
-    let data = [uniqueId, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, req.body.profileImg, date, date];
+    let imageUrl = await imageUploader(req.body.profileImg)
+
+    let data = [uniqueId, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, imageUrl, date, date];
 
     let result = await database.execute(string, data)
     return { status: 1, code: 200, data: "account created" }
