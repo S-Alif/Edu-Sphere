@@ -6,9 +6,14 @@ import { errorAlert } from '../helpers/alertMsg'
 import avatar from '../assets/imgs/avatar-1577909_640.png'
 import { dataValidator } from '../helpers/validators';
 
+import userStore from '../store/userStore';
+import { useNavigate } from 'react-router-dom';
+
 
 const StudentRegPage = () => {
 
+    const navigate = useNavigate()
+    const { studentRegistration } = userStore()
     const [preview, setPreview] = useState(avatar)
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
@@ -22,15 +27,16 @@ const StudentRegPage = () => {
 
     // image handler
     const handleImage = (e) => {
+        if (!e.target.files[0]) return
         let uploadedFile = e.target.files[0]
         if ((uploadedFile.size / 1024) > 5000) {
             errorAlert("Image is larger than 5MB")
             return
         }
-        setFormData({...formData, profileImg: uploadedFile})
         const file = new FileReader
         file.onload = () => {
             setPreview(file.result)
+            setFormData({ ...formData, profileImg: file.result })
         }
         file.readAsDataURL(uploadedFile)
     }
@@ -44,6 +50,14 @@ const StudentRegPage = () => {
     const submitForm = async (e) => {
         e.preventDefault()
         let validation = dataValidator(formData, confirmPass, 0)
+
+        if (validation) {
+            let result = await studentRegistration(formData)
+            
+            if(result == 1){
+                navigate('/login', {replace:true})
+            }
+        }
     }
 
     return (
