@@ -4,8 +4,8 @@ const { v4 } = require('uuid')
 //  create
 exports.create = async (req) => {
     try {
-        
-        if(req.headers.role === "11"){
+
+        if (req.headers.role === "11") {
             let uid = v4()
             let qeury = "INSERT INTO subject (id, name, code, class) VALUES (?,?,?,?);"
             let data = [uid, req.body.name, req.body.code, req.body.class]
@@ -61,8 +61,31 @@ exports.delete = async (req) => {
 //  get Subjects
 exports.getSubjects = async (req) => {
     try {
+        let query = "SELECT * FROM subject order by class desc;"
+        let result = await database.execute(query)
+        return { status: 1, code: 200, data: result[0] };
 
-        let query = "SELECT * FROM subject;"
+    } catch (error) {
+        return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
+    }
+}
+
+// get distinct class
+exports.getClasses = async (req) => {
+    try {
+        let query = "SELECT distinct class FROM subject order by class desc;"
+        let result = await database.execute(query)
+        return { status: 1, code: 200, data: result[0] };
+
+    } catch (error) {
+        return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
+    }
+}
+
+// get subject by class
+exports.getSubjectsByClass = async (req) => {
+    try {
+        let query = `SELECT * FROM subject where class = '${req.params.class}' order by class desc;`
         let result = await database.execute(query)
         return { status: 1, code: 200, data: result[0] };
 

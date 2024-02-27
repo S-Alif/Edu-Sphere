@@ -23,3 +23,15 @@ exports.getAllSubject = async (req,res) => {
     let result = await subject.getSubjects(req)
     res.status(200).json(result)
 }
+
+// get class
+exports.classes = async (req, res) => {
+    let result = await subject.getClasses(req)
+    res.status(200).json(result)
+}
+
+// get subject class
+exports.subjectByClass = async (req, res) => {
+    let result = await subject.getSubjectsByClass(req)
+    res.status(200).json(result)
+}
