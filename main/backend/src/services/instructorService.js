@@ -2,22 +2,31 @@ const database = require('../../database')
 const { v4 } = require('uuid');
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 const { getCurrentDateTime } = require('../helpers/helper');
+const { imageUploader } = require('../helpers/ImageUploader');
 
 
 // create
 exports.create = async (req) => {
   try {
+    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg || req.body?.sub1 || req.body?.sub2 || req.body?.address || req.body?.forClass) return { status: 0, code: 200, data: "Fill all the data" };
+    
     let uid = v4();
-    let query = "INSERT INTO instructor (id, firstName, lastName, email, pass, phone, profileImg, registerDate, updateDate, sub1, sub2, address, forClass) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    let query = "INSERT INTO instructor (id, firstName, lastName, email, pass, phone, registerDate, updateDate, sub1, sub2, address, forClass) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     let enPass = encryptPass(req.body.pass)
     let date = getCurrentDateTime()
 
-    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, req.body.profileImg, date, date, req.body.sub1, req.body.sub2, req.body.address, req.body.forClass];
+    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, date, req.body.sub1, req.body.sub2, req.body.address, req.body.forClass];
 
     let result = await database.execute(query, data)
 
-    return { status: 1, code: 200, data: "account created" }
+    if (result[0]['affectedRows'] == 1) {
+      let imageUrl = await imageUploader(req.body.profileImg)
+      let getData = await database.execute(`update instructor set profileImg = '${imageUrl}' where id = "${uniqueId}"`)
+      return { status: 1, code: 200, data: "account created" }
+    }
+
+    return { status: 0, code: 200, data: "could not create account" }
 
   } catch (error) {
     return { status: 0, code: 200, data: "could not create account", errorCode: error };
@@ -82,8 +91,8 @@ exports.delete = async (req) => {
       id = req.params.id
     }
 
-    let query = `UPDATE instructor SET active = 0, updateDate = ? WHERE id = ${id} and active = 1;`;
-    let data = [getCurrentDateTime(), req.headers.id]
+    let query = `UPDATE instructor SET active = 0, updateDate = ? WHERE id = '${id}' and active = 1;`;
+    let data = [getCurrentDateTime()]
 
     let result = await database.execute(query, data)
 

@@ -7,22 +7,30 @@ const { imageUploader } = require('../helpers/ImageUploader');
 // create
 exports.create = async (req) => {
   try {
+    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg) return { status: 0, code: 200, data: "Fill all the data" };
+
     let uniqueId = v4();
-    let string = "INSERT INTO `student` (`id`, `firstName`, `lastName`, `email`, `pass`, `phone`, `profileImg`, `registerDate`, `updateDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    let string = "INSERT INTO `student` (`id`, `firstName`, `lastName`, `email`, `pass`, `phone`, `registerDate`, `updateDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     // encrypt password
     let enPass = encryptPass(req.body.pass)
     let date = getCurrentDateTime()
 
-    let imageUrl = await imageUploader(req.body.profileImg)
-
-    let data = [uniqueId, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, imageUrl, date, date];
+    let data = [uniqueId, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, date];
 
     let result = await database.execute(string, data)
-    return { status: 1, code: 200, data: "account created" }
+
+    if (result[0]['affectedRows'] == 1){
+      let imageUrl = await imageUploader(req.body.profileImg)
+      if(!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
+      let getData = await database.execute(`update student set profileImg = '${imageUrl}' where id = "${uniqueId}"`)
+      return { status: 1, code: 200, data: "account created" }
+    }
+
+    return { status: 0, code: 200, data: "could not create account" }
 
   } catch (error) {
-    return { status: 0, code: 200, data: "could not create account", errorCode: error };
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
@@ -70,7 +78,7 @@ exports.update = async (req) => {
 // delete
 exports.delete = async (req) => {
   try {
-    if(req.headers.role == 0){
+    if (req.headers.role == 0) {
       var id = req.headers.id
     }
     // for admin
@@ -78,7 +86,7 @@ exports.delete = async (req) => {
       id = req.body.stdId
     }
 
-    let query = `UPDATE student SET active = 0, updateDate = ? WHERE id = ${id} and active = 1;`;
+    let query = `UPDATE student SET active = 0, updateDate = ? WHERE id = '${id}' and active = 1;`;
     let data = [getCurrentDateTime(), req.headers.id]
 
     let result = await database.execute(query, data)
