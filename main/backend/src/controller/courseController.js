@@ -18,14 +18,32 @@ exports.deleteCourse = async (req, res) => {
     res.status(200).json(result);
 }
 
-// get course (public)
-exports.getAllCourse = async (req, res) => {
-    const result = await course.getCoursePublic(req);
+// get all course
+exports.courses = async (req, res) => {
+    const result = await course.getAllCourse(req);
     res.status(200).json(result);
 }
 
 // get course by instructor
-exports.getCourseByInstructor = async (req, res) => {
-    const result = await course.getCourseInstructor(req);
+exports.courseByInstructor = async (req, res) => {
+    const result = await course.getCourseByInstructor(req);
+    res.status(200).json(result);
+}
+
+// get course by subject
+exports.courseBySubject = async (req, res) => {
+    let result = await course.getCourseBySubject(req);
+    res.status(200).json(result);
+}
+
+// get course by class
+exports.courseByClass = async (req, res) => {
+    let result = await course.getCourseByClass(req);
+    res.status(200).json(result);
+}
+
+// get course by code
+exports.courseByCode = async (req, res) => {
+    let result = await course.getCourseByCode(req);
     res.status(200).json(result);
 }
