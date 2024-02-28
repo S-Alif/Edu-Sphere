@@ -1,17 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { errorAlert } from "../helpers/alertMsg";
 import { dataValidator } from "../helpers/validators";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import Section from "../components/tag-comps/Section";
 import avatar from '../assets/imgs/avatar-1577909_640.png'
 import userStore from "../store/userStore";
+import basicStore from "../store/basicStore";
 
 
 const InstuctorRegPage = () => {
-  
+
     const navigate = useNavigate()
-    const {instructorRegistration} = userStore()
+
+    const { fetchClass, subjectByClass, classes, subjects } = basicStore()
+
+    const { instructorRegistration } = userStore()
     const [preview, setPreview] = useState(avatar)
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
@@ -20,8 +24,20 @@ const InstuctorRegPage = () => {
         email: "",
         pass: "",
         phone: "",
-        profileImg: null
+        profileImg: null,
+        sub1: "",
+        sub2: "",
+        forClass: ""
     })
+
+    // get classes
+    useEffect(() => {
+
+        (async () => {
+            await fetchClass()
+        })()
+
+    }, [0])
 
     // image handler
     const handleImage = (e) => {
@@ -40,8 +56,11 @@ const InstuctorRegPage = () => {
     }
 
     // handle data
-    const handleFormData = (e) => {
+    const handleFormData = async (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        if (e.target.name == "forClass" && e.target.value != "") {
+            await subjectByClass(e.target.value)
+        }
     }
 
     // submit form
@@ -51,9 +70,9 @@ const InstuctorRegPage = () => {
 
         if (validation) {
             let result = await instructorRegistration(formData)
-            
-            if(result == 1){
-                navigate('/login', {replace:true})
+
+            if (result == 1) {
+                navigate('/login', { replace: true })
             }
         }
     }
@@ -62,7 +81,7 @@ const InstuctorRegPage = () => {
         <section className="std-register-page">
 
             {/* page header */}
-            <PageHeader pageTitle={"Instructor Registration"} pageText={"Register as a instructor to teach in the best platform"} headerBg={"https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}/>
+            <PageHeader pageTitle={"Instructor Registration"} pageText={"Register as a instructor to teach in the best platform"} headerBg={"https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
 
             {/* register content */}
             <Section className={"register-content"}>
@@ -83,21 +102,74 @@ const InstuctorRegPage = () => {
                             <label htmlFor="profileImg">Profile image</label>
                             <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/png, image/jpg' onChange={handleImage} />
 
+                            {/* first name */}
                             <label htmlFor="firstName">First name</label>
                             <input type="text" name='firstName' id='firstName' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.firstName} onChange={handleFormData} />
 
+                            {/* last name */}
                             <label htmlFor="lastName">Last name</label>
                             <input type="text" name='lastName' id='lastName' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.lastName} onChange={handleFormData} />
 
+                            {/* email */}
                             <label htmlFor="email">Email</label>
                             <input type="email" name='email' id='email' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.email} onChange={handleFormData} />
 
+                            {/* phone */}
                             <label htmlFor="email">Phone</label>
                             <input type="text" name='phone' id='phone' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.phone} onChange={handleFormData} />
 
+                            {/* classes */}
+                            <div className="w-full">
+                                <label htmlFor="forClass" className="block">For Class</label>
+                                <select className="select select-success w-full max-w-xs mt-4 mb-6" id="forClass" name="forClass" value={formData.forClass} onChange={handleFormData}>
+                                    <option value={""}>Pick class to teach</option>
+                                    {
+                                        classes.length > 0 &&
+                                        classes.map((e, index) => (
+                                            <option value={e.class} key={index}>{e.class}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+
+                            {/* show subject choose options */}
+                            <div className={`w-full grid grid-cols-1 lg:grid-cols-2 gap-4 ${formData.forClass != "" && "mb-6"}`}>
+                                {formData.forClass != "" && (
+                                    <>
+                                        <div>
+                                            <label htmlFor="sub1" className="block">Subject one</label>
+                                            <select className="select select-success mt-4 w-full" id="sub1" name="sub1" value={formData.sub1} onChange={handleFormData}>
+                                                <option value={""}>choose a subject</option>
+                                                {
+                                                    subjects.length > 0 &&
+                                                    subjects.map((e, index) => (
+                                                        <option value={e.id} key={index}>{e.name}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label htmlFor="sub2" className="block">Subject two</label>
+                                            <select className="select select-success mt-4 w-full" id="sub2" name="sub2" value={formData.sub2} onChange={handleFormData}>
+                                                <option value={""}>choose a subject</option>
+                                                {
+                                                    subjects.length > 0 &&
+                                                    subjects.map((e, index) => (
+                                                        <option value={e.id} key={index}>{e.name}</option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            {/* password */}
                             <label htmlFor="pass">Password</label>
                             <input type="password" name='pass' id='pass' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.pass} onChange={handleFormData} />
 
+                            {/* confirm password */}
                             <label htmlFor="re-pass">Confirm Password</label>
                             <input type="password" name='con_pass' id='re-pass' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
 

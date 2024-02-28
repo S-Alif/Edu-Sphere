@@ -5,8 +5,8 @@ import { errorAlert, successAlert } from './../helpers/alertMsg';
 
 
 const basicStore = create((set) => ({
-  classes: null,
-  subjects: null,
+  classes: [],
+  subjects: [],
 
   // fetch classes
   fetchClass: async () => {
