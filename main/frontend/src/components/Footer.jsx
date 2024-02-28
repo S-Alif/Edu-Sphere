@@ -2,14 +2,14 @@ import { NavLink } from "react-router-dom";
 import Container from "./tag-comps/Container";
 import logoDark from '../assets/imgs/logo-dark.png'
 
-// logos
-import { FaFacebook, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+// icons
+import { FaFacebook, FaLinkedinIn, FaXTwitter, FaCopyright } from "react-icons/fa6";
 import { AiFillInstagram } from "react-icons/ai";
 
 
 const Footer = () => {
     return (
-        <footer className="py-12 bg-slate-900">
+        <footer className="pt-12 bg-slate-900">
             <Container>
                 <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-7">
 
@@ -56,6 +56,15 @@ const Footer = () => {
 
                 </div>
             </Container>
+
+            {/* copyright message  */}
+            <div className="w-full border-t-2 mt-12">
+                <p className="text-center">
+                    <span><FaCopyright /></span>
+                    Copyright 2024 <a href="/" className="text-emerald-500" >Edusphere</a> || All Rights Reserved
+                </p>
+            </div>
+
         </footer>
     );
 };
