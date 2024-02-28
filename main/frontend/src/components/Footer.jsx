@@ -58,10 +58,9 @@ const Footer = () => {
             </Container>
 
             {/* copyright message  */}
-            <div className="w-full border-t-2 mt-12">
-                <p className="text-center">
-                    <span><FaCopyright /></span>
-                    Copyright 2024 <a href="/" className="text-emerald-500" >Edusphere</a> || All Rights Reserved
+            <div className="w-full border-t-2 border-dashed mt-16">
+                <p className="text-center text-gray-300 w-full py-4 font-semibold flex justify-center items-center">
+                    <span className="pr-1"><FaCopyright /></span> Copyright 2024 <a href="/" className="text-emerald-500 mx-1" >Edusphere</a> | | All Rights Reserved
                 </p>
             </div>
 
