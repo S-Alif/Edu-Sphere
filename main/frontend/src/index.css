@@ -1,4 +1,5 @@
 /* import design css */
+@import "./assets/css/global.css";
 @import "./assets/css/loginPage.css";
 
 @tailwind base;
