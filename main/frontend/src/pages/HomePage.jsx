@@ -9,7 +9,7 @@ const HomePage = () => {
     return (
         <>
             {/* hero section */}
-            <section className="lg:homepage-hero-section w-full h-auto bg-gray-100 overflow-hidden">
+            <section className="lg:homepage-hero-section w-full h-auto bg-gray-100 dark:bg-slate-800 overflow-hidden">
                 <Container className={"h-full"}>
                     <GridRows className={"lg:grid-cols-2 h-full w-full"}>
 
