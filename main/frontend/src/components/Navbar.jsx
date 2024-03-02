@@ -13,7 +13,7 @@ const Navbar = () => {
     return (
         <>
             {/* top navbar */}
-            <div className={`navbar-top h-16 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky`}>
+            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky`}>
                 <Container className={"h-full"}>
                     <div className="flex w-full h-full justify-between items-center">
 
