@@ -17,32 +17,34 @@ const validatePhone = (Phone) => {
 export const dataValidator = (data, confirmPass, location) => {
 
   if (data['firstName'].trim() == "" || data['lastName'].trim() == "") {
-    errorAlert("Names can't be empty")
-    return false
+    return errorAlert("Names can't be empty")
   }
   else if (data['firstName'].trim().length < 2 || data['lastName'].trim().length < 2) {
-    errorAlert("Names can't be less than 2 characters")
-    return false
+    return errorAlert("Names can't be less than 2 characters")
   }
   else if (data['email'].trim() == "" || !validateEmail(data['email'].trim())) {
-    errorAlert("Invalid email")
-    return false
+    return errorAlert("Invalid email")
   }
   else if (data['phone'].trim() == "" || data['phone'].trim().length > 15 || !validatePhone(data['phone'].trim())) {
-    errorAlert("Invalid phone number")
-    return false
+    return errorAlert("Invalid phone number")
+  }
+  else if(location == 1){
+    if(data['sub1'] == "" || data['sub2'] == ""){
+      return errorAlert("must pick two subjects")
+    }
+    if (data['sub1'] == data['sub2'] || data['sub2'] == data['sub1']) {
+      return errorAlert("pick different subjects")
+    }
   }
   else if (data['pass'].trim().length < 8) {
-    errorAlert("Password must be 8 characters or more")
-    return false
+    return errorAlert("Password must be 8 characters or more")
+
   }
   else if (data['pass'].trim() !== confirmPass) {
-    errorAlert("Passwords don't match")
-    return false
+    return errorAlert("Passwords don't match")
   }
   else if (!data['profileImg']) {
-    errorAlert("Select a profile picture")
-    return false
+    return errorAlert("Select a profile picture")
   }
 
   return true;
