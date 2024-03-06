@@ -8,15 +8,15 @@ const { imageUploader } = require('../helpers/ImageUploader');
 // create
 exports.create = async (req) => {
   try {
-    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg || req.body?.sub1 || req.body?.sub2 || req.body?.address || req.body?.forClass) return { status: 0, code: 200, data: "Fill all the data" };
+    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg || req.body?.sub1 || req.body?.sub2 || req.body?.address) return { status: 0, code: 200, data: "Fill all the data" };
     
     let uid = v4();
-    let query = "INSERT INTO instructor (id, firstName, lastName, email, pass, phone, registerDate, updateDate, sub1, sub2, address, forClass) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    let query = "INSERT INTO instructor (id, firstName, lastName, email, pass, phone, registerDate, updateDate, sub1, sub2, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     let enPass = encryptPass(req.body.pass)
     let date = getCurrentDateTime()
 
-    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, date, req.body.sub1, req.body.sub2, req.body.address, req.body.forClass];
+    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, date, req.body.sub1, req.body.sub2, req.body.address];
 
     let result = await database.execute(query, data)
 
@@ -63,9 +63,9 @@ exports.update = async (req) => {
   try {
 
     if (req.headers.role == 1) {
-      let query = "UPDATE instructor SET firstName = ?, lastName = ?, phone = ?, profileImg = ?, profileCover = ?, updateDate = ?, sub1 = ?, sub2 = ?, address = ?, forClass = ? WHERE id = ? AND active = 1";
+      let query = `UPDATE instructor SET firstName = ?, lastName = ?, phone = ?, profileImg = ?, profileCover = ?, updateDate = ?, sub1 = ?, sub2 = ?, address = ? WHERE id = "${req.headers.id}" AND active = 1`;
 
-      let data = [req.body.firstName, req.body.lastName, req.body.phone, req.body.profileImg, profileCover, getCurrentDateTime(), req.body.sub1, req.body.sub2, req.body.address, req.body.forClass];
+      let data = [req.body.firstName, req.body.lastName, req.body.phone, req.body.profileImg, profileCover, getCurrentDateTime(), req.body.sub1, req.body.sub2, req.body.address];
 
       let result = await database.execute(query, data)
       return { status: 1, code: 200, data: "Account updated" }
@@ -116,7 +116,7 @@ exports.getData = async (req) => {
       id = req.headers.id
     }
 
-    let query = `SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, forClass, registerDate, updateDate FROM instructor WHERE id = '${id}';`
+    let query = `SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, registerDate, updateDate FROM instructor WHERE id = '${id}';`
 
     let result = await database.execute(query)
     return { status: 1, code: 200, data: result[0][0] }
@@ -130,7 +130,7 @@ exports.getData = async (req) => {
 exports.getInstructors = async (req) => {
   try {
 
-    let query = "SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, forClass, registerDate, updateDate FROM instructor;"
+    let query = "SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, registerDate, updateDate FROM instructor;"
 
     let result = await database.execute(query)
     return { status: 1, code: 200, data: result[0] }
