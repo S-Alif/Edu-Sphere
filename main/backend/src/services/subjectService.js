@@ -7,8 +7,8 @@ exports.create = async (req) => {
 
         if (req.headers.role === "11") {
             let uid = v4()
-            let qeury = "INSERT INTO subject (id, name, code, class) VALUES (?,?,?,?);"
-            let data = [uid, req.body.name, req.body.code, req.body.class]
+            let qeury = "INSERT INTO subject (id, name, code) VALUES (?,?,?,?);"
+            let data = [uid, req.body.name, req.body.code]
             let result = await database.execute(qeury, data)
 
             return { status: 1, code: 200, data: "subject created" }
@@ -26,8 +26,8 @@ exports.update = async (req) => {
 
         if (req.headers.role === "11") {
             let uid = v4()
-            let qeury = "UPDATE subject SET name= ?, code = ?, class = ? WHERE id = ?;"
-            let data = [req.body.name, req.body.code, req.body.class, req.params.id]
+            let qeury = "UPDATE subject SET name = ?, code = ? WHERE id = ?;"
+            let data = [req.body.name, req.body.code, req.params.id]
             let result = await database.execute(qeury, data)
 
             return { status: 1, code: 200, data: "subject updated" }
@@ -61,7 +61,7 @@ exports.delete = async (req) => {
 //  get Subjects
 exports.getSubjects = async (req) => {
     try {
-        let query = "SELECT * FROM subject order by class desc;"
+        let query = "SELECT * FROM subject;"
         let result = await database.execute(query)
         return { status: 1, code: 200, data: result[0] };
 
@@ -73,21 +73,9 @@ exports.getSubjects = async (req) => {
 // get distinct class
 exports.getClasses = async (req) => {
     try {
-        let query = "SELECT distinct class FROM subject order by class desc;"
-        let result = await database.execute(query)
-        return { status: 1, code: 200, data: result[0] };
-
-    } catch (error) {
-        return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
-    }
-}
-
-// get subject by class
-exports.getSubjectsByClass = async (req) => {
-    try {
-        let query = `SELECT * FROM subject where class = '${req.params.class}' order by class desc;`
-        let result = await database.execute(query)
-        return { status: 1, code: 200, data: result[0] };
+        // let query = "SELECT distinct class FROM subject order by class desc;"
+        let result = ["12","11","9", "8", "7", "6"]
+        return { status: 1, code: 200, data: result };
 
     } catch (error) {
         return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
