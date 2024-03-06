@@ -19,7 +19,6 @@ router.get('/courses-code/:code', course.courseByCode)
 // subjects
 router.get('/classes', subject.classes)
 router.get('/subjects', subject.getAllSubject)
-router.get('/subjects/:class', subject.subjectByClass)
 
 
 module.exports = router
