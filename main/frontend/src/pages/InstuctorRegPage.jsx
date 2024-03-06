@@ -4,9 +4,9 @@ import { dataValidator } from "../helpers/validators";
 import { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import Section from "../components/tag-comps/Section";
-import avatar from '../assets/imgs/avatar-1577909_640.png'
 import userStore from "../store/userStore";
 import basicStore from "../store/basicStore";
+import useHandleImage from "../hooks/useHandleImage";
 
 
 const InstuctorRegPage = () => {
@@ -14,9 +14,13 @@ const InstuctorRegPage = () => {
     const navigate = useNavigate()
 
     const { fetchClass, subjectByClass, classes, subjects } = basicStore()
+    const { handleImage, preview } = useHandleImage(
+        (result) => setFormData({ ...formData, profileImg: result }),
+        5000,
+        errorAlert
+    );
 
     const { instructorRegistration } = userStore()
-    const [preview, setPreview] = useState(avatar)
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
         firstName: "",
@@ -27,33 +31,19 @@ const InstuctorRegPage = () => {
         profileImg: null,
         sub1: "",
         sub2: "",
-        forClass: ""
     })
 
     // get classes
-    useEffect(() => {
+    // useEffect(() => {
 
-        (async () => {
-            await fetchClass()
-        })()
+    //     (async () => {
+    //         await fetchClass()
+    //     })()
 
-    }, [0])
+    // }, [0])
 
     // image handler
-    const handleImage = (e) => {
-        if (!e.target.files[0]) return
-        let uploadedFile = e.target.files[0]
-        if ((uploadedFile.size / 1024) > 5000) {
-            errorAlert("Image is larger than 5MB")
-            return
-        }
-        const file = new FileReader
-        file.onload = () => {
-            setPreview(file.result)
-            setFormData({ ...formData, profileImg: file.result })
-        }
-        file.readAsDataURL(uploadedFile)
-    }
+
 
     // handle data
     const handleFormData = async (e) => {
@@ -66,9 +56,9 @@ const InstuctorRegPage = () => {
     // submit form
     const submitForm = async (e) => {
         e.preventDefault()
-        let validation = dataValidator(formData, confirmPass, 0)
+        let validation = dataValidator(formData, confirmPass, 1)
 
-        if (validation) {
+        if (validation == true) {
             let result = await instructorRegistration(formData)
 
             if (result == 1) {
@@ -99,6 +89,8 @@ const InstuctorRegPage = () => {
 
                         {/* form */}
                         <form action="" onSubmit={submitForm}>
+
+                            {/* profile image */}
                             <label htmlFor="profileImg">Profile image</label>
                             <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/png, image/jpg' onChange={handleImage} />
 
@@ -118,51 +110,34 @@ const InstuctorRegPage = () => {
                             <label htmlFor="email">Phone</label>
                             <input type="text" name='phone' id='phone' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.phone} onChange={handleFormData} />
 
-                            {/* classes */}
-                            <div className="w-full">
-                                <label htmlFor="forClass" className="block">For Class</label>
-                                <select className="select select-success w-full max-w-xs mt-4 mb-6" id="forClass" name="forClass" value={formData.forClass} onChange={handleFormData}>
-                                    <option value={""}>Pick class to teach</option>
-                                    {
-                                        classes.length > 0 &&
-                                        classes.map((e, index) => (
-                                            <option value={e.class} key={index}>{e.class}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
 
                             {/* show subject choose options */}
                             <div className={`w-full grid grid-cols-1 lg:grid-cols-2 gap-4 ${formData.forClass != "" && "mb-6"}`}>
-                                {formData.forClass != "" && (
-                                    <>
-                                        <div>
-                                            <label htmlFor="sub1" className="block">Subject one</label>
-                                            <select className="select select-success mt-4 w-full" id="sub1" name="sub1" value={formData.sub1} onChange={handleFormData}>
-                                                <option value={""}>choose a subject</option>
-                                                {
-                                                    subjects.length > 0 &&
-                                                    subjects.map((e, index) => (
-                                                        <option value={e.id} key={index}>{e.name}</option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </div>
+                                <div>
+                                    <label htmlFor="sub1" className="block">Subject one</label>
+                                    <select className="select select-success mt-4 w-full" id="sub1" name="sub1" value={formData.sub1} onChange={handleFormData}>
+                                        <option value={""}>choose a subject</option>
+                                        {
+                                            subjects.length > 0 &&
+                                            subjects.map((e, index) => (
+                                                <option value={e.id} key={index}>{e.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
 
-                                        <div>
-                                            <label htmlFor="sub2" className="block">Subject two</label>
-                                            <select className="select select-success mt-4 w-full" id="sub2" name="sub2" value={formData.sub2} onChange={handleFormData}>
-                                                <option value={""}>choose a subject</option>
-                                                {
-                                                    subjects.length > 0 &&
-                                                    subjects.map((e, index) => (
-                                                        <option value={e.id} key={index}>{e.name}</option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </div>
-                                    </>
-                                )}
+                                <div>
+                                    <label htmlFor="sub2" className="block">Subject two</label>
+                                    <select className="select select-success mt-4 w-full" id="sub2" name="sub2" value={formData.sub2} onChange={handleFormData}>
+                                        <option value={""}>choose a subject</option>
+                                        {
+                                            subjects.length > 0 &&
+                                            subjects.map((e, index) => (
+                                                <option value={e.id} key={index}>{e.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
                             </div>
 
                             {/* password */}
