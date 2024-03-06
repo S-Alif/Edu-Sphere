@@ -7,7 +7,7 @@ const { imageUploader } = require('../helpers/ImageUploader');
 // create
 exports.create = async (req) => {
   try {
-    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg) return { status: 0, code: 200, data: "Fill all the data" };
+    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || !req.body?.phone || !req.body?.profileImg) return { status: 0, code: 200, data: "Fill all the data" };
 
     let uniqueId = v4();
     let string = "INSERT INTO `student` (`id`, `firstName`, `lastName`, `email`, `pass`, `phone`, `registerDate`, `updateDate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
