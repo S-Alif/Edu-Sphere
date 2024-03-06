@@ -1,14 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import Container from './tag-comps/Container';
 import useSystemTheme from '../hooks/useSystemTheme';
+import userStore from './../store/userStore';
 
 // import logo
 import logoDark from '../assets/imgs/logo-dark.png'
 import logoLight from '../assets/imgs/logo-light.png'
 
+// placeholder avatar
+import avatar from "../assets/imgs/avatar-1577909_640.png"
+
 const Navbar = () => {
 
     const theme = useSystemTheme()
+    const { user } = userStore()
 
     return (
         <>
@@ -35,22 +40,42 @@ const Navbar = () => {
                             </div>
 
                             <div className="profile">
-                                <div className="dropdown dropdown-end">
-                                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar border-2 border-emerald-500">
+                                <details className="dropdown dropdown-end">
+                                    <summary tabIndex={0} className="btn btn-circle avatar border-2 hover:border-emerald-500">
                                         <div className="w-9 rounded-full">
-                                            <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                            <img alt="profile avatar" src={avatar} />
                                         </div>
-                                    </div>
+                                    </summary>
                                     <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-emerald-500">
-                                        <li>
-                                            <a className="justify-between">
-                                                Profile
-                                            </a>
-                                        </li>
-                                        <li><a>Settings</a></li>
-                                        <li><a>Logout</a></li>
+
+                                        {/* option to show when a user is logged in */}
+                                        {user?.uid && (user?.role == 1 || user?.role == 0) && (
+                                            <>
+                                                <li>
+                                                    <NavLink to={`/user`}>Profile</NavLink>
+                                                </li>
+                                                <li>
+                                                    <button>Logout</button>
+                                                </li>
+                                            </>
+                                        )}
+
+                                        {/* option to show when no user is logged in */}
+                                        {!user && (
+                                            <>
+                                                <li>
+                                                    <NavLink to={`/login`}>Login</NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink to={`/student-register`}>Register as student</NavLink>
+                                                </li>
+                                                <li>
+                                                    <NavLink to={`/instructor-register`}>Register as instructor</NavLink>
+                                                </li>
+                                            </>
+                                        )}
                                     </ul>
-                                </div>
+                                </details>
                             </div>
 
                         </div>
