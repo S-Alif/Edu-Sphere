@@ -25,10 +25,10 @@ const basicStore = create((set) => ({
     }
   },
 
-  // subject by class
-  subjectByClass: async (classNo) => {
+  // get subjects
+  getSubjects: async () => {
     try {
-      let result = await axios.get(basicEndpoint + "/subjects/" + classNo)
+      let result = await axios.get(basicEndpoint + "/subjects")
 
       if (result.data["status"] == 0) {
         errorAlert(result.data['data'])
