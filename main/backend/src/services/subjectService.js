@@ -23,9 +23,8 @@ exports.create = async (req) => {
 //  update
 exports.update = async (req) => {
     try {
-
         if (req.headers.role === "11") {
-            let uid = v4()
+            
             let qeury = "UPDATE subject SET name = ?, code = ? WHERE id = ?;"
             let data = [req.body.name, req.body.code, req.params.id]
             let result = await database.execute(qeury, data)
@@ -42,9 +41,7 @@ exports.update = async (req) => {
 //  delete
 exports.delete = async (req) => {
     try {
-
         if (req.headers.role === "11") {
-            let uid = v4()
             let qeury = "DELETE FROM subject WHERE id = ?;"
             let data = [req.params.id]
             let result = await database.execute(qeury, data)

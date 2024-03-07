@@ -8,8 +8,8 @@ const { imageUploader } = require('../helpers/ImageUploader');
 // create
 exports.create = async (req) => {
   try {
-    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || req.body?.phone || !req.body?.profileImg || req.body?.sub1 || req.body?.sub2 || req.body?.address) return { status: 0, code: 200, data: "Fill all the data" };
-    
+    if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || !req.body?.phone || !req.body?.profileImg || !req.body?.sub1 || !req.body?.sub2 || !req.body?.address) return { status: 0, code: 200, data: "Fill all the data" };
+
     let uid = v4();
     let query = "INSERT INTO instructor (id, firstName, lastName, email, pass, phone, registerDate, updateDate, sub1, sub2, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -22,14 +22,15 @@ exports.create = async (req) => {
 
     if (result[0]['affectedRows'] == 1) {
       let imageUrl = await imageUploader(req.body.profileImg)
-      let getData = await database.execute(`update instructor set profileImg = '${imageUrl}' where id = "${uniqueId}"`)
+      if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
+      let getData = await database.execute(`update instructor set profileImg = '${imageUrl}' where id = "${uid}"`)
       return { status: 1, code: 200, data: "account created" }
     }
 
     return { status: 0, code: 200, data: "could not create account" }
 
   } catch (error) {
-    return { status: 0, code: 200, data: "could not create account", errorCode: error };
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
