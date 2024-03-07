@@ -13,13 +13,7 @@ const InstuctorRegPage = () => {
 
     const navigate = useNavigate()
 
-    const { fetchClass, subjectByClass, classes, subjects } = basicStore()
-    const { handleImage, preview } = useHandleImage(
-        (result) => setFormData({ ...formData, profileImg: result }),
-        5000,
-        errorAlert
-    );
-
+    const { getSubjects, subjects } = basicStore()
     const { instructorRegistration } = userStore()
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
@@ -29,28 +23,28 @@ const InstuctorRegPage = () => {
         pass: "",
         phone: "",
         profileImg: null,
+        address: "",
         sub1: "",
         sub2: "",
     })
+    
+    // handle image with custom hook
+    const { handleImage, preview } = useHandleImage(
+        (result) => setFormData({ ...formData, profileImg: result }),
+        5000,
+        errorAlert
+    );
 
-    // get classes
-    // useEffect(() => {
-
-    //     (async () => {
-    //         await fetchClass()
-    //     })()
-
-    // }, [0])
-
-    // image handler
-
+    // get subjects
+    useEffect(() => {
+        (async () => {
+            await getSubjects()
+        })()
+    }, [0])
 
     // handle data
     const handleFormData = async (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        if (e.target.name == "forClass" && e.target.value != "") {
-            await subjectByClass(e.target.value)
-        }
     }
 
     // submit form
@@ -92,7 +86,7 @@ const InstuctorRegPage = () => {
 
                             {/* profile image */}
                             <label htmlFor="profileImg">Profile image</label>
-                            <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/png, image/jpg' onChange={handleImage} />
+                            <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/jpg, image/png' onChange={handleImage} />
 
                             {/* first name */}
                             <label htmlFor="firstName">First name</label>
@@ -107,8 +101,12 @@ const InstuctorRegPage = () => {
                             <input type="email" name='email' id='email' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.email} onChange={handleFormData} />
 
                             {/* phone */}
-                            <label htmlFor="email">Phone</label>
+                            <label htmlFor="phone">Phone</label>
                             <input type="text" name='phone' id='phone' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.phone} onChange={handleFormData} />
+
+                            {/* address */}
+                            <label htmlFor="address">Address</label>
+                            <input type="text" name='address' id='address' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.address} onChange={handleFormData} />
 
 
                             {/* show subject choose options */}
