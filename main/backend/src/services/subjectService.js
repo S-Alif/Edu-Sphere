@@ -7,7 +7,7 @@ exports.create = async (req) => {
 
         if (req.headers.role === "11") {
             let uid = v4()
-            let qeury = "INSERT INTO subject (id, name, code) VALUES (?,?,?,?);"
+            let qeury = "INSERT INTO subject (id, name, code) VALUES (?,?,?);"
             let data = [uid, req.body.name, req.body.code]
             let result = await database.execute(qeury, data)
 
