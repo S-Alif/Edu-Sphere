@@ -9,16 +9,27 @@ import logoLight from '../assets/imgs/logo-light.png'
 
 // placeholder avatar
 import avatar from "../assets/imgs/avatar-1577909_640.png"
+import { useEffect } from 'react';
 
 const Navbar = () => {
 
     const theme = useSystemTheme()
-    const { user } = userStore()
+    const { user, profile, userProfile } = userStore()
+
+    // get profile data
+    useEffect(() => {
+        (async () => {
+            if (user?.role == 0 || user?.role == 1) {
+                await userProfile(user.role)
+            }
+        })()
+
+    }, [user])
 
     return (
         <>
             {/* top navbar */}
-            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky`}>
+            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky top-0`}>
                 <Container className={"h-full"}>
                     <div className="flex w-full h-full justify-between items-center">
 
@@ -43,7 +54,7 @@ const Navbar = () => {
                                 <details className="dropdown dropdown-end">
                                     <summary tabIndex={0} className="btn btn-circle avatar border-2 hover:border-emerald-500">
                                         <div className="w-9 rounded-full">
-                                            <img alt="profile avatar" src={avatar} />
+                                            <img alt="profile avatar" src={profile?.profileImg ? profile.profileImg : avatar} />
                                         </div>
                                     </summary>
                                     <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 border border-emerald-500">
