@@ -3,18 +3,22 @@ import PageHeader from './../components/PageHeader';
 import Section from './../components/tag-comps/Section';
 import { errorAlert } from '../helpers/alertMsg'
 
-import avatar from '../assets/imgs/avatar-1577909_640.png'
 import { dataValidator } from '../helpers/validators';
 
 import userStore from '../store/userStore';
 import { useNavigate } from 'react-router-dom';
+import useHandleImage from '../hooks/useHandleImage';
 
 
 const StudentRegPage = () => {
 
     const navigate = useNavigate()
+    const { handleImage, preview } = useHandleImage(
+        (result) => setFormData({ ...formData, profileImg: result }),
+        5000,
+        errorAlert
+    );
     const { studentRegistration } = userStore()
-    const [preview, setPreview] = useState(avatar)
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
         firstName: "",
@@ -24,22 +28,6 @@ const StudentRegPage = () => {
         phone: "",
         profileImg: null
     })
-
-    // image handler
-    const handleImage = (e) => {
-        if (!e.target.files[0]) return
-        let uploadedFile = e.target.files[0]
-        if ((uploadedFile.size / 1024) > 5000) {
-            errorAlert("Image is larger than 5MB")
-            return
-        }
-        const file = new FileReader
-        file.onload = () => {
-            setPreview(file.result)
-            setFormData({ ...formData, profileImg: file.result })
-        }
-        file.readAsDataURL(uploadedFile)
-    }
 
     // handle data
     const handleFormData = (e) => {
@@ -83,7 +71,7 @@ const StudentRegPage = () => {
                         {/* form */}
                         <form action="" onSubmit={submitForm}>
                             <label htmlFor="profileImg">Profile image</label>
-                            <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/png, image/jpg' onChange={handleImage} />
+                            <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success w-full' accept='image/jpg, image/png' onChange={handleImage} />
 
                             <label htmlFor="firstName">First name</label>
                             <input type="text" name='firstName' id='firstName' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={formData.firstName} onChange={handleFormData} />
