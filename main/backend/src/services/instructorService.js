@@ -117,7 +117,8 @@ exports.getData = async (req) => {
       id = req.headers.id
     }
 
-    let query = `SELECT id, firstName, lastName, email, phone, profileImg, profileCover, about, sub1, sub2, address, registerDate, updateDate FROM instructor WHERE id = '${id}';`
+    let query = `SELECT ins.id, ins.firstName, ins.lastName, ins.email, ins.phone, ins.profileImg, ins.profileCover, ins.about, (SELECT JSON_OBJECT('id', sub1.id, 'name', sub1.name)) AS sub1,
+    (SELECT JSON_OBJECT('id', sub2.id, 'name', sub2.name)) AS sub2, ins.address, ins.registerDate, ins.updateDate FROM instructor AS ins JOIN subject AS sub1 ON ins.sub1 = sub1.id JOIN subject AS sub2 ON ins.sub2 = sub2.id WHERE ins.id = '${id}';`
 
     let result = await database.execute(query)
     return { status: 1, code: 200, data: result[0][0] }
