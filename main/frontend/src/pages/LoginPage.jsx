@@ -2,10 +2,13 @@
 import { useState } from 'react';
 import loginPageIllustration from '../assets/imgs/login-illustration-1.jpg'
 import userStore from '../store/userStore';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
 
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/"
     const { studentLogin, instrutorLogin } = userStore()
 
     const [logger, setLogger] = useState(false)
@@ -29,7 +32,8 @@ const LoginPage = () => {
             setEmail("")
             setPass("")
             setDisabler(false)
-            // navigate to profile
+            // navigate to where the user was before login
+            navigate(from, {replace: true})
         }
         setDisabler(false)
     }
@@ -79,7 +83,7 @@ const LoginPage = () => {
 
                         {/* route to registration */}
                         <div className="pt-6">
-                            <div>  
+                            <div>
                                 Don&apos;t have an account !!
                                 <details className="dropdown lg:dropdown-right">
                                     <summary className="m-1 btn bg-transparent hover:bg-emerald-500 hover:text-white border-2 border-emerald-500">Register as</summary>
