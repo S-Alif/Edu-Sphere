@@ -10,6 +10,7 @@ import Section from '../components/tag-comps/Section';
 import { LiaBookSolid } from "react-icons/lia";
 import { FaChalkboardTeacher, FaHeadset } from "react-icons/fa";
 import { MdLiveTv } from "react-icons/md";
+import ContactSection from '../components/ContactSection';
 
 const HomePage = () => {
     return (
@@ -136,20 +137,21 @@ const HomePage = () => {
                         <p className='pt-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, sit! Exercitationem illum quam cum error quod quisquam ipsum obcaecati, aperiam aliquam doloribus praesentium blanditiis, eaque fuga nihil corrupti delectus. Corrupti!</p>
 
                         <h2 className='text-3xl font-bold pt-8'>Enjoy many perks</h2>
-                        <p className="pt-4">
-                            <ul className="list-disc pl-5 font-semibold">
-                                <li className='w-full lg:float-left lg:w-1/2 pt-2'>Global impact</li>
-                                <li className='w-full lg:float-left lg:w-1/2 pt-2'>Flexible schedule</li>
-                                <li className='w-full lg:float-left lg:w-1/2 pt-2'>Innovative teaching tool</li>
-                                <li className='w-full lg:float-left lg:w-1/2 pt-2'>Networking opportunities</li>
-                            </ul>
-                        </p>
+                        <ul className="list-disc pl-5 pt-4 font-semibold">
+                            <li className='w-full lg:float-left lg:w-1/2 pt-2'>Global impact</li>
+                            <li className='w-full lg:float-left lg:w-1/2 pt-2'>Flexible schedule</li>
+                            <li className='w-full lg:float-left lg:w-1/2 pt-2'>Innovative teaching tool</li>
+                            <li className='w-full lg:float-left lg:w-1/2 pt-2'>Networking opportunities</li>
+                        </ul>
 
                         <NavLink to={'/instructor-register'} className={"btn btn-wide md:btn-lg bg-emerald-500 text-white hover:bg-emerald-600 shadow-md mt-8"}>become an instructor</NavLink>
                     </div>
 
                 </GridRows>
             </Section>
+
+            {/* contact section */}
+            <ContactSection />
         </>
     );
 };
