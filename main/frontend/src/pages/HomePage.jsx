@@ -50,11 +50,11 @@ const HomePage = () => {
                     </div>
 
                     <div className="text-content flex flex-col justify-center text-left">
-                        <h2 className='text-3xl font-bold'>About Edusphere</h2>
+                        <h2 className='text-3xl font-bold'>About <span className='text-emerald-500'>Edusphere</span></h2>
                         <p className='pt-5'>Edusphere revolutionizes e-learning with its innovative approach to education. Breaking free from traditional methods, Edusphere harnesses cutting-edge technology to deliver engaging and immersive learning experiences. Through interactive simulations, personalized learning paths, and real-world applications, Edusphere empowers learners to grasp complex concepts with ease. Its dynamic platform fosters collaboration, critical thinking, and creativity, preparing students for success in the ever-evolving digital landscape. With a diverse range of courses spanning various disciplines, Edusphere caters to learners of all ages and backgrounds. Join the Edusphere community and embark on a transformative journey towards knowledge and mastery.</p>
 
                         <div className="w-full">
-                            <a href={"#courses"} className={"btn md:btn-lg bg-emerald-500 text-white mt-8 hover:bg-emerald-600 shadow-md"}>contact us</a>
+                            <a href={"#contact"} className={"btn md:btn-lg bg-emerald-500 text-white mt-8 hover:bg-emerald-600 shadow-md"}>contact us</a>
                             <NavLink to={"/about"} className={"btn md:btn-lg bg-purple-500 text-white mt-8 hover:bg-purple-600 shadow-md ml-4"} >learn more</NavLink>
                         </div>
                     </div>
