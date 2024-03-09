@@ -52,3 +52,24 @@ export const dataValidator = (data, confirmPass, location) => {
 
   return true;
 }
+
+// contact msg validaator
+export const contactMsgValidate = (data) => {
+  if (data["name"].trim() == "" || data["email"].trim() == "" || data["phone"].trim() == "" || data["msg"].trim() == "") {
+    return errorAlert("Fill all the data")
+  }
+  else if (data["name"].trim().length < 5) {
+    return errorAlert("Write name properly")
+  }
+  else if (data["email"].trim() == "" || !validateEmail(data["email"].trim())) {
+    return errorAlert("invalid email")
+  }
+  else if (data["phone"].trim().length > 15 || !validatePhone(data["phone"].trim())) {
+    return errorAlert("invalid phone")
+  }
+  else if(data["msg"].trim().length < 100){
+    return errorAlert("message should be at least 100 characters")
+  }
+
+  return true
+}
