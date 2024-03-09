@@ -8,6 +8,7 @@ const PageHeader = ({ pageTitle, pageText, headerBg }) => {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed"
   }
 
   return (

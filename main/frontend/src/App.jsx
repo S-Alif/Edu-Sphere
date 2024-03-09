@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import AuthCheck from './components/AuthCheck';
 import InstructorDashboard from "./pages/InstructorDashboard";
 import DashboardLayout from "./components/layouts/DashboardLayout";
+import ContactPage from "./pages/ContactPage";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="student-register" element={<StudentRegPage />} />
         <Route path="instructor-register" element={<InstuctorRegPage />} />
+        <Route path="contact" element={<ContactPage />} />
       </Route>
 
       {/* protected routes for instructor */}
