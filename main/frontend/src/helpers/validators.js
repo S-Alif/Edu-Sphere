@@ -40,6 +40,9 @@ export const dataValidator = (data, confirmPass, location) => {
     return errorAlert("Password must be 8 characters or more")
 
   }
+  else if (confirmPass.trim() == ""){
+    return errorAlert("Confirm password empty")
+  }
   else if (data['pass'].trim() !== confirmPass) {
     return errorAlert("Passwords don't match")
   }
