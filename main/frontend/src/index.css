@@ -11,3 +11,8 @@
 .homepage-hero-section {
   height: calc(100vh - 80px);
 }
+
+.dashboard-sidebar a.active {
+  @apply bg-emerald-500;
+  @apply text-white;
+}
