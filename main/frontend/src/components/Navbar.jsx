@@ -29,7 +29,7 @@ const Navbar = () => {
     return (
         <>
             {/* top navbar */}
-            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky top-0`}>
+            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky top-0 z-[200]`}>
                 <Container className={"h-full"}>
                     <div className="flex w-full h-full justify-between items-center">
 
@@ -63,7 +63,7 @@ const Navbar = () => {
                                         {user?.uid && (user?.role == 1 || user?.role == 0) && (
                                             <>
                                                 <li>
-                                                    <NavLink to={`/user`}>Profile</NavLink>
+                                                    <NavLink to={`${user?.role == 1 ? "/instructor" : "/student"}`}>Profile</NavLink>
                                                 </li>
                                                 <li>
                                                     <button>Logout</button>
