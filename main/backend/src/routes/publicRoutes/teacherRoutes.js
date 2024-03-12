@@ -3,6 +3,7 @@ const router = express.Router()
 
 // controller
 const instructor = require("../../controller/instructorController")
+const course = require("../../controller/courseController")
 
 // middleware
 const authVerification = require('../../middleware/authVerification')
@@ -17,8 +18,8 @@ router.get('/user/:id')
 
 
 // course routes
-router.post('/create-course', authVerification)
-router.post('/update-course', authVerification)
-router.post('/delete-course', authVerification)
+router.post('/create-course', authVerification, course.createCourse)
+router.post('/update-course', authVerification, course.updateCourse)
+router.post('/delete-course', authVerification, course.deleteCourse)
 
 module.exports = router
