@@ -3,14 +3,16 @@ import Section from "../components/tag-comps/Section";
 import basicStore from "../store/basicStore";
 import { errorAlert } from "../helpers/alertMsg";
 import userStore from './../store/userStore';
+import instructorStore from "../store/instructorStore";
 
 
 const CreateCoursePage = () => {
 
   const { classes } = basicStore()
   const { profile } = userStore()
+  const { createCourse } = instructorStore()
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       name: "",
       forClass: "",
@@ -25,8 +27,13 @@ const CreateCoursePage = () => {
     }
   })
 
+  // submit data
   const submitData = async (data) => {
-    console.log(data)
+    let result = await createCourse(data)
+
+    if (result == true) {
+      reset()
+    }
   }
 
   return (
@@ -72,8 +79,8 @@ const CreateCoursePage = () => {
 
             {/* course detail */}
             <label htmlFor="detail" className="font-semibold block">Course detail</label>
-            <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={10} placeholder="Course detail" {...register("detail", { required: true, minLength: 150, maxLength: 300 })} />
-            {errors?.detail && errorAlert("Detail should be of 150-300 characters")}
+            <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={10} placeholder="Course detail" {...register("detail", { required: true, minLength: 150, maxLength: 2000 })} />
+            {errors?.detail && errorAlert("Detail should be of 150-255 characters")}
 
             {/* course duration */}
             <label htmlFor="duration" className="font-semibold block">Course duration</label>
@@ -87,8 +94,8 @@ const CreateCoursePage = () => {
 
             {/* course class time */}
             <label htmlFor="classTime" className="font-semibold block">Class time</label>
-            <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="eg: 9:00 AM - 11 AM, for two hours" {...register("classTime", { required: true, minLength: 20, maxLength: 100 })} />
-            {errors?.classTime && errorAlert("type at least three class days")}
+            <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="eg: 9:00 AM - 11:00 AM, For two hours on the given day" {...register("classTime", { required: true, minLength: 20, maxLength: 100 })} />
+            {errors?.classTime && errorAlert("properly describe class times")}
 
             {/* course prerequisite */}
             <label htmlFor="preRequisite" className="font-semibold block">Course prerequisite</label>
@@ -101,8 +108,8 @@ const CreateCoursePage = () => {
             {errors?.price && errorAlert("Write price properly")}
 
             {/* course discount */}
-            <label htmlFor="discount" className="font-semibold block">Course discount <span className="text-sm text-red-500">(in taka, only works if you put the discount amount)</span> <span className="text-sm text-gray-400">(keep empty if there is no discount)</span></label>
-            <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="2000" {...register("discount", { required: false, minLength: 4, maxLength: 5, pattern: /^[0-9]*$/ })} />
+            <label htmlFor="discount" className="font-semibold block">Course discount <span className="text-sm text-red-500">(in taka, only works if you put the discount amount)</span> <span className="text-sm text-gray-400">(put "0" is there is no discount)</span></label>
+            <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="2000" {...register("discount", { required: true, maxLength: 5, pattern: /^[0-9]*$/ })} />
             {errors?.discount && errorAlert("write discount properly")}
 
             <div className="mt-4 mb-6">
