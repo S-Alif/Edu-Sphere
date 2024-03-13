@@ -41,29 +41,28 @@ const StudentRegPage = () => {
 
         if (validation) {
             let result = await studentRegistration(formData)
-            
-            if(result == 1){
-                navigate('/login', {replace:true})
+
+            if (result == 1) {
+                navigate('/login', { replace: true })
             }
         }
     }
 
     return (
-        <section className="std-register-page">
-
+        <>
             {/* page header */}
             <PageHeader pageTitle={"Student Registration"} pageText={"Register as a student to enroll in the best courses"} headerBg={"https://images.unsplash.com/photo-1554252116-30abdf759321?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
 
             {/* register content */}
             <Section className={"register-content"}>
-                <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="flex flex-col justify-center items-center">
 
+                    <h2 className='text-3xl font-bold pb-3 uppercase border-b-2 border-gray-200 mb-20 max-w-4xl w-full text-center'>Registration form</h2>
                     {/* form content */}
-                    <div className="form-content">
-                        <h2 className='text-xl font-bold pb-8'>Registration form</h2>
+                    <div className="form-content flex flex-col lg:flex-row gap-9 max-w-4xl">
 
-                        <div className="avatar mb-9">
-                            <div className="w-32 h-32 rounded">
+                        <div className="avatar">
+                            <div className="rounded w-80 h-80 lg:sticky lg:top-20">
                                 <img src={preview} alt='pfp' />
                             </div>
                         </div>
@@ -91,7 +90,7 @@ const StudentRegPage = () => {
                             <label htmlFor="re-pass">Confirm Password</label>
                             <input type="password" name='con_pass' id='re-pass' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
 
-                            <button type='submit' className='btn btn-success text-white bg-emerald-600 w-1/2'>Register</button>
+                            <button type='submit' className='btn btn-success bg-emerald-500 text-white w-full'>Register</button>
 
                         </form>
                     </div>
@@ -100,11 +99,9 @@ const StudentRegPage = () => {
                     <div className="faq">
 
                     </div>
-
                 </div>
             </Section>
-
-        </section>
+        </>
     );
 };
 

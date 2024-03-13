@@ -1,7 +1,7 @@
 // import image
 import { useState } from 'react';
 import userStore from '../store/userStore';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import PageHeader from './../components/PageHeader';
 import Section from './../components/tag-comps/Section';
 
