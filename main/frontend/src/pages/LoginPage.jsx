@@ -14,8 +14,6 @@ import { FaRegArrowAltCircleRight, FaRegEye } from "react-icons/fa";
 const LoginPage = () => {
 
     const navigate = useNavigate()
-    const location = useLocation()
-    const from = location.state?.from?.pathname || "/"
     const { studentLogin, instrutorLogin } = userStore()
 
     const [logger, setLogger] = useState(false)
@@ -41,9 +39,14 @@ const LoginPage = () => {
             setPass("")
             setDisabler(false)
 
-            // navigate to where the user was before login
+            // navigate to profile
             setTimeout(() => {
-                navigate(from, { replace: true })
+                if (logger) {
+                    navigate("/instructor", { replace: true })
+                }
+                else {
+                    navigate("/student", { replace: true }) 
+                }
             }, 3000)
 
             return
