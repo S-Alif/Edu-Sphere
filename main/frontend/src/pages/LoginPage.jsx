@@ -1,8 +1,15 @@
 // import image
 import { useState } from 'react';
-import loginPageIllustration from '../assets/imgs/login-illustration-1.jpg'
 import userStore from '../store/userStore';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import PageHeader from './../components/PageHeader';
+import Section from './../components/tag-comps/Section';
+
+// icons
+import { MdOutlineAlternateEmail } from "react-icons/md";
+import { IoMdLock } from "react-icons/io";
+import { FaRegArrowAltCircleRight, FaRegEye } from "react-icons/fa";
+
 
 const LoginPage = () => {
 
@@ -15,6 +22,7 @@ const LoginPage = () => {
     const [disabler, setDisabler] = useState(false)
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
+    const [showPass, setShowPass] = useState(false)
 
     // login submit
     const loginSubmit = async (e) => {
@@ -32,72 +40,100 @@ const LoginPage = () => {
             setEmail("")
             setPass("")
             setDisabler(false)
+
             // navigate to where the user was before login
-            navigate(from, {replace: true})
+            setTimeout(() => {
+                navigate(from, { replace: true })
+            }, 3000)
+
+            return
         }
         setDisabler(false)
     }
 
     return (
         <>
-            <section className="login-page">
-                <div className="flex justify-center lg:justify-normal h-full">
+            <PageHeader pageTitle={"Welcome back !!"} pageText={"Login to see your profile or enroll in courses"} headerBg={"https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} />
 
-                    <div className="image-box w-1/2 lg:block hidden h-full overflow-hidden">
-                        <img src={loginPageIllustration} alt="login page illustration" />
-                    </div>
+            {/* form section */}
+            <Section>
+                <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-lg">
+                        <div className="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800"> Login To Your Account</div>
 
-                    {/* form content */}
-                    <div className="form-content py-8 lg:py-10 px-4 lg:px-20 shadow-lg lg:shadow-none my-2 lg:my-0">
-
-                        <h1 className='text-3xl font-bold'>Welcome to <span className='text-emerald-500'>eduSphere</span></h1>
-                        <p className='pt-1 text-slate-400'>Login to your account</p>
-
-                        {/* party indicator */}
-                        <div className="w-full pt-8">
-                            <button className={`btn ${!logger ? "" : "btn-outline"} btn-success text-white mr-5 ${disabler && "btn-disabled"}`} onClick={() => setLogger(false)}>Student</button>
-                            <button className={`btn ${!logger ? "btn-outline" : ""} btn-success text-white ${disabler && "btn-disabled"}`} onClick={() => setLogger(true)}>Instructor</button>
+                        {/* setting logger */}
+                        <div className="text-center flex gap-5 justify-center mt-8">
+                            <button className={`btn btn-outline border-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white ${!logger ? "bg-emerald-500 text-white" : "text-slate-900"} ${disabler && "btn-disabled"}`} onClick={() => setLogger(false)}>student</button>
+                            <button className={`btn btn-outline border-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white ${logger ? "bg-emerald-500 text-white" : "text-slate-900"} ${disabler && "btn-disabled"}`} onClick={() => setLogger(true)}>instructor</button>
                         </div>
 
-                        {/* form */}
-                        <form action="" className='pt-8 w-full' onSubmit={loginSubmit}>
+                        {/* form content */}
+                        <div className="mt-8">
+                            <form onSubmit={loginSubmit}>
 
-                            <div className="w-full">
-                                <label htmlFor="email" className='font-semibold'>Email</label>
-                                <input type="email" className='form-control input input-bordered border-emerald-500 mt-4 mb-6 w-full' name='email' id='email' placeholder='enter your email' autoComplete='false' value={email} onChange={(e) => setEmail(e.target.value)} required />
-                            </div>
+                                {/* email field */}
+                                <div className="flex flex-col mb-6">
+                                    <label htmlFor="email" className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600">E-Mail</label>
+                                    <div className="relative">
+                                        <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400 text-2xl">
+                                            <MdOutlineAlternateEmail />
+                                        </div>
+                                        <input id="email" type="email" name="email" className="placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-emerald-500" placeholder="E-Mail Address" onChange={(e) => setEmail(e.target.value)} required />
+                                    </div>
+                                </div>
 
-                            <div className="w-full">
-                                <label htmlFor="pass" className='font-semibold'>Password</label>
-                                <input type="password" className='form-control input input-bordered border-emerald-500 w-full mt-4' name='pass' id='pass' placeholder='enter your password' value={pass} onChange={(e) => setPass(e.target.value)} required minLength={8} />
-                            </div>
+                                {/* password field */}
+                                <div className="flex flex-col mb-6">
+                                    <label htmlFor="password" className="mb-1 tracking-wide text-gray-600">Password:</label>
+                                    <div className="relative">
+                                        <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400 text-xl font-bold">
+                                            <IoMdLock />
+                                        </div>
+                                        <div className="join w-full">
+                                            <input id="password" type={showPass ? "text" : "password"} name="password" className="placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-emerald-500 join-item" placeholder="Password" onChange={(e) => setPass(e.target.value)} required />
+                                            <button type="button" className={`btn rounded-l-sm border border-gray-400 text-xl hover:border-emerald-400 hover:bg-emerald-500 hover:text-white`} onClick={(e) => setShowPass(prev => !prev)}><FaRegEye /></button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <button type='submit' className='btn bg-emerald-500 text-white px-10 mt-6 hover:bg-green-700'>
-                                Login
-                                {
-                                    disabler && <span className="loading loading-spinner loading-xs ml-2"></span>
-                                }
-                            </button>
+                                {/* forgot password */}
+                                <div className="flex items-center mb-6 -mt-4 hidden">
+                                    <div className="flex ml-auto">
+                                        <a href="#" className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700">
+                                            Forgot Your Password?
+                                        </a>
+                                    </div>
+                                </div>
 
-                        </form>
+                                {/* login button */}
+                                <div className="flex w-full">
+                                    <button type="submit" className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-emerald-400 hover:bg-emerald-500 rounded py-2 w-full transition duration-150 ease-in"> <span className="mr-2 uppercase">Login</span>
+                                        {disabler ? <span className="loading loading-spinner loading-sm"></span> : <span><FaRegArrowAltCircleRight /></span>}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
 
-                        {/* route to registration */}
-                        <div className="pt-6">
-                            <div>
-                                Don&apos;t have an account !!
-                                <details className="dropdown lg:dropdown-right">
-                                    <summary className="m-1 btn bg-transparent hover:bg-emerald-500 hover:text-white border-2 border-emerald-500">Register as</summary>
-                                    <ul className="p-2 shadow-lg menu dropdown-content z-[1] rounded-box w-52 bg-slate-100">
-                                        <li><NavLink to={"/student-register"} className='hover:bg-emerald-500 hover:text-white'>Student</NavLink></li>
-                                        <li><NavLink to={"/instructor-register"} className='hover:bg-emerald-500 hover:text-white'>Instructor</NavLink></li>
-                                    </ul>
-                                </details>
+                        {/* navigate to other registrations */}
+                        <div className="relative mt-10 h-px bg-gray-300">
+                            <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
+                                <span className="bg-white px-4 text-xs text-gray-500 uppercase">Don&apos;t have an account ?</span>
                             </div>
                         </div>
-                    </div>
 
+                        {/* navigate to registration pages */}
+                        <div className="pt-8">
+                            <NavLink to={"/student-register"} className={"btn w-1/2 btn-outline btn-success text-emerald-600 hover:!bg-emerald-500 hover:!text-white shadow rounded-r-none"}>
+                                Register as student
+                            </NavLink>
+                            <NavLink to={"/instructor-register"} className={"btn w-1/2 btn-outline btn-success text-emerald-600 hover:!bg-emerald-500 hover:!text-white shadow rounded-l-none"}>
+                                Register as instructor
+                            </NavLink>
+
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </Section>
         </>
     );
 };
