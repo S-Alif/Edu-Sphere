@@ -14,7 +14,6 @@ router.get('/courses', course.courses)
 router.get('/courses-instructor/:id', course.courseByInstructor)
 router.get('/courses-subject/:subject', course.courseBySubject)
 router.get('/courses-class/:class', course.courseByClass)
-router.get('/courses-code/:code', course.courseByCode)
 
 // subjects
 router.get('/classes', subject.classes)

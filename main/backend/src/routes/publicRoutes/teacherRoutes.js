@@ -21,5 +21,6 @@ router.get('/user/:id')
 router.post('/create-course', authVerification, course.createCourse)
 router.post('/update-course', authVerification, course.updateCourse)
 router.post('/delete-course', authVerification, course.deleteCourse)
+router.get('/course-names', authVerification, course.courseNames)
 
 module.exports = router

@@ -18,7 +18,7 @@ exports.create = async (req) => {
 
     let result = await database.execute(query, data)
 
-    if (result[0]['affectedRows'] == 1) return {status: 1, code: 200, data: "course created"}
+    if (result[0]['affectedRows'] == 1) return { status: 1, code: 200, data: "course created" }
 
     return { status: 0, code: 200, data: "could not create course" }
 
@@ -81,11 +81,19 @@ exports.getCourseByClass = async (req) => {
   }
 }
 
-// get course by subject code
-exports.getCourseByCode = async (req) => {
+// get course names
+exports.getCourseNames = async (req) => {
   try {
+    let instructorId = req.headers.id
+    if (!instructorId) instructorId = req.params.id
+    if (!instructorId) return { status: 100, code: 200, data: "Instructor ID not found" }
+
+    let query = `SELECT id, name FROM course WHERE instructor = '${instructorId}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }

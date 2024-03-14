@@ -42,8 +42,8 @@ exports.courseByClass = async (req, res) => {
     res.status(200).json(result);
 }
 
-// get course by code
-exports.courseByCode = async (req, res) => {
-    let result = await course.getCourseByCode(req);
+// get course names
+exports.courseNames = async (req, res) => {
+    let result = await course.getCourseNames(req);
     res.status(200).json(result);
 }
