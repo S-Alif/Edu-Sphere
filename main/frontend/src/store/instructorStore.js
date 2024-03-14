@@ -28,6 +28,29 @@ const instructorStore = create((set) => ({
     } catch (error) {
       errorAlert("something went wrong")
     }
+  },
+
+  // course names for batches
+  fetchCourseNames: async () => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/course-names", {withCredentials: true})
+
+      if (result.data?.status == 100) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+
+      return result.data?.data
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
   }
 
 }))
