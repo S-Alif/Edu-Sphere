@@ -9,6 +9,7 @@ import InstructorDashboard from "./pages/InstructorDashboard";
 import DashboardLayout from "./components/layouts/DashboardLayout";
 import ContactPage from "./pages/ContactPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
+import BatchConfigurePage from "./pages/BatchConfigurePage";
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route element={<DashboardLayout />}>
             <Route index element={<InstructorDashboard />} />
             <Route path="create-courses" element={<CreateCoursePage />} />
+            <Route path="batch-configure" element={<BatchConfigurePage />} />
           </Route>
         </Route>
       </Route>

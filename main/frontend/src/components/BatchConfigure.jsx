@@ -2,9 +2,9 @@
 
 const BatchConfigure = () => {
   return (
-    <div>
+    <>
       
-    </div>
+    </>
   );
 };
 
