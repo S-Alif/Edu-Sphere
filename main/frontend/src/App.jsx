@@ -10,6 +10,7 @@ import DashboardLayout from "./components/layouts/DashboardLayout";
 import ContactPage from "./pages/ContactPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import BatchConfigurePage from "./pages/BatchConfigurePage";
+import AboutPage from "./pages/AboutPage";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="student-register" element={<StudentRegPage />} />
         <Route path="instructor-register" element={<InstuctorRegPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="about" element={<AboutPage />} />
       </Route>
 
       {/* protected routes for instructor */}
