@@ -91,7 +91,7 @@ exports.getCourseNames = async (req) => {
     let query = `SELECT id, name FROM course WHERE instructor = '${instructorId}';`
     let result = await database.execute(query)
 
-    return { status: 1, code: 200, data: result[0][0] }
+    return { status: 1, code: 200, data: result[0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
