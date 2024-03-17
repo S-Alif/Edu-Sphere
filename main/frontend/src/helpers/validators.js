@@ -28,19 +28,10 @@ export const dataValidator = (data, confirmPass, location) => {
   else if (data['phone'].trim() == "" || data['phone'].trim().length > 15 || !validatePhone(data['phone'].trim())) {
     return errorAlert("Invalid phone number")
   }
-  else if(location == 1){
-    if(data['sub1'] == "" || data['sub2'] == ""){
-      return errorAlert("must pick two subjects")
-    }
-    if (data['sub1'] == data['sub2'] || data['sub2'] == data['sub1']) {
-      return errorAlert("pick different subjects")
-    }
-  }
   else if (data['pass'].trim().length < 8) {
     return errorAlert("Password must be 8 characters or more")
-
   }
-  else if (confirmPass.trim() == ""){
+  else if (confirmPass.trim() == "") {
     return errorAlert("Confirm password empty")
   }
   else if (data['pass'].trim() !== confirmPass) {
@@ -67,7 +58,7 @@ export const contactMsgValidate = (data) => {
   else if (data["phone"].trim().length > 15 || !validatePhone(data["phone"].trim())) {
     return errorAlert("invalid phone")
   }
-  else if(data["msg"].trim().length < 100){
+  else if (data["msg"].trim().length < 100) {
     return errorAlert("message should be at least 100 characters")
   }
 

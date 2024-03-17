@@ -14,7 +14,7 @@ import { FaRegArrowAltCircleRight, FaRegEye } from "react-icons/fa";
 const LoginPage = () => {
 
     const navigate = useNavigate()
-    const { studentLogin, instrutorLogin } = userStore()
+    const { userLogin } = userStore()
 
     const [logger, setLogger] = useState(false)
     const [disabler, setDisabler] = useState(false)
@@ -27,48 +27,36 @@ const LoginPage = () => {
         e.preventDefault()
 
         setDisabler(true)
-        if (logger) {
-            var result = await instrutorLogin({ email, pass })
-        }
-        else {
-            result = await studentLogin({ email, pass })
-        }
-
-        if (result == 1) {
+        let result = await userLogin({email, pass})
+        
+        if (result?.status == 1) {
             setEmail("")
             setPass("")
-            setDisabler(false)
 
             // navigate to profile
             setTimeout(() => {
-                if (logger) {
+                if (result?.data?.role == 1) {
                     navigate("/instructor", { replace: true })
                 }
                 else {
-                    navigate("/student", { replace: true }) 
+                    navigate("/student", { replace: true })
                 }
             }, 3000)
 
-            return
+            return setDisabler(true)
         }
         setDisabler(false)
     }
 
     return (
         <>
-            <PageHeader pageTitle={"Welcome back !!"} pageText={"Login to see your profile or enroll in courses"} headerBg={"https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} />
+            <PageHeader pageTitle={"Welcome back !!"} pageText={"Login to see your profile"} headerBg={"https://images.pexels.com/photos/4145153/pexels-photo-4145153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} />
 
             {/* form section */}
             <Section>
                 <div className="flex flex-col items-center justify-center">
                     <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-lg">
-                        <div className="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800"> Login To Your Account</div>
-
-                        {/* setting logger */}
-                        <div className="text-center flex gap-5 justify-center mt-8">
-                            <button className={`btn btn-outline border-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white ${!logger ? "bg-emerald-500 text-white" : "text-slate-900"} ${disabler && "btn-disabled"}`} onClick={() => setLogger(false)}>student</button>
-                            <button className={`btn btn-outline border-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white ${logger ? "bg-emerald-500 text-white" : "text-slate-900"} ${disabler && "btn-disabled"}`} onClick={() => setLogger(true)}>instructor</button>
-                        </div>
+                        <div className="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800 border-b-2 border-gray-200 w-full text-center pb-3"> Login To Your Account</div>
 
                         {/* form content */}
                         <div className="mt-8">
@@ -118,21 +106,12 @@ const LoginPage = () => {
                         </div>
 
                         {/* navigate to other registrations */}
-                        <div className="relative mt-10 h-px bg-gray-300">
-                            <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
-                                <span className="bg-white px-4 text-xs text-gray-500 uppercase">Don&apos;t have an account ?</span>
+                        <div className="mt-10 border-t-2 border-gray-300 pt-3">
+                            <div className="flex justify-center w-full">
+                                Don't have an account ? <span className='pl-2'><NavLink to={"/register"} className={"text-emerald-600 font-bold"}>
+                                    Register now
+                                </NavLink></span>
                             </div>
-                        </div>
-
-                        {/* navigate to registration pages */}
-                        <div className="pt-8">
-                            <NavLink to={"/student-register"} className={"btn w-1/2 btn-outline btn-success text-emerald-600 hover:!bg-emerald-500 hover:!text-white shadow rounded-r-none"}>
-                                Register as student
-                            </NavLink>
-                            <NavLink to={"/instructor-register"} className={"btn w-1/2 btn-outline btn-success text-emerald-600 hover:!bg-emerald-500 hover:!text-white shadow rounded-l-none"}>
-                                Register as instructor
-                            </NavLink>
-
                         </div>
                     </div>
                 </div>

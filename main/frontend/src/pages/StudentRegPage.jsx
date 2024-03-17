@@ -18,7 +18,7 @@ const StudentRegPage = () => {
         5000,
         errorAlert
     );
-    const { studentRegistration } = userStore()
+    const { userRegistration } = userStore()
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
         firstName: "",
@@ -26,11 +26,15 @@ const StudentRegPage = () => {
         email: "",
         pass: "",
         phone: "",
-        profileImg: null
+        profileImg: null,
+        role: 0
     })
 
     // handle data
     const handleFormData = (e) => {
+        if(e.target.name == "role"){
+            return setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) })
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -40,10 +44,11 @@ const StudentRegPage = () => {
         let validation = dataValidator(formData, confirmPass, 0)
 
         if (validation) {
-            let result = await studentRegistration(formData)
-
+            let result = await userRegistration(formData)
             if (result == 1) {
-                navigate('/login', { replace: true })
+                setTimeout(() => {
+                    navigate('/login', { replace: true })
+                }, 2000);
             }
         }
     }
@@ -51,7 +56,7 @@ const StudentRegPage = () => {
     return (
         <>
             {/* page header */}
-            <PageHeader pageTitle={"Student Registration"} pageText={"Register as a student to enroll in the best courses"} headerBg={"https://images.unsplash.com/photo-1554252116-30abdf759321?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
+            <PageHeader pageTitle={"We are a big family !!"} pageText={"Register now to become a part of this big family"} headerBg={"https://images.unsplash.com/photo-1554252116-30abdf759321?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
 
             {/* register content */}
             <Section className={"register-content"}>
@@ -89,6 +94,17 @@ const StudentRegPage = () => {
 
                             <label htmlFor="re-pass">Confirm Password</label>
                             <input type="password" name='con_pass' id='re-pass' className='input input-bordered border-emerald-500 mt-4 mb-6 w-full' value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} />
+
+
+                            <div className="flex gap-3 pb-5">
+                                <label htmlFor="re-pass">Are you a student ? </label>
+                                <div className="flex justify-center gap-2">
+                                    <input type="radio" name="role" className="radio radio-success" value={0} checked={formData.role === 0} onChange={handleFormData} /> <span>Student</span>
+                                </div>
+                                <div className="flex justify-center gap-2">
+                                    <input type="radio" name="role" className="radio radio-success" value={1} checked={formData.role === 1} onChange={handleFormData} /> <span>Instructor</span>
+                                </div>
+                            </div>
 
                             <button type='submit' className='btn btn-success bg-emerald-500 text-white w-full'>Register</button>
 
