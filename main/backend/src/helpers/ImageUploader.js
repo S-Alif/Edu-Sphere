@@ -6,6 +6,22 @@ v2.config({
   api_secret: process.env.imageCloudSecret
 });
 
+// public id finder
+exports.extractPublicId = (imageUrl) => {
+  const parts = imageUrl.split('/');
+  const fileName = parts.pop();
+  const publicId = fileName.split('.')[0];
+  return publicId;
+}
+
+exports.imgDeleter = async (publicId) => {
+  try {
+    let deletePic = await v2.uploader.destroy(publicId);
+    return true
+  } catch (error) {
+    return null
+  }
+}
 
 // upload image
 exports.imageUploader = async (image) => {
@@ -24,7 +40,6 @@ exports.imageUploader = async (image) => {
 
     return result.url
   } catch (error) {
-    console.log(error)
     return null
   }
 }

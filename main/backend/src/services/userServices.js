@@ -2,7 +2,7 @@ const database = require('../../database')
 const { v4 } = require('uuid');
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 const { getCurrentDateTime } = require('../helpers/helper');
-const { imageUploader } = require('../helpers/ImageUploader');
+const { imageUploader, extractPublicId, imgDeleter } = require('../helpers/ImageUploader');
 
 
 // register
@@ -64,12 +64,28 @@ exports.login = async (req) => {
 // update
 exports.update = async (req) => {
   try {
-    let query = `UPDATE users SET firstName = ?, lastName = ?, phone = ?, profileImg = ?, updateDate = ?, about = ?, address = ? WHERE id = ${req.headers?.id} and active = 1;`
+    if (req.body?.newProfileImg != ""){
+      let id = extractPublicId(req.body?.profileImg)
+      let deleter = await imgDeleter(id)
 
+      if(deleter == true){        
+        let imageUrl = await imageUploader(req.body.newProfileImg)
+        if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
+        req.body.profileImg = imageUrl
+      }else{
+        return { status: 0, code: 200, data: "could not update profile" }
+      }
+    }
 
+    let query = `UPDATE users SET firstName = ?, lastName = ?, phone = ?, profileImg = ?, updateDate = ?, about = ?, address = ? WHERE id = '${req.headers?.id}' and active = 1;`
+    let data = [req.body.firstName, req.body.lastName, req.body.phone, req.body.profileImg, getCurrentDateTime(), req.body?.about, req.body.address];
+
+    let result = await database.execute(query, data)
+
+    return { status: 1, code: 200, data: "account updated" }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
@@ -124,11 +140,11 @@ exports.deleteInstructorSubs = async (req) => {
 exports.instructorSubs = async (req) => {
   try {
     let insId = req.headers?.id
-    if(!insId){
+    if (!insId) {
       insId = req.params?.id
     }
 
-    
+
 
   } catch (error) {
 
