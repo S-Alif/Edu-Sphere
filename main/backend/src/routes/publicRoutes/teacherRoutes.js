@@ -4,17 +4,16 @@ const router = express.Router()
 // controller
 const instructor = require("../../controller/instructorController")
 const course = require("../../controller/courseController")
+const user = require("../../controller/userController")
 
 // middleware
 const authVerification = require('../../middleware/authVerification')
 
 // instructor routes
-router.post('/create', instructor.registerInstructor)
-router.post('/login', instructor.loginAccount)
-router.post('/update', authVerification, instructor.updateAccount)
-router.post('/delete', authVerification, instructor.deleteAccount)
-router.get('/user', authVerification, instructor.getAccount)
-router.get('/user/:id')
+router.post('/update', authVerification, user.userUpdate)
+router.post('/delete', authVerification, user.userDelete)
+router.get('/user', authVerification, user.userProfile)
+router.get('/user/:id', user.userProfile)
 
 
 // course routes

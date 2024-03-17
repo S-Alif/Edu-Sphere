@@ -1,17 +1,16 @@
 const express = require('express')
 const router = express.Router()
 
-// contoller
+// controller
 const student = require('../../controller/studentController')
+const user = require("../../controller/userController")
 
 // auth verification
 const authVerification = require('../../middleware/authVerification')
 
 // student routes
-router.post('/create', student.registerStudent)
-router.post('/login', student.loginAccount)
-router.post('/update', authVerification, student.updateAccount)
-router.post('/delete', authVerification, student.deleteAccount)
-router.get('/user', authVerification, student.getAccount)
+router.post('/update', authVerification, user.userUpdate)
+router.post('/delete', authVerification, user.userDelete)
+router.get('/user', authVerification, user.userProfile)
 
 module.exports = router

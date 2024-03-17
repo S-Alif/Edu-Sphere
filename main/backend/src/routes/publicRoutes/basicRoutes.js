@@ -5,6 +5,12 @@ const router = express.Router()
 const instructor = require("../../controller/instructorController")
 const subject = require("../../controller/subjectController")
 const course = require("../../controller/courseController")
+const user = require("../../controller/userController")
+
+// login / register
+router.post("/login", user.userLogin)
+router.post("/register", user.userRegister)
+router.post("/logout", user.userLogout)
 
 // instructor routes
 router.get('/instructors', instructor.getAllInstructors)
