@@ -16,20 +16,24 @@ const BatchConfigure = () => {
 
   // handle image with custom hook
   const { handleImage, preview } = useHandleImage(
-    (result) => setValue("courseBatchImg", result),
+    (result) => {
+      if (!params?.id) { setValue("courseBatchImg", result) }
+      else { setValue("newCourseBatchImg", result) }
+    },
     5000,
     errorAlert
   );
 
   // form values
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
     defaultValues: {
       name: "",
       courseId: "",
       courseBatchImg: "",
       start: "",
       end: "",
-      enrollmentEnd: ""
+      enrollmentEnd: "",
+      newCourseBatchImg: ""
     }
   })
 
@@ -49,6 +53,8 @@ const BatchConfigure = () => {
     })()
   }, [])
 
+  const { newCourseBatchImg, courseBatchImg } = watch();
+
 
   return (
     <>
@@ -61,7 +67,11 @@ const BatchConfigure = () => {
         {/* course image preview */}
         <div className="pt-2">
           <div className="max-w-3xl aspect-video w-full rounded-md shadow-lg overflow-hidden">
-            <img src={preview} alt="" className='w-full h-full object-cover object-center' />
+            {
+              !params?.id ? 
+                <img src={preview} alt="" className='w-full h-full object-cover object-center' /> :
+                <img src={newCourseBatchImg != "" ? newCourseBatchImg : courseBatchImg} alt="" className='w-full h-full object-cover object-center' />
+            }
           </div>
         </div>
 

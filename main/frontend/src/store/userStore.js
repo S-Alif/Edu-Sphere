@@ -73,8 +73,39 @@ const userStore = create((set) => ({
       errorAlert("something went wrong")
       return 0
     }
-  }
+  },
 
+  // user update
+  userUpdate: async (role, data) => {
+    try {
+      infoAlert("Updating account ... please wait")
+      if (role == 1) {
+        var profileData = await axios.post(instructorEndpoint + "/update", data, { withCredentials: true })
+      }
+      else {
+        profileData = await axios.post(studentEndpoint + "/update", data, { withCredentials: true })
+      }
+
+      if (profileData.data['code'] == 401) {
+        sessionStorage.clear()
+        window.location.replace("/login")
+      }
+
+      // check response
+      if (profileData.data['status'] == 1) {
+        successAlert(profileData.data['data'])
+        return 1
+      }
+      else {
+        errorAlert(profileData.data['data'])
+        return 0
+      }
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  }
 }))
 
 export default userStore

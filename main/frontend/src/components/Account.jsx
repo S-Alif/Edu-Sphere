@@ -10,7 +10,7 @@ import useHandleImage from '../hooks/useHandleImage';
 const Account = () => {
 
   const location = useLocation()
-  const { profile } = userStore()
+  const { profile, userUpdate, userProfile } = userStore()
 
   // form values
   const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
@@ -31,6 +31,14 @@ const Account = () => {
     5000,
     errorAlert
   );
+
+  // submti data
+  const submitData = async (data) => {
+    let result = await userUpdate(profile?.role, data)
+    if(result == 1){
+      await userProfile(profile?.role)
+    }
+  }
 
   // get profile data
   useEffect(() => {
@@ -59,7 +67,7 @@ const Account = () => {
       </div>
 
       {/* form content */}
-      <div className="pt-5">
+      <div className="pt-5" onSubmit={handleSubmit(submitData)}>
 
         {/* image */}
         <div className="image w-80 h-80 overflow-hidden shadow-xl">
@@ -68,6 +76,10 @@ const Account = () => {
 
         {/* form */}
         <form action="" className='pt-5'>
+
+          {/* profile image upload */}
+          <label htmlFor="profileImg" className='font-semibold block'>Profile image</label>
+          <input type="file" name='profileImg' id='profileImg' className='mt-4 mb-6 file-input file-input-bordered file-input-success max-w-xl w-full' accept='image/jpg, image/png' onChange={handleImage} />
 
           {/* first name */}
           <label htmlFor="firstName" className='font-semibold block'>First name</label>

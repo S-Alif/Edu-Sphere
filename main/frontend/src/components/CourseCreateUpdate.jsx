@@ -12,7 +12,7 @@ const CourseCreateUpdate = () => {
   const params = useParams()
 
   // stores
-  const { classes } = basicStore()
+  const { classes, subjects } = basicStore()
   const { profile } = userStore()
   const { createCourse } = instructorStore()
 
@@ -34,7 +34,7 @@ const CourseCreateUpdate = () => {
 
   // if params exist get the data of the course
   useEffect(() => {
-    if(params?.id){
+    if (params?.id) {
       // fetch the course data to update
     }
   }, [])
@@ -84,8 +84,10 @@ const CourseCreateUpdate = () => {
             <label htmlFor="subject" className="font-semibold block">Subject</label>
             <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full" {...register("subject", { required: true })}>
               <option value={""}>choose a subject</option>
-              {profile?.sub1 && <option value={profile?.sub1?.id}>{profile?.sub1?.name}</option>}
-              {profile?.sub2 && <option value={profile?.sub2?.id}>{profile?.sub2?.name}</option>}
+
+              {subjects.length > 0 && subjects.map((e, index) => (
+                <option value={e.id} key={index}>{e.name}</option>
+              ))}
             </select>
             {errors?.subject && errorAlert("Select a course")}
 

@@ -8,6 +8,7 @@ const instructorStore = create((set) => ({
 
   createCourse: async (data) => {
     try {
+      infoAlert("creating course ... please wait")
       let result = await axios.post(instructorEndpoint + "/create-course", data, { withCredentials: true })
 
       if(result.data?.status == 100){
