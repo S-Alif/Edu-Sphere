@@ -11,6 +11,7 @@ import ContactPage from "./pages/ContactPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import BatchConfigurePage from "./pages/BatchConfigurePage";
 import AboutPage from "./pages/AboutPage";
+import InstructorAccountPage from "./pages/InstructorAccountPage";
 
 
 const App = () => {
@@ -19,8 +20,7 @@ const App = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="student-register" element={<StudentRegPage />} />
-        <Route path="instructor-register" element={<InstuctorRegPage />} />
+        <Route path="register" element={<StudentRegPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="about" element={<AboutPage />} />
       </Route>
@@ -32,6 +32,7 @@ const App = () => {
             <Route index element={<InstructorDashboard />} />
             <Route path="create-courses" element={<CreateCoursePage />} />
             <Route path="batch-configure" element={<BatchConfigurePage />} />
+            <Route path="account" element={<InstructorAccountPage />} />
           </Route>
         </Route>
       </Route>

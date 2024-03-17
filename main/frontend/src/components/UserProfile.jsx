@@ -48,7 +48,7 @@ const UserProfile = () => {
                 </tr>
                 <tr className="hover">
                   <th>Subjects</th>
-                  <td>{profile?.sub1.name}, {profile?.sub2.name}</td>
+                  <td>{profile?.sub1?.name}, {profile?.sub2?.name}</td>
                 </tr>
                 <tr className="hover">
                   <th>Address</th>
