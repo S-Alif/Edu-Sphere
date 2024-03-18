@@ -4,20 +4,21 @@ import instructorStore from './../store/instructorStore';
 import { useForm } from 'react-hook-form';
 import Section from './tag-comps/Section';
 import { errorAlert } from '../helpers/alertMsg';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const CourseCreateUpdate = () => {
 
   const params = useParams()
+  const navigate = useNavigate()
 
   // stores
   const { classes, subjects } = basicStore()
   const { profile } = userStore()
-  const { createCourse } = instructorStore()
+  const { createCourse, getCourseById, updateCourse } = instructorStore()
 
   // form values
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
     defaultValues: {
       name: "",
       forClass: "",
@@ -28,19 +29,44 @@ const CourseCreateUpdate = () => {
       classTime: "",
       preRequisite: "",
       price: "",
-      discount: ""
+      discount: "",
+      published: 0
     }
   })
 
   // if params exist get the data of the course
   useEffect(() => {
     if (params?.id) {
-      // fetch the course data to update
+      (async () => {
+        let result = await getCourseById(params.id)
+        if(result != 0){
+          setValue("name", result?.name || "")
+          setValue("forClass", result?.forClass || "")
+          setValue("subject", result?.subject || "")
+          setValue("detail", result?.detail || "")
+          setValue("duration", result?.duration || "")
+          setValue("classDay", result?.classDay || "")
+          setValue("classTime", result?.classTime || "")
+          setValue("preRequisite", result?.preRequisite || "")
+          setValue("price", result?.price || "")
+          setValue("discount", result?.discount || "")
+          setValue("published", result?.published || 0)
+        }
+      })()
     }
   }, [])
 
   // submit data
   const submitData = async (data) => {
+
+    if(params?.id){
+      let result = await updateCourse(data, params.id)
+      if(result == 1){
+        setTimeout(() => {navigate("/instructor/courses")}, 3000)
+      }
+      return
+    }
+
     let result = await createCourse(data)
 
     if (result == true) {
@@ -53,7 +79,7 @@ const CourseCreateUpdate = () => {
       <Section className={"create-course-section"} padding={"py-10"}>
         {/* title */}
         <div className="title pb-4 mb-7 border-b-2 border-b-emerald-300">
-          <h2 className="font-bold text-3xl">Create a course</h2>
+          <h2 className="font-bold text-3xl">{params?.id ? "Update course" : "Create a course"}</h2>
         </div>
 
         {/* form content */}
@@ -126,8 +152,18 @@ const CourseCreateUpdate = () => {
             <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="2000" {...register("discount", { required: true, maxLength: 5, pattern: /^[0-9]*$/ })} />
             {errors?.discount && errorAlert("write discount properly")}
 
+            {params?.id && 
+              <>
+              <label htmlFor="detail" className="font-semibold block">Publish course</label>
+              <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full" {...register("published")}>
+                <option value={1}>Yes</option>
+                <option value={0}>No</option>
+              </select>
+              </>
+            }
+
             <div className="mt-4 mb-6">
-              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">create course</button>
+              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">{params?.id ? "Update course" : "Create a course"}</button>
             </div>
           </form>
         </div>

@@ -1,10 +1,11 @@
 // grid rows
-const GridRows = ({ children, className }) => {
+const GridRows = ({ children, className, gap }) => {
 
   const classes = className || ""
+  const gaps = gap || "gap-9"
 
   return (
-    <div className={`w-full grid grid-cols-1 gap-9 ${classes}`}>
+    <div className={`w-full grid grid-cols-1 ${gaps} ${classes}`}>
       {children}
     </div>
   );

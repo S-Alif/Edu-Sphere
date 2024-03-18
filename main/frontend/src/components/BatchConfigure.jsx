@@ -9,7 +9,7 @@ import { errorAlert } from '../helpers/alertMsg';
 const BatchConfigure = () => {
 
   const params = useParams()
-  const { fetchCourseNames } = instructorStore()
+  const { fetchCourseNames, createBatch } = instructorStore()
 
   const [courseNames, setCourseNames] = useState([])
   const [selectedCourse, setSelectedCourse] = useState("")
@@ -40,7 +40,10 @@ const BatchConfigure = () => {
   // submit the form
   let onSubmit = async (data) => {
     if(data.courseBatchImg == "") return errorAlert("Select an image")
-    console.log(data)
+    if(!params?.id){
+      let result = await createBatch(data)
+      if(result == 1) return reset()
+    }
   }
 
   // get course names

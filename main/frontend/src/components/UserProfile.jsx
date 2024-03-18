@@ -2,17 +2,32 @@ import { useLocation, useNavigate } from "react-router-dom";
 import userStore from "../store/userStore";
 
 import avatar from '../assets/imgs/avatar-1577909_640.png'
+import { useEffect, useState } from "react";
+import basicStore from "../store/basicStore";
 
 const UserProfile = () => {
 
   const naviagte = useNavigate()
   const location = useLocation()
   const { user, profile } = userStore()
+  const { subByInstructor } = basicStore()
+
+  const [subjects, setSubjects] = useState([])
+  console.log(subjects)
 
   // check if the user is logged in
   if (user == null || (user?.role != 0 && user?.role != 1)) {
     naviagte("/login", { state: { from: location }, replace: true })
   }
+
+  useEffect(() => {
+    (async () => {
+      let result = await subByInstructor()
+      if (result != 0){
+        setSubjects(result)
+      }
+    })()
+  }, [])
 
   return (
     <div className="user-profile">
@@ -22,6 +37,7 @@ const UserProfile = () => {
         <h2 className="font-bold text-3xl">Profile</h2>
       </div>
 
+      {/* user detail table */}
       <div className="flex flex-col lg:flex-row gap-6">
 
         {/* image */}
@@ -47,10 +63,6 @@ const UserProfile = () => {
                   <td>{profile?.phone}</td>
                 </tr>
                 <tr className="hover">
-                  <th>Subjects</th>
-                  <td>{profile?.sub1?.name}, {profile?.sub2?.name}</td>
-                </tr>
-                <tr className="hover">
                   <th>Address</th>
                   <td>{profile?.address}</td>
                 </tr>
@@ -68,6 +80,25 @@ const UserProfile = () => {
         </div>
 
       </div>
+
+      {/* subjects */}
+      {subjects.length != 0 &&
+        <div className="mt-5 p-5 rounded-lg shadow-lg">
+          <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Your subjects</h3>
+          <div className="flex gap-4">
+            {subjects.map((e, index) => (
+              <button className="btn" key={index}>{e.name}</button>
+            ))}
+          </div>
+        </div>
+      }
+
+      {profile?.about != "" && 
+      <div className="mt-5 p-5 rounded-lg shadow-lg">
+        <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">About</h3>
+        <p>{profile.about}</p>
+      </div>}
+
     </div>
   );
 };
