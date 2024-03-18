@@ -20,11 +20,11 @@ const DashboardLayout = () => {
 
         {/* sidebar */}
         <div className={`w-80 h-[calc(100vh-80px)] pt-9 fixed z-10 lg:sticky top-20 bg-gray-300 ${menuToggle ? 'lg:block' : 'hidden lg:block'}`}>
-          <NavLink to={'/instructor'} end className={linkStyles}>Dashboard</NavLink>
-          <NavLink to={'/instructor/courses'} className={linkStyles}>My courses</NavLink>
+          <NavLink to={user?.role == 1 ? '/instructor' : "/student"} end className={linkStyles}>Dashboard</NavLink>
+          <NavLink to={user?.role == 1 ? '/instructor/courses' : "/student/courses"} className={linkStyles}>My courses</NavLink>
           {user?.role == 1 && (<NavLink to={'/instructor/create-courses'} className={linkStyles}>Create courses</NavLink>)}
           {user?.role == 1 && (<NavLink to={'/instructor/batch-configure'} className={linkStyles}>Batch configure</NavLink>)}
-          <NavLink to={'/instructor/account'} className={linkStyles}>Account</NavLink>
+          <NavLink to={user?.role == 1 ? '/instructor/account' : "/student/account"} className={linkStyles}>Account</NavLink>
         </div>
 
 

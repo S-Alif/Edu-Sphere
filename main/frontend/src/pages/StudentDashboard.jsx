@@ -1,10 +1,12 @@
+import UserProfile from "../components/UserProfile";
+import Section from "../components/tag-comps/Section";
 
 
 const StudentDashboard = () => {
     return (
-        <div>
-            
-        </div>
+        <Section className={"student-profile-section"} padding={"py-10"}>
+            <UserProfile />
+        </Section>
     );
 };
 

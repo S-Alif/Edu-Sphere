@@ -15,6 +15,8 @@ import InstructorAccountPage from "./pages/InstructorAccountPage";
 import MyCoursesPage from './pages/MyCoursesPage';
 import UpdateCoursePage from './pages/UpdateCoursePage';
 import BatchUpdate from "./pages/BatchUpdate";
+import StudentDashboard from './pages/StudentDashboard';
+import StudentAccountPage from "./pages/StudentAccountPage";
 
 
 const App = () => {
@@ -39,6 +41,16 @@ const App = () => {
             <Route path="account" element={<InstructorAccountPage />} />
             <Route path="courses" element={<MyCoursesPage />} />
             <Route path="courses/:id" element={<UpdateCoursePage />} />
+          </Route>
+        </Route>
+      </Route>
+
+      {/* protected routes for student */}
+      <Route element={<AuthCheck role={0} />}>
+        <Route path="student" element={<MainLayout />}>
+          <Route element={<DashboardLayout />}>
+            <Route index element={<StudentDashboard />} />
+            <Route path="account" element={<StudentAccountPage />} />
           </Route>
         </Route>
       </Route>

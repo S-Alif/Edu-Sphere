@@ -21,12 +21,14 @@ const UserProfile = () => {
   }
 
   useEffect(() => {
-    (async () => {
-      let result = await subByInstructor()
-      if (result != 0){
-        setSubjects(result)
-      }
-    })()
+    if (profile?.role == 1) {
+      (async () => {
+        let result = await subByInstructor()
+        if (result != 0) {
+          setSubjects(result)
+        }
+      })()
+    }
   }, [])
 
   return (
@@ -62,10 +64,13 @@ const UserProfile = () => {
                   <th>Phone</th>
                   <td>{profile?.phone}</td>
                 </tr>
-                <tr className="hover">
-                  <th>Address</th>
-                  <td>{profile?.address}</td>
-                </tr>
+                {
+                  profile?.address && profile?.address != "" &&
+                  <tr className="hover">
+                    <th>Address</th>
+                    <td>{profile?.address}</td>
+                  </tr>
+                }
                 <tr className="hover">
                   <th>Register date</th>
                   <td>{profile?.registerDate.substr(0, 10)}</td>
@@ -82,7 +87,7 @@ const UserProfile = () => {
       </div>
 
       {/* subjects */}
-      {subjects.length != 0 &&
+      {subjects.length != 0 && profile?.role == 1 &&
         <div className="mt-5 p-5 rounded-lg shadow-lg">
           <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Your subjects</h3>
           <div className="flex gap-4">
@@ -93,11 +98,11 @@ const UserProfile = () => {
         </div>
       }
 
-      {profile?.about != "" && 
-      <div className="mt-5 p-5 rounded-lg shadow-lg">
-        <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">About</h3>
-        <p>{profile.about}</p>
-      </div>}
+      {profile?.about != "" && profile?.about &&
+        <div className="mt-5 p-5 rounded-lg shadow-lg">
+          <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">About</h3>
+          <p>{profile.about}</p>
+        </div>}
 
     </div>
   );

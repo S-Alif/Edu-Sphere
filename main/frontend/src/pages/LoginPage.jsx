@@ -16,7 +16,6 @@ const LoginPage = () => {
     const navigate = useNavigate()
     const { userLogin } = userStore()
 
-    const [logger, setLogger] = useState(false)
     const [disabler, setDisabler] = useState(false)
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
