@@ -24,6 +24,7 @@ router.get('/courses-class/:class', course.courseByClass)
 // subjects
 router.get('/classes', subject.classes)
 router.get('/subjects', subject.getAllSubject)
+router.get('/subjects/:id', subject.getSubByInstructor)
 
 
 module.exports = router

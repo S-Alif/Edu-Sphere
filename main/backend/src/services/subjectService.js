@@ -24,7 +24,7 @@ exports.create = async (req) => {
 exports.update = async (req) => {
     try {
         if (req.headers.role === "11") {
-            
+
             let qeury = "UPDATE subject SET name = ?, code = ? WHERE id = ?;"
             let data = [req.body.name, req.body.code, req.params.id]
             let result = await database.execute(qeury, data)
@@ -71,9 +71,24 @@ exports.getSubjects = async (req) => {
 exports.getClasses = async (req) => {
     try {
         // let query = "SELECT distinct class FROM subject order by class desc;"
-        let result = ["12","11","9", "8", "7", "6"]
+        let result = ["12", "11", "9", "8", "7", "6"]
         return { status: 1, code: 200, data: result };
 
+    } catch (error) {
+        return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
+    }
+}
+
+
+// get subject by instructor
+exports.subByInstructor = async (req) => {
+    try {
+        let id = req.headers?.id
+        if (!id) id = req.params.id
+
+        let query = `SELECT DISTINCT s.id AS id, s.name AS name FROM course c JOIN subject s ON c.subject = s.id WHERE c.instructor = '${id}';`
+        let result = await database.execute(query)
+        return { status: 1, code: 200, data: result[0] };
     } catch (error) {
         return { status: 0, code: 200, data: "could not fetch subjects", errorCode: error };
     }

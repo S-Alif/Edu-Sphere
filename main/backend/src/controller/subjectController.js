@@ -29,3 +29,9 @@ exports.classes = async (req, res) => {
     let result = await subject.getClasses(req)
     res.status(200).json(result)
 }
+
+// subject by instructor
+exports.getSubByInstructor = async (req, res) => {
+    let result = await subject.subByInstructor(req)
+    res.status(200).json(result)
+}

@@ -18,6 +18,11 @@ exports.deleteCourse = async (req, res) => {
     res.status(200).json(result);
 }
 
+exports.courseById = async (req, res) => {
+    const result = await course.courseById(req);
+    res.status(200).json(result);
+}
+
 // get all course
 exports.courses = async (req, res) => {
     const result = await course.getAllCourse(req);
