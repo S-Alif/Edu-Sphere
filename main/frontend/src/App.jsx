@@ -12,6 +12,9 @@ import CreateCoursePage from "./pages/CreateCoursePage";
 import BatchConfigurePage from "./pages/BatchConfigurePage";
 import AboutPage from "./pages/AboutPage";
 import InstructorAccountPage from "./pages/InstructorAccountPage";
+import MyCoursesPage from './pages/MyCoursesPage';
+import UpdateCoursePage from './pages/UpdateCoursePage';
+import BatchUpdate from "./pages/BatchUpdate";
 
 
 const App = () => {
@@ -32,7 +35,10 @@ const App = () => {
             <Route index element={<InstructorDashboard />} />
             <Route path="create-courses" element={<CreateCoursePage />} />
             <Route path="batch-configure" element={<BatchConfigurePage />} />
+            <Route path="batch-configure/:id" element={<BatchUpdate />} />
             <Route path="account" element={<InstructorAccountPage />} />
+            <Route path="courses" element={<MyCoursesPage />} />
+            <Route path="courses/:id" element={<UpdateCoursePage />} />
           </Route>
         </Route>
       </Route>
