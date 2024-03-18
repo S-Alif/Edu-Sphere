@@ -10,7 +10,7 @@ exports.create = async (req) => {
 
     let uid = v4()
     let dates = getCurrentDateTime()
-    let query = `INSERT INTO batch (id, name, courseId, start, end, enrollmentEnd, createdAt, updatedAt, published) VALUES (?,?,?,?,?,?,?,?)`
+    let query = `INSERT INTO batch (id, name, courseId, start, end, enrollmentEnd, createdAt, updatedAt, published) VALUES (?,?,?,?,?,?,?,?,?)`
     let data = [uid, req.body?.name, req.body?.courseId, req.body?.start, req.body?.end, req.body?.enrollmentEnd, dates, dates, parseInt(req.body?.published)]
 
     let result = await database.execute(query, data)
