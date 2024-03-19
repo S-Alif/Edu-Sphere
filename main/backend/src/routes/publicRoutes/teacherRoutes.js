@@ -8,6 +8,7 @@ const user = require("../../controller/userController")
 const subject = require("../../controller/subjectController")
 const batch = require("../../controller/batchController")
 const modules = require("../../controller/moduleController")
+const classes = require("../../controller/classController")
 
 // middleware
 const authVerification = require('../../middleware/authVerification')
@@ -39,5 +40,19 @@ router.post('/update-module/:batch/:id', authVerification, modules.moduleUpdate)
 router.post('/delete-module/:batch/:id', authVerification, modules.moduleDelete)
 router.get('/get-module/:batch/:id', authVerification, modules.getModuleById)
 router.get('/modules/:course/:batch', authVerification, modules.getAllModule)
+
+// assignment routes
+router.post('/create-assignment', authVerification, classes.createAssignment)
+router.post('/update-assignment/:module/:id', authVerification, classes.updateAssignment)
+router.post('/delete-assignment/:module/:id', authVerification, classes.deleteAssignment)
+router.get('/get-assignment/:moduleId', authVerification, classes.getAssignmentById)
+
+// live class routes
+router.post('/create-live', authVerification, classes.createLive)
+router.post('/update-live/:module/:id', authVerification, classes.updateLive)
+router.post('/delete-live/:module/:id', authVerification, classes.deleteLive)
+router.get('/get-lives/:moduleId/:id', authVerification, classes.getLiveId)
+router.get('/get-lives', authVerification, classes.getAllLives)
+
 
 module.exports = router

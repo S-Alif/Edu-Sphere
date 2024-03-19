@@ -22,6 +22,14 @@ exports.create = async (req) => {
 // update
 exports.update = async (req) => {
   try {
+    let id = req.params?.id
+    let batchId = req.params?.batch
+
+    let query = `UPDATE modules SET name = ?, detail= ?, startAt= ?, endAt = ?  WHERE id = "${id}" AND batchId = "${batchId}";`
+    let data = [req.body?.name, req.body?.detail, req.body?.startAt, req.body?.endAt]
+    
+    let result = await database.execute(query, data)
+    return { status: 1, code: 200, data: "module updated" }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
@@ -43,7 +51,7 @@ exports.moduleById = async (req) => {
     let id = req.params?.id
     let batchId = req.params?.batch
 
-    let query = `SELECT * FROM module WHERE id = "${id}" AND batchId = "${batchId}";`
+    let query = `SELECT * FROM modules WHERE id = "${id}" AND batchId = "${batchId}";`
     let result = await database.execute(query)
 
     return { status: 1, code: 200, data: result[0][0] }
