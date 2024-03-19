@@ -1,4 +1,4 @@
-mport { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BatchConfigure from '../components/BatchConfigure';
 import Module from '../components/Module';
 

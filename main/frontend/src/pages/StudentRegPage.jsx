@@ -27,14 +27,11 @@ const StudentRegPage = () => {
         pass: "",
         phone: "",
         profileImg: null,
-        role: 0
+        role: "0"
     })
 
     // handle data
     const handleFormData = (e) => {
-        if(e.target.name == "role"){
-            return setFormData({ ...formData, [e.target.name]: parseInt(e.target.value) })
-        }
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
@@ -99,10 +96,10 @@ const StudentRegPage = () => {
                             <div className="flex gap-3 pb-5">
                                 <label htmlFor="re-pass">Are you a student ? </label>
                                 <div className="flex justify-center gap-2">
-                                    <input type="radio" name="role" className="radio radio-success" value={0} checked={formData.role === 0} onChange={handleFormData} /> <span>Student</span>
+                                    <input type="radio" name="role" className="radio radio-success" value={"0"} checked={formData.role == "0"} onChange={handleFormData} /> <span>Student</span>
                                 </div>
                                 <div className="flex justify-center gap-2">
-                                    <input type="radio" name="role" className="radio radio-success" value={1} checked={formData.role === 1} onChange={handleFormData} /> <span>Instructor</span>
+                                    <input type="radio" name="role" className="radio radio-success" value={"1"} checked={formData.role == "1"} onChange={handleFormData} /> <span>Instructor</span>
                                 </div>
                             </div>
 

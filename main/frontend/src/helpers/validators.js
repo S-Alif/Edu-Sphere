@@ -64,3 +64,26 @@ export const contactMsgValidate = (data) => {
 
   return true
 }
+
+export const formatDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+export const formatTime = (timeString) => {
+  const date = new Date(timeString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  return `${year}-${month}-${day} at ${formattedHours}:${formattedMinutes} ${period}`;
+}

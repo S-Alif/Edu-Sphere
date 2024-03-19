@@ -1,18 +1,19 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Section from './tag-comps/Section';
 import { useEffect, useState } from 'react';
 import instructorStore from '../store/instructorStore';
 import { useForm } from 'react-hook-form';
 import useHandleImage from './../hooks/useHandleImage';
 import { errorAlert } from '../helpers/alertMsg';
+import { formatDate } from '../helpers/validators';
 
 const BatchConfigure = () => {
 
   const params = useParams()
-  const { fetchCourseNames, createBatch } = instructorStore()
+  const navigate = useNavigate()
+  const { fetchCourseNames, createBatch, batchById, updateBatch } = instructorStore()
 
   const [courseNames, setCourseNames] = useState([])
-  const [selectedCourse, setSelectedCourse] = useState("")
 
   // handle image with custom hook
   const { handleImage, preview } = useHandleImage(
@@ -33,16 +34,22 @@ const BatchConfigure = () => {
       start: "",
       end: "",
       enrollmentEnd: "",
-      newCourseBatchImg: ""
+      newCourseBatchImg: "",
+      published: "0"
     }
   })
 
   // submit the form
   let onSubmit = async (data) => {
-    if(data.courseBatchImg == "") return errorAlert("Select an image")
-    if(!params?.id){
+    if (data.courseBatchImg == "") return errorAlert("Select an image")
+    if (!params?.id) {
       let result = await createBatch(data)
-      if(result == 1) return reset()
+      if (result == 1) return reset()
+    }
+
+    let result = await updateBatch(params?.course, params?.id, data)
+    if (result == 1) {
+      setTimeout(() => { navigate("/instructor/courses") })
     }
   }
 
@@ -56,6 +63,24 @@ const BatchConfigure = () => {
     })()
   }, [])
 
+  // batch info
+  useEffect(() => {
+    if (params?.id) {
+      (async () => {
+        let result = await batchById(params?.course, params?.id);
+        if (result != 0) {
+          setValue("name", result?.name || "");
+          setValue("courseId", result?.courseId || "");
+          setValue("courseBatchImg", result?.courseBatchImg || "");
+          setValue("start", result?.start ? formatDate(result?.start) : "");
+          setValue("end", result?.end ? formatDate(result?.end) : "");
+          setValue("enrollmentEnd", result?.enrollmentEnd ? formatDate(result?.enrollmentEnd) : "");
+          setValue("published", result?.published.toString() || "0");
+        }
+      })();
+    }
+  }, []);
+
   const { newCourseBatchImg, courseBatchImg } = watch();
 
 
@@ -64,14 +89,14 @@ const BatchConfigure = () => {
       <Section className={"batch-configure-section"} padding={"py-10"}>
         {/* title */}
         <div className="title pb-4 mb-7 border-b-2 border-b-emerald-300">
-          <h2 className="font-bold text-3xl">Create a batch for an existing course</h2>
+          <h2 className="font-bold text-3xl">{params?.id ? "Update batch" : "Create a batch for an existing course"}</h2>
         </div>
 
         {/* course image preview */}
         <div className="pt-2">
           <div className="max-w-3xl aspect-video w-full rounded-md shadow-lg overflow-hidden">
             {
-              !params?.id ? 
+              !params?.id ?
                 <img src={preview} alt="" className='w-full h-full object-cover object-center' /> :
                 <img src={newCourseBatchImg != "" ? newCourseBatchImg : courseBatchImg} alt="" className='w-full h-full object-cover object-center' />
             }
@@ -117,8 +142,14 @@ const BatchConfigure = () => {
             <input type="datetime-local" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' {...register("enrollmentEnd", { required: true })} />
             {errors?.enrollmentEnd && errorAlert("Please select a valid enrollment end date and time")}
 
+            {/* published */}
+            <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full" {...register("published", { required: true })}>
+              <option value={"1"}>Yes</option>
+              <option value={"0"}>No</option>
+            </select>
+
             <div className="mt-4 mb-6">
-              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">create batch</button>
+              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">{params?.id ? "update" : "create"} batch</button>
             </div>
 
           </form>

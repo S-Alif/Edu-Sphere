@@ -84,7 +84,7 @@ const instructorStore = create((set) => ({
     try {
       infoAlert("loading data ... please wait")
 
-      let result = await axios.get(instructorEndpoint + "/get-batch", {withCredentials: true})
+      let result = await axios.get(instructorEndpoint + "/get-batch", { withCredentials: true })
 
       if (result.data?.code == 401) {
         errorAlert(result.data?.data)
@@ -103,20 +103,21 @@ const instructorStore = create((set) => ({
 
     } catch (error) {
       errorAlert("something went wrong")
-      return 0 
+      return 0
     }
   },
 
   // get course by id
   getCourseById: async (id) => {
     try {
-      let result = await axios.get(instructorEndpoint + "/course/"+id, { withCredentials: true })
+      let result = await axios.get(instructorEndpoint + "/course/" + id, { withCredentials: true })
 
       if (result.data?.code == 401) {
         errorAlert(result.data?.data)
         setTimeout(() => {
           window.location.replace("/login")
         }, 3000)
+        return
       }
 
       if (result.data?.status == 0) {
@@ -124,7 +125,7 @@ const instructorStore = create((set) => ({
         errorAlert(result.data?.data)
         return 0
       }
-      
+
       return result.data?.data
     } catch (error) {
       errorAlert("something went wrong")
@@ -143,6 +144,7 @@ const instructorStore = create((set) => ({
         setTimeout(() => {
           window.location.replace("/login")
         }, 3000)
+        return
       }
 
       if (result.data?.status == 0) {
@@ -152,6 +154,111 @@ const instructorStore = create((set) => ({
       }
       successAlert(result.data?.data)
       return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // get batch by id
+  batchById: async (course, id) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/batch/" + course + "/" + id, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // update batch
+  updateBatch: async (course, id, data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + "/update-batch/" + course + "/" + id, data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  createModule: async (data) => {
+    try {
+      infoAlert("creating module ... please wait")
+      let result = await axios.post(instructorEndpoint + "/create-module",data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
+  },
+
+  // get modules
+  getModule: async (batch, course) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/modules/" + course + "/" + batch, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
     } catch (error) {
       errorAlert("something went wrong")
       return 0

@@ -17,6 +17,7 @@ import UpdateCoursePage from './pages/UpdateCoursePage';
 import BatchUpdate from "./pages/BatchUpdate";
 import StudentDashboard from './pages/StudentDashboard';
 import StudentAccountPage from "./pages/StudentAccountPage";
+import ModuleConfigure from "./pages/ModuleConfigure";
 
 
 const App = () => {
@@ -37,10 +38,11 @@ const App = () => {
             <Route index element={<InstructorDashboard />} />
             <Route path="create-courses" element={<CreateCoursePage />} />
             <Route path="batch-configure" element={<BatchConfigurePage />} />
-            <Route path="batch-configure/:id" element={<BatchUpdate />} />
+            <Route path="batch-configure/:course/:id" element={<BatchUpdate />} />
             <Route path="account" element={<InstructorAccountPage />} />
             <Route path="courses" element={<MyCoursesPage />} />
             <Route path="courses/:id" element={<UpdateCoursePage />} />
+            <Route path="modules/:batch/:id" element={<ModuleConfigure />} />
           </Route>
         </Route>
       </Route>
