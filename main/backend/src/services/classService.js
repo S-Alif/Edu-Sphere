@@ -71,8 +71,8 @@ exports.getAssignment = async (req) => {
 exports.liveCreate = async (req) => {
   try {
     let uid = v4()
-    let query = `INSERT INTO live_class (id, topic, moduleId, description, start, end, createdAt) VALUES (?,?,?,?,?,?)`
-    let data = [uid, req.body?.name, req.body?.moduleId, req.body?.description, req.body?.start, req.body?.end, getCurrentDateTime()]
+    let query = `INSERT INTO live_class (id, link, topic, moduleId, description, start, end, createdAt) VALUES (?,?,?,?,?,?,?,?);`
+    let data = [uid, req.body?.link, req.body?.topic, req.body?.moduleId, req.body?.description, req.body?.start, req.body?.end, getCurrentDateTime()]
 
     let result = await database.execute(query, data)
     return { status: 1, code: 200, data: "live class created" }
@@ -88,8 +88,8 @@ exports.liveUpdate = async (req) => {
     let id = req.params?.id
     let moduleId = req.params?.module
 
-    let query = `UPDATE live_class SET topic = ?, description = ?, start = ?, end = ? WHERE id = "${id}" AND moduleId = "${moduleId}"; `
-    let data = [req.body?.topic, req.body?.description, req.body?.start, req.body?.end]
+    let query = `UPDATE live_class SET link = ?, topic = ?, description = ?, start = ?, end = ? WHERE id = "${id}" AND moduleId = "${moduleId}"; `
+    let data = [req.body?.link, req.body?.topic, req.body?.description, req.body?.start, req.body?.end]
 
     let result = await database.execute(query, data)
     return { status: 1, code: 200, data: "live class updated" }

@@ -51,8 +51,8 @@ router.get('/get-assignment/:moduleId', authVerification, classes.getAssignmentB
 router.post('/create-live', authVerification, classes.createLive)
 router.post('/update-live/:module/:id', authVerification, classes.updateLive)
 router.post('/delete-live/:module/:id', authVerification, classes.deleteLive)
-router.get('/get-lives/:moduleId/:id', authVerification, classes.getLiveId)
-router.get('/get-lives', authVerification, classes.getAllLives)
+router.get('/get-live/:moduleId/:id', authVerification, classes.getLiveId)
+router.get('/get-lives/:moduleId', authVerification, classes.getAllLives)
 
 
 module.exports = router
