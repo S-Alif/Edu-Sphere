@@ -218,7 +218,7 @@ const instructorStore = create((set) => ({
   createModule: async (data) => {
     try {
       infoAlert("creating module ... please wait")
-      let result = await axios.post(instructorEndpoint + "/create-module",data, { withCredentials: true })
+      let result = await axios.post(instructorEndpoint + "/create-module", data, { withCredentials: true })
 
       if (result.data?.code == 401) {
         errorAlert(result.data?.data)
@@ -263,8 +263,163 @@ const instructorStore = create((set) => ({
       errorAlert("something went wrong")
       return 0
     }
-  }
+  },
 
+  // module by id
+  getModuleById: async (batch, id) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/get-module/" + batch + "/" + id, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // update module
+  updateModule: async (batch, id, data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + "/update-module/" + batch + "/" + id, data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // create assignment
+  createAssignment: async (data) => {
+    try {
+      infoAlert("creating assignment ... please wait")
+      let result = await axios.post(instructorEndpoint + "/create-assignment", data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
+  },
+
+  // get assignment
+  getAssignment: async (module) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/get-assignment/" + module, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data || 0
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
+  },
+
+  // update assignment
+  updateAssignment: async (module, id, data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + "/update-assignment/" + module + "/" + id, data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // create live
+  createLive: async (data) => {
+    try {
+      infoAlert("creating live class ... please wait")
+      let result = await axios.post(instructorEndpoint + "/create-live", data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
+  },
 }))
 
 export default instructorStore
