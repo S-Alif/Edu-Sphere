@@ -7,6 +7,7 @@ const course = require("../../controller/courseController")
 const user = require("../../controller/userController")
 const subject = require("../../controller/subjectController")
 const batch = require("../../controller/batchController")
+const modules = require("../../controller/moduleController")
 
 // middleware
 const authVerification = require('../../middleware/authVerification')
@@ -30,5 +31,13 @@ router.get('/course/:id', authVerification, course.courseById)
 router.post('/create-batch', authVerification, batch.batchCreate)
 router.post('/update-batch/:course/:id', authVerification, batch.batchUpdate)
 router.get('/get-batch', authVerification, batch.getBatchByInstructor)
+router.get('/batch/:course/:id', authVerification, batch.getBatchById)
+
+// module routes
+router.post('/create-module', authVerification, modules.moduleCreate)
+router.post('/update-module/:batch/:id', authVerification, modules.moduleUpdate)
+router.post('/delete-module/:batch/:id', authVerification, modules.moduleDelete)
+router.get('/get-module/:batch/:id', authVerification, modules.getModuleById)
+router.get('/modules/:course/:batch', authVerification, modules.getAllModule)
 
 module.exports = router

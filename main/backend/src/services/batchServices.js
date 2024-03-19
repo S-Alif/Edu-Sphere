@@ -1,7 +1,7 @@
 const database = require('../../database')
 const { v4 } = require('uuid')
 const { getCurrentDateTime } = require('../helpers/helper')
-const { imageUploader } = require('../helpers/ImageUploader')
+const { imageUploader, imgDeleter, extractPublicId } = require('../helpers/ImageUploader')
 
 // create
 exports.create = async (req) => {
@@ -32,11 +32,29 @@ exports.create = async (req) => {
 // update
 exports.update = async (req) => {
   try {
-    let query = `UPDATE batch SET name = ?, courseBatchImg = ?, start = ?, end = ?, enrollmentEnd = ?, published = ?, createdAt = ?, updatedAt = ? WHERE id = "${req.params?.id}" AND courseId = "${req.params?.course}";`;
+    // image update
+    if (req.body?.newCourseBatchImg != "") {
+      let id = extractPublicId(req.body?.courseBatchImg)
+      let deleter = await imgDeleter(id)
 
+      if (deleter == true) {
+        let imageUrl = await imageUploader(req.body.newCourseBatchImg)
+        if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
+        req.body.courseBatchImg = imageUrl
+      } else {
+        return { status: 0, code: 200, data: "could not update profile" }
+      }
+    }
+
+    let query = `UPDATE batch SET name = ?, courseId = ?, courseBatchImg = ?, start = ?, end = ?, enrollmentEnd = ?, published = ?, updatedAt = ? WHERE id = "${req.params?.id}" AND courseId = "${req.params?.course}";`;
+
+    let data = [req.body?.name, req.body?.courseId, req.body?.courseBatchImg, req.body?.start, req.body?.end, req.body?.enrollmentEnd, parseInt(req.body?.published), getCurrentDateTime()]
+    let result = await database.execute(query, data)
+
+    return { status: 1, code: 200, data: "batch updated" }
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
@@ -59,18 +77,15 @@ exports.getBatch = async (req) => {
         c.id AS id,
         c.name AS name,
         c.published AS published,
-        c.createdAt AS createdAt,
-        c.updatedAt AS updatedAt,
-        CASE
-            WHEN COUNT(b.id) = 0 THEN JSON_ARRAY()
-            ELSE JSON_ARRAYAGG(
-                JSON_OBJECT(
-                    'id', b.id,
-                    'name', b.name,
-                    'published', b.published
-                )
+        c.createdAt as createdAt,
+        c.updatedAt as updatedAt,
+        JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', b.id,
+                'name', b.name,
+                'published', b.published
             )
-        END AS batches
+        ) AS batches
     FROM course c
     LEFT JOIN batch b ON c.id = b.courseId
     WHERE c.instructor = '${id}'
@@ -79,6 +94,24 @@ exports.getBatch = async (req) => {
     let result = await database.execute(query)
 
     return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// batch by id
+exports.batchByID = async (req) => {
+  try {
+    let course = req.params?.course
+    let id = req.params?.id
+
+    if (!course || !id) return { status: 0, code: 200, data: "Insufficient data" }
+
+    let query = `SELECT * FROM batch WHERE id = '${id}' AND courseId = '${course}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };

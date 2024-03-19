@@ -11,27 +11,22 @@ exports.register = async (req) => {
     if (!req.body?.firstName || !req.body?.lastName || !req.body?.email || !req.body?.pass || !req.body?.phone || !req.body?.profileImg || !req.body?.role) return { status: 0, code: 200, data: "Fill all the data" };
 
     let uid = v4()
-    let query = "INSERT INTO users (id, firstName, lastName, email, pass, phone, registerDate, updateDate, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+    let query = "INSERT INTO users (id, firstName, lastName, email, pass, phone, profileImg, registerDate, updateDate, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
 
     // encrypt password
     let enPass = encryptPass(req.body.pass)
     let date = getCurrentDateTime()
 
-    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, date, date, req.body.role];
+    let imageUrl = await imageUploader(req.body.profileImg)
+    if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
+    
+    let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, imageUrl, date, date, parseInt(req.body.role)];
 
     let result = await database.execute(query, data)
 
-    if (result[0]['affectedRows'] == 1) {
-      let imageUrl = await imageUploader(req.body.profileImg)
-      if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
-      let getData = await database.execute(`update users set profileImg = '${imageUrl}' where id = "${uid}"`)
-      return { status: 1, code: 200, data: "account created" }
-    }
-
-    return { status: 0, code: 200, data: "could not create account" }
+    return { status: 1, code: 200, data: "account created" }
 
   } catch (error) {
-    console.log(error)
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
