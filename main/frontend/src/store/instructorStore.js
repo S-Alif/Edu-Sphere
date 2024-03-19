@@ -420,6 +420,85 @@ const instructorStore = create((set) => ({
       return errorAlert("something went wrong")
     }
   },
+
+  // get all live
+  getALlLive: async (moduleId) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/get-lives/" + moduleId, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+        return 0
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // get single class
+  getLiveClass: async (moduleId, id) => {
+    try {
+      let result = await axios.get(instructorEndpoint + "/get-live/" + moduleId + "/" + id, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data || 0
+    } catch (error) {
+      return errorAlert("something went wrong")
+    }
+  },
+
+  // update live
+  updateLive: async (module, id, data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + "/update-live/" + module + "/" + id, data, { withCredentials: true })
+
+      if (result.data?.code == 401) {
+        errorAlert(result.data?.data)
+        setTimeout(() => {
+          window.location.replace("/login")
+        }, 3000)
+
+        return
+      }
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  }
+
 }))
 
 export default instructorStore

@@ -18,6 +18,7 @@ import BatchUpdate from "./pages/BatchUpdate";
 import StudentDashboard from './pages/StudentDashboard';
 import StudentAccountPage from "./pages/StudentAccountPage";
 import ModuleConfigure from "./pages/ModuleConfigure";
+import LiveUpdate from "./pages/LiveUpdate";
 
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="courses" element={<MyCoursesPage />} />
             <Route path="courses/:id" element={<UpdateCoursePage />} />
             <Route path="modules/:batch/:id" element={<ModuleConfigure />} />
+            <Route path="live-class/:module/:id" element={<LiveUpdate />} />
           </Route>
         </Route>
       </Route>

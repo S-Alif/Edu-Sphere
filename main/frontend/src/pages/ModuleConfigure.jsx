@@ -5,6 +5,7 @@ import { errorAlert } from "../helpers/alertMsg";
 import { useEffect, useState } from "react";
 import instructorStore from "../store/instructorStore";
 import { formatDate } from "../helpers/validators";
+import LiveCard from "../components/cards/LiveCard";
 
 
 // assignment form
@@ -85,8 +86,12 @@ const AssignmentForm = ({ moduleId }) => {
 // live class
 const LiveClass = ({ moduleId }) => {
 
+  const { createLive, getALlLive } = instructorStore()
+  const [classes, setClasses] = useState([])
+
   const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm({
     defaultValues: {
+      link: "",
       topic: "",
       moduleId: moduleId || "",
       description: "",
@@ -95,19 +100,40 @@ const LiveClass = ({ moduleId }) => {
     }
   })
 
+  useEffect(() => {
+    (async () => {
+      let lives = await getALlLive(moduleId)
+      if (lives != 0) {
+        if (lives != undefined && lives != null) {
+          setClasses(lives)
+        }
+      }
+    })()
+  }, [])
+
   // form submit
   const submitForm = async (data) => {
-    console.log(data)
+    let result = await createLive(data)
+    if (result == 1) {
+      reset()
+      let lives = await getALlLive(moduleId)
+      if (lives != 0) setClasses(lives)
+    }
   }
 
   return (
     <>
       <form onSubmit={handleSubmit(submitForm)} className="pt-6">
 
+        {/* live class link */}
+        <label htmlFor="name" className="font-semibold block">live class link</label>
+        <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="Zoom link" {...register("link", { required: true, maxLength: 3000, minLength: 20 })} />
+        {errors?.name && errorAlert("type zoom link properly")}
+
         {/* live class name */}
         <label htmlFor="name" className="font-semibold block">live class topic</label>
         <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="English first paper revision batch first module" {...register("topic", { required: true, maxLength: 100, minLength: 20 })} />
-        {errors?.name && errorAlert("type name properly")}
+        {errors?.name && errorAlert("type topic properly")}
 
         {/* live class name */}
         <label htmlFor="name" className="font-semibold block">live class description</label>
@@ -129,6 +155,19 @@ const LiveClass = ({ moduleId }) => {
         </div>
 
       </form>
+
+      {/* title */}
+      <div className="title pt-6 pb-4 mb-7 border-b-2 border-b-emerald-300">
+        <h2 className="font-bold text-3xl">live classes</h2>
+      </div>
+
+      {
+        classes.length > 0 && 
+          classes.map((e, index) => (
+            <LiveCard key={index} data={e}/>
+          ))
+      }
+
     </>
   );
 }
