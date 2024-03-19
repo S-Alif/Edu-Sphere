@@ -4,7 +4,7 @@ import Module from '../components/Module';
 
 const BatchUpdate = () => {
   const params = useParams()
-
+console.log(params)
   return (
     <>
       <BatchConfigure />

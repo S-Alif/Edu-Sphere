@@ -143,6 +143,7 @@ const BatchConfigure = () => {
             {errors?.enrollmentEnd && errorAlert("Please select a valid enrollment end date and time")}
 
             {/* published */}
+            <label htmlFor="enrollmentEnd" className="font-semibold block">Published</label>
             <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full" {...register("published", { required: true })}>
               <option value={"1"}>Yes</option>
               <option value={"0"}>No</option>
