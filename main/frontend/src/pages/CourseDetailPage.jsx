@@ -15,7 +15,6 @@ const CourseDetailPage = () => {
     const [courseData, setCourseData] = useState({})
     const [batch, setBatch] = useState({})
     const [modules, setModules] = useState([])
-    console.log(modules)
 
     useEffect(() => {
         (async () => {
@@ -93,7 +92,7 @@ const CourseDetailPage = () => {
                                 </tbody>
                             </table>
 
-                            <NavLink className={"btn bg-emerald-500 hover:bg-emerald-600 text-white mt-8 max-w-xl w-full"}>Enroll now</NavLink>
+                            <NavLink to={`/enroll/${params?.course}/${params?.batch}`} className={"btn bg-emerald-500 hover:bg-emerald-600 text-white mt-8 max-w-xl w-full"}>Enroll now</NavLink>
 
                             {/* module accordion */}
                             <div className="pt-8">

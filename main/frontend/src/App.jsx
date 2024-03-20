@@ -21,6 +21,9 @@ import ModuleConfigure from "./pages/ModuleConfigure";
 import LiveUpdate from "./pages/LiveUpdate";
 import AllCoursesPage from './pages/AllCoursesPage';
 import CourseDetailPage from "./pages/CourseDetailPage";
+import EnrollPage from "./pages/EnrollPage";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import StudentEnrolledCourse from './pages/StudentEnrolledCourse';
 
 
 const App = () => {
@@ -34,6 +37,12 @@ const App = () => {
         <Route path="about" element={<AboutPage />} />
         <Route path="/all-course" element={<AllCoursesPage />} />
         <Route path="/course/:course/:batch" element={<CourseDetailPage />} />
+        <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+        {/* enroll student */}
+        <Route element={<AuthCheck role={0} />}>
+          <Route path="enroll/:course/:batch" element={<EnrollPage />} />
+        </Route>
       </Route>
 
       {/* protected routes for instructor */}
@@ -59,6 +68,7 @@ const App = () => {
           <Route element={<DashboardLayout />}>
             <Route index element={<StudentDashboard />} />
             <Route path="account" element={<StudentAccountPage />} />
+            <Route path="courses" element={<StudentEnrolledCourse />} />
           </Route>
         </Route>
       </Route>

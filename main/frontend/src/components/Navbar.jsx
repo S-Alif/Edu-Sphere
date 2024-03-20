@@ -1,4 +1,4 @@
-import { NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Container from './tag-comps/Container';
 import useSystemTheme from '../hooks/useSystemTheme';
 import userStore from './../store/userStore';
@@ -44,7 +44,7 @@ const Navbar = () => {
                         <div className="menu-bar flex h-full items-center gap-5 md:gap-8">
 
                             {/* menu links */}
-                            <div className={`links fixed shadow-lg md:shadow-none right-0 md:right-72 md:relative top-20 md:top-auto items-center justify-evenly md:justify-between flex flex-col md:flex-row gap-6 w-72 ${theme ? "bg-slate-900" : "bg-slate-200"} h-[calc(100vh-80px)] transition-all duration-500 md:h-auto overflow-hidden md:overflow-visible ${menu ? "" : "w-0 transition-all duration-500"}`}>
+                            <div className={`links fixed shadow-lg md:shadow-none right-0 md:right-72 md:relative top-20 md:top-auto items-center justify-evenly md:justify-between flex flex-col md:flex-row gap-6 ${theme ? "bg-slate-900" : "bg-slate-200"} h-[calc(100vh-80px)] transition-all duration-500 md:h-auto overflow-hidden md:overflow-visible ${menu ? "w-72" : "w-0"}`}>
 
                                 <NavLink to={"/"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Home</NavLink>
                                 <NavLink to={"/about"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>About</NavLink>
@@ -93,7 +93,7 @@ const Navbar = () => {
                             <label className="btn btn-circle md:hidden swap swap-rotate">
 
                                 {/* this hidden checkbox controls the state */}
-                                <input type="checkbox" onChange={() => setMenu(!menu)} />
+                                <input type="checkbox" onChange={() => setMenu(prev => !prev)} />
 
                                 {/* hamburger icon */}
                                 <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" /></svg>

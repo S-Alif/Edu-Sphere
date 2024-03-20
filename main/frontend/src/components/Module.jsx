@@ -48,6 +48,8 @@ const Module = () => {
       reset()
       let modules = await getModule(params?.id, params?.course)
       if (modules != 0) setModules(modules)
+      setValue("courseId", params?.course)
+      setValue("batchId", params?.id)
     }
   }
 
@@ -68,8 +70,8 @@ const Module = () => {
 
           {/* module detail */}
           <label htmlFor="name" className="font-semibold block">Module detail</label>
-          <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="First module details are here" {...register("detail", { required: true, maxLength: 200, minLength: 20 })} />
-          {errors?.detail && errorAlert("type detail properly")}
+          <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' placeholder="First module details are here" {...register("detail", { required: true, maxLength: 1000, minLength: 20 })} />
+          {errors?.detail && errorAlert("type detail in 255 character")}
 
           {/* module start */}
           <label htmlFor="start" className="font-semibold block">Module start</label>
