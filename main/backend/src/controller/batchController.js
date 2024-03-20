@@ -25,3 +25,8 @@ exports.getBatchById = async (req, res) => {
   let result = await batch.batchByID(req)
   res.status(200).json(result)
 }
+
+exports.getBatch = async (req, res) => {
+  let result = await batch.batchId(req)
+  res.status(200).json(result)
+}

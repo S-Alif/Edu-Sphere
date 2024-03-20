@@ -23,11 +23,6 @@ exports.courseById = async (req, res) => {
     res.status(200).json(result);
 }
 
-// get all course
-exports.courses = async (req, res) => {
-    const result = await course.getAllCourse(req);
-    res.status(200).json(result);
-}
 
 // get course by instructor
 exports.courseByInstructor = async (req, res) => {
@@ -50,5 +45,17 @@ exports.courseByClass = async (req, res) => {
 // get course names
 exports.courseNames = async (req, res) => {
     let result = await course.getCourseNames(req);
+    res.status(200).json(result);
+}
+
+// all course cards
+exports.courseCards = async (req, res) => {
+    let result = await course.getCourseCards(req);
+    res.status(200).json(result);
+}
+
+// for course detail
+exports.forCourseDetail = async (req, res) => {
+    let result = await course.courseForDetail(req)
     res.status(200).json(result);
 }

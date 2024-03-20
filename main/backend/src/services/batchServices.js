@@ -117,3 +117,18 @@ exports.batchByID = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// get batch by only id
+exports.batchId = async (req) => {
+  try {
+    let id = req.params?.id
+
+    let query = `SELECT * FROM batch WHERE id = '${id}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0][0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}

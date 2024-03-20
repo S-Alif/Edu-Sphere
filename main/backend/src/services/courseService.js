@@ -59,20 +59,11 @@ exports.courseById = async (req) => {
     let courseid = req.params.id
     let query = `SELECT * FROM course WHERE id = '${courseid}';`
     let result = await database.execute(query)
-    
+
     return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
-  }
-}
-
-// get all course
-exports.getAllCourse = async (req) => {
-  try {
-
-  } catch (error) {
-
   }
 }
 
@@ -114,6 +105,86 @@ exports.getCourseNames = async (req) => {
     let result = await database.execute(query)
 
     return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// all course cards
+exports.getCourseCards = async (req) => {
+  try {
+    let course = req.params.course
+    let classes = req.params.class
+
+    let query = `SELECT
+      u.firstName AS instructorFname,
+      u.lastName AS instructorLname,
+      u.profileImg AS instructorImg,
+      s.name AS subjectName,
+      b.name AS batchName,
+      b.courseBatchImg AS batchImg,
+      b.enrollmentEnd AS batchEnroll,
+      c.name AS courseName,
+      c.price AS price,
+      c.forClass AS class,
+      c.id AS courseId,
+      b.id AS batchId
+      FROM batch b
+      JOIN course c ON b.courseId = c.id
+      JOIN users u ON c.instructor = u.id
+      JOIN subject s ON c.subject = s.id
+      WHERE c.published = 1
+      AND c.active = 1
+      AND b.published = 1
+      AND b.enrollmentEnd >= NOW()`
+
+    // Add filters if provided
+    if (classes != 0) {
+      query += ` AND c.forClass = '${classes}'`
+    }
+
+    if (course != 0) {
+      query += ` AND s.id = '${course}'`
+    }
+
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+exports.courseForDetail = async (req) => {
+  try {
+    let id = req.params.id
+    let query = `SELECT
+        c.id AS courseId,
+        c.name AS courseName,
+        c.detail AS courseDetail,
+        c.duration AS courseDuration,
+        c.preRequisite AS coursePreRequisite,
+        c.createdAt AS courseCreatedAt,
+        c.updatedAt AS courseUpdatedAt,
+        c.classDay AS courseClassDay,
+        c.classTime AS courseClassTime,
+        s.name AS courseSubject,
+        c.price AS coursePrice,
+        c.discount AS courseDiscount,
+        c.forClass AS courseForClass,
+        u.id AS instructorId,
+        u.firstName AS instructorFirstName,
+        u.lastName AS instructorLastName,
+        u.profileImg AS instructorProfileImg
+    FROM course c
+    JOIN users u ON c.instructor = u.id
+    JOIN subject s ON c.subject = s.id
+    WHERE c.id = '${id}';`
+
+    let result = await database.execute(query)
+    return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
