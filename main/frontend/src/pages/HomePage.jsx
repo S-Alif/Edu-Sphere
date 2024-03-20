@@ -110,20 +110,12 @@ const HomePage = () => {
                 </GridRows>
 
                 <div className="lg:text-center mt-12">
-                    <NavLink to={'/course'} className={"btn btn-wide md:btn-lg bg-emerald-500 text-white hover:bg-emerald-600 shadow-md"}>see all courses</NavLink>
-                </div>
-            </Section>
-
-            {/* popular courses */}
-            <Section className={"poppular-course-section"} id={"course"}>
-                <div className="title text-center">
-                    <h2 className='text-3xl font-bold'>Popular Courses</h2>
-                    <p className='pt-5 font-medium'>See our popular courses taught by our best instructors</p>
+                    <NavLink to={'/all-course'} className={"btn btn-wide md:btn-lg bg-emerald-500 text-white hover:bg-emerald-600 shadow-md"}>see all courses</NavLink>
                 </div>
             </Section>
 
             {/* become a teacher */}
-            <Section className={"become-teacher bg-gray-100 dark:bg-[#1c262c]"} id={"become-teacher"}>
+            <Section className={"become-teacher dark:bg-[#1c262c]"} id={"become-teacher"}>
                 <GridRows className={"lg:grid-cols-2"}>
 
                     <div className="image-content lg:order-2">
@@ -151,7 +143,7 @@ const HomePage = () => {
             </Section>
 
             {/* contact section */}
-            <ContactSection />
+            <ContactSection className={"bg-gray-100"} />
         </>
     );
 };

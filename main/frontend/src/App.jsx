@@ -19,6 +19,8 @@ import StudentDashboard from './pages/StudentDashboard';
 import StudentAccountPage from "./pages/StudentAccountPage";
 import ModuleConfigure from "./pages/ModuleConfigure";
 import LiveUpdate from "./pages/LiveUpdate";
+import AllCoursesPage from './pages/AllCoursesPage';
+import CourseDetailPage from "./pages/CourseDetailPage";
 
 
 const App = () => {
@@ -30,6 +32,8 @@ const App = () => {
         <Route path="register" element={<StudentRegPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="/all-course" element={<AllCoursesPage />} />
+        <Route path="/course/:course/:batch" element={<CourseDetailPage />} />
       </Route>
 
       {/* protected routes for instructor */}
