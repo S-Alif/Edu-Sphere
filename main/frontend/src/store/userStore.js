@@ -105,6 +105,20 @@ const userStore = create((set) => ({
       errorAlert("something went wrong")
       return 0
     }
+  },
+
+  // logout
+  userLogout: () => {
+    sessionStorage.clear()
+    document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+    
+    set({ user: null })
+    set({ profile: null })
+    successAlert("logout success")
+
+    setTimeout(() => { 
+      window.location.replace('/')
+    }, 3000)
   }
 }))
 

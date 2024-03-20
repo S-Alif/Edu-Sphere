@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import Container from './tag-comps/Container';
 import useSystemTheme from '../hooks/useSystemTheme';
 import userStore from './../store/userStore';
@@ -9,12 +9,13 @@ import logoLight from '../assets/imgs/logo-light.png'
 
 // placeholder avatar
 import avatar from "../assets/imgs/avatar-1577909_640.png"
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
     const theme = useSystemTheme()
-    const { user, profile, userProfile } = userStore()
+    const { user, profile, userProfile, userLogout } = userStore()
+    const [menu, setMenu] = useState(false)
 
     // get profile data
     useEffect(() => {
@@ -25,6 +26,7 @@ const Navbar = () => {
         })()
 
     }, [user])
+
 
     return (
         <>
@@ -39,15 +41,17 @@ const Navbar = () => {
                         </div>
 
                         {/* menu */}
-                        <div className="menu-bar flex h-full items-center gap-8">
+                        <div className="menu-bar flex h-full items-center gap-5 md:gap-8">
 
                             {/* menu links */}
-                            <div className="links flex gap-6">
+                            <div className={`links fixed shadow-lg md:shadow-none right-0 md:right-72 md:relative top-20 md:top-auto items-center justify-evenly md:justify-between flex flex-col md:flex-row gap-6 w-72 ${theme ? "bg-slate-900" : "bg-slate-200"} h-[calc(100vh-80px)] transition-all duration-500 md:h-auto overflow-hidden md:overflow-visible ${menu ? "" : "w-0 transition-all duration-500"}`}>
+
                                 <NavLink to={"/"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Home</NavLink>
                                 <NavLink to={"/about"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>About</NavLink>
-                                <NavLink to={"/courses"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Courses</NavLink>
-                                <NavLink to={"/instructors"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Instructors</NavLink>
+                                <NavLink to={"/all-course"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Courses</NavLink>
+                                {/* <NavLink to={"/instructors"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Instructors</NavLink> */}
                                 <NavLink to={"/contact"} className={`font-semibold ${theme ? "hover:text-lime-500" : "hover:text-emerald-500"}`}>Contact</NavLink>
+
                             </div>
 
                             <div className="profile">
@@ -66,7 +70,7 @@ const Navbar = () => {
                                                     <NavLink to={`${user?.role == 1 ? "/instructor" : "/student"}`}>Profile</NavLink>
                                                 </li>
                                                 <li>
-                                                    <button>Logout</button>
+                                                    <button onClick={userLogout}>Logout</button>
                                                 </li>
                                             </>
                                         )}
@@ -78,16 +82,26 @@ const Navbar = () => {
                                                     <NavLink to={`/login`}>Login</NavLink>
                                                 </li>
                                                 <li>
-                                                    <NavLink to={`/student-register`}>Register as student</NavLink>
-                                                </li>
-                                                <li>
-                                                    <NavLink to={`/instructor-register`}>Register as instructor</NavLink>
+                                                    <NavLink to={`/register`}>Register Account</NavLink>
                                                 </li>
                                             </>
                                         )}
                                     </ul>
                                 </details>
                             </div>
+
+                            <label className="btn btn-circle md:hidden swap swap-rotate">
+
+                                {/* this hidden checkbox controls the state */}
+                                <input type="checkbox" onChange={() => setMenu(!menu)} />
+
+                                {/* hamburger icon */}
+                                <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" /></svg>
+
+                                {/* close icon */}
+                                <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" /></svg>
+
+                            </label>
 
                         </div>
 

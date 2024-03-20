@@ -45,20 +45,88 @@ const basicStore = create((set) => ({
   // subjects by instructor
   subByInstructor: async (id) => {
     try {
-      if(id){
-        var result = await axios.get(basicEndpoint + "/subjects/"+id)
+      if (id) {
+        var result = await axios.get(basicEndpoint + "/subjects/" + id)
       }
-      else{
-        result = await axios.get(instructorEndpoint + "/subjects", {withCredentials: true})
+      else {
+        result = await axios.get(instructorEndpoint + "/subjects", { withCredentials: true })
       }
 
-      if(result.data?.status == 0){
+      if (result.data?.status == 0) {
         errorAlert(result.data['data'])
         return 0
       }
 
       return result.data?.data
 
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // course cards
+  courseCards: async (course, classes) => {
+    try {
+      var result = await axios.get(basicEndpoint + "/all-course/" + course + "/" + classes)
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data['data'])
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // course details
+  courseDetail: async (courseID) => {
+    try {
+      var result = await axios.get(basicEndpoint + "/course/" + courseID)
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data['data'])
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // batch detail
+  batchDetail: async (batchId) => {
+    try {
+      var result = await axios.get(basicEndpoint + "/batch/" + batchId)
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data['data'])
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // batch detail
+  getModule: async (batchId, courseId) => {
+    try {
+      var result = await axios.get(basicEndpoint + "/module/" + courseId + "/" + batchId)
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data['data'])
+        return 0
+      }
+
+      return result.data?.data
     } catch (error) {
       errorAlert("Something went wrong")
       return 0
