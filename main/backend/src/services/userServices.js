@@ -19,7 +19,7 @@ exports.register = async (req) => {
 
     let imageUrl = await imageUploader(req.body.profileImg)
     if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
-    
+
     let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, imageUrl, date, date, parseInt(req.body.role)];
 
     let result = await database.execute(query, data)
@@ -59,15 +59,15 @@ exports.login = async (req) => {
 // update
 exports.update = async (req) => {
   try {
-    if (req.body?.newProfileImg != ""){
+    if (req.body?.newProfileImg != "") {
       let id = extractPublicId(req.body?.profileImg)
       let deleter = await imgDeleter(id)
 
-      if(deleter == true){        
+      if (deleter == true) {
         let imageUrl = await imageUploader(req.body.newProfileImg)
         if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
         req.body.profileImg = imageUrl
-      }else{
+      } else {
         return { status: 0, code: 200, data: "could not update profile" }
       }
     }
@@ -111,41 +111,6 @@ exports.instructorById = async (req) => {
   }
 }
 
-// insert instructors subjects
-exports.pushInstructorsSubs = async (req) => {
-  try {
-    let uid = v4()
-
-
-  } catch (error) {
-
-  }
-}
-
-// delete instructor subjects
-exports.deleteInstructorSubs = async (req) => {
-  try {
-
-  } catch (error) {
-
-  }
-}
-
-// get instructor subjects
-exports.instructorSubs = async (req) => {
-  try {
-    let insId = req.headers?.id
-    if (!insId) {
-      insId = req.params?.id
-    }
-
-
-
-  } catch (error) {
-
-  }
-}
-
 // user profile
 exports.profile = async (req) => {
   try {
@@ -162,3 +127,47 @@ exports.profile = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// enroll in course
+exports.enrollCourse = async (req) => {
+  try {
+    let uid = v4()
+    if (!req.body?.courseId || !req.body?.batchId || !req.body?.studentId || !req.body?.paid) return { status: 0, code: 200, data: "Fill all the data" };
+
+    let checkEnroll = await database.execute(`SELECT COUNT(*) as total FROM enrollment WHERE courseId = '${req.body?.courseId}' AND batchId = '${req.body?.batchId}';`)
+    let total = checkEnroll[0][0]
+
+    if (total?.total != 0) return { status: 0, code: 200, data: "Already enrolled in course" };
+
+
+    let courseData = await database.execute(`SELECT price, discount FROM course WHERE id = '${req.body?.courseId}';`)
+    let course = courseData[0][0]
+    let fee = parseInt(course?.price) - parseInt(course?.discount)
+
+    if ((fee - parseInt(req.body?.paid) != 0)) {
+      return { status: 0, code: 200, data: "pay the required amount" };
+    }
+
+    let date = getCurrentDateTime()
+
+    let query = `INSERT INTO enrollment (id, courseId, batchId, studentId, paid, payDue, enrollDate) VALUES (?,?,?,?,?,?,?);`
+    let data = [uid, req.body?.courseId, req.body?.batchId, req.body?.studentId, req.body?.paid, "0", date]
+
+    let result = await database.execute(query, data)
+
+    if (result[0]['affectedRows'] == 1) {
+
+      let newUid = v4()
+      let query2 = `INSERT INTO student_payment (id, studentId, enrollId, paid, date) VALUES (?,?,?,?,?);`
+      let data2 = [newUid, req.body?.studentId, uid, req.body?.paid, date]
+      let result2 = await database.execute(query2, data2)
+
+      return { status: 1, code: 200, data: "course enroll success" }
+    }
+
+    return { status: 1, code: 200, data: "course enroll failed" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+} 

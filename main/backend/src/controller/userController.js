@@ -64,26 +64,15 @@ exports.getInstructorsById = async (req, res) => {
   res.status(200).json(result);
 }
 
-// insert instructors subjects
-exports.insertInstructorSubs = async (req, res) => {
-  let result = await userService.pushInstructorsSubs(req)
-  res.status(200).json(result);
-}
-
-// delete instructor subjects
-exports.removeInstructorSubs = async (req, res) => {
-  let result = await userService.deleteInstructorSubs(req)
-  res.status(200).json(result);
-}
-
-// get instructor subjects
-exports.getInstructorSubs = async (req, res) => {
-  let result = await userService.instructorSubs(req)
-  res.status(200).json(result);
-}
-
 // user profile
 exports.userProfile = async (req, res) => {
   let result = await userService.profile(req)
+  res.status(200).json(result);
+}
+
+
+// course enroll
+exports.courseEnroll = async (req, res) => {
+  let result = await userService.enrollCourse(req)
   res.status(200).json(result);
 }

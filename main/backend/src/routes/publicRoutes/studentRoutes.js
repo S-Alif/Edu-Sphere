@@ -13,4 +13,6 @@ router.post('/update', authVerification, user.userUpdate)
 router.post('/delete', authVerification, user.userDelete)
 router.get('/user', authVerification, user.userProfile)
 
+router.post('/enroll', authVerification, user.courseEnroll)
+
 module.exports = router
