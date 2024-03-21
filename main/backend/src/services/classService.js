@@ -148,3 +148,13 @@ exports.getAssignmentStudent = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// check assignment student
+exports.checkAssignmentStudent = async (req) => {
+  try {
+    let result = await database.execute(`SELECT * FROM assignment_submits WHERE studentId = "${req.params?.id}" AND assignmentId = "${req.params?.assignment}";`)
+    return { status: 1, code: 200, data: result[0][0] }
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}

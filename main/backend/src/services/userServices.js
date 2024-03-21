@@ -206,3 +206,53 @@ exports.fetchEnrollCourse = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// submit assignment
+exports.submitAssignment = async (req) => {
+  try {
+    if (!req.body?.studentId || !req.body?.assignmentId || !req.body?.sub_assignment) return { status: 0, code: 200, data: "submit assignment properly" }
+
+    let checks = await database.execute(`SELECT COUNT(*) as total FROM assignment_submits WHERE studentId = '${req.body?.studentId}' AND assignmentId = '${req.body?.assignmentId}';`)
+
+    let total = checks[0][0]
+
+    if (total.total > 0) return { status: 0, code: 200, data: "assignment already submitted" }
+
+    // pdf uploader
+    let url = await pdfUploader(req.body?.sub_assignment)
+    if (!url) return { status: 0, code: 200, data: "could not submit assignment" }
+
+    let uid = v4()
+    let query = `INSERT INTO assignment_submits (id, studentId, assignmentId, sub_assignment, date) VALUES(?,?,?,?,?);`
+    let data = [uid, req.body?.studentId, req.body?.assignmentId, url, getCurrentDateTime()]
+
+    let result = await database.execute(query, data)
+
+    return { status: 1, code: 200, data: "submitted assignment" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// student payment
+exports.studentPayment = async (req) => {
+  try {
+    let id = req.headers?.id
+    let query = `SELECT 
+        course.name AS courseName,
+        batch.name AS batchName,
+        enrollment.paid AS paid,
+        enrollment.enrollDate AS enrollDate
+    FROM enrollment
+    INNER JOIN course ON enrollment.courseId = course.id
+    INNER JOIN batch ON enrollment.batchId = batch.id
+    WHERE enrollment.studentId = '${id}';`
+
+    let result = await database.execute(query)
+  
+    return { status: 1, code: 200, data: result[0]};
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}

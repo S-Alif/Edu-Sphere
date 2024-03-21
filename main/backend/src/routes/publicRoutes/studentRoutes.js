@@ -21,4 +21,12 @@ router.get('/enroll-course/:id', authVerification, user.studentEnrollCourse)
 router.get('/get-lives/:moduleId', authVerification, classes.getAllLives)
 router.get('/get-assignments/:moduleId', authVerification, classes.studentAssignment)
 
+router.get('/live/:moduleId/:id', authVerification, classes.getLiveId)
+router.get('/assignment/:moduleId', authVerification, classes.getAssignmentById)
+
+router.get('/check-assignment/:assignment/:id', authVerification, classes.checkStudentAssignment)
+router.post('/submit-assignment', authVerification, user.AssignmentSubmit)
+
+router.get('/payment', authVerification, user.studentPayInfo)
+
 module.exports = router

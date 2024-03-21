@@ -82,3 +82,15 @@ exports.studentEnrollCourse = async (req, res) => {
   let result = await userService.fetchEnrollCourse(req)
   res.status(200).json(result);
 }
+
+//student submit assignments
+exports.AssignmentSubmit = async (req, res) => {
+  let result = await userService.submitAssignment(req)
+  res.status(200).json(result);
+}
+
+// student payment info
+exports.studentPayInfo = async (req, res) => {
+  let result = await userService.studentPayment(req)
+  res.status(200).json(result);
+}

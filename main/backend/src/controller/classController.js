@@ -61,3 +61,9 @@ exports.getAllLives = async (req, res) => {
   let result = await classes.getLives(req)
   res.status(200).json(result)
 }
+
+// check assignment student
+exports.checkStudentAssignment = async (req, res) => {
+  let result = await classes.checkAssignmentStudent(req)
+  res.status(200).json(result)
+}

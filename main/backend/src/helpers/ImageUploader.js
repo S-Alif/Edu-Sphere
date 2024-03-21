@@ -1,4 +1,6 @@
-const { v2 } =  require('cloudinary')
+const { v2 } = require('cloudinary')
+const fs = require('fs');
+const path = require('path');
 
 v2.config({
   cloud_name: process.env.imageCloudName,
@@ -41,5 +43,26 @@ exports.imageUploader = async (image) => {
     return result.url
   } catch (error) {
     return null
+  }
+}
+
+// pdf uploader
+exports.pdfUploader = async (pdf) => {
+  try {
+    const base64Data = pdf.replace(/^data:application\/pdf;base64,/, '');
+    const binaryData = Buffer.from(base64Data, 'base64');
+    let output = path.join(__dirname, "../assignments")
+
+    if (!fs.existsSync(output)) {
+      fs.mkdirSync(output)
+    }
+    const fileName = `assignment_${Date.now()}.pdf`;
+    const filePath = path.join(output, fileName);
+
+    fs.writeFileSync(filePath, binaryData);
+
+    return filePath;
+  } catch (error) {
+    return null;
   }
 }
