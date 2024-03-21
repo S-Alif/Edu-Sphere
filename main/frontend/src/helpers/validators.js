@@ -87,3 +87,23 @@ export const formatTime = (timeString) => {
   const formattedMinutes = minutes.toString().padStart(2, '0');
   return `${year}-${month}-${day} at ${formattedHours}:${formattedMinutes} ${period}`;
 }
+
+export const compareDateTime = (dateTimeString, eventType) => {
+  // Get current date and time
+  const now = new Date();
+  // Convert datetime string to Date object
+  const dateTime = new Date(dateTimeString);
+
+  // Get the difference in milliseconds between the current time and the provided datetime
+  const timeDiff = dateTime - now;
+
+  if (eventType === "liveClass" && timeDiff >= -900000 && timeDiff < 0) { // Within 15 minutes (900000 milliseconds) before the current time for live class
+    return "today";
+  } else if (dateTime.toDateString() === now.toDateString()) { // For assignments, return "today" at the exact time
+    return "today";
+  } else if (dateTime > now) {
+    return "future";
+  } else {
+    return "past";
+  }
+}

@@ -1,12 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { formatDate, formatTime } from "../../helpers/validators";
 
 
 const CourseCards = ({ data }) => {
+    const location = useLocation()
+    
+    let links = location.pathname == "/student/courses" ? `/student/course/${data?.courseId}/${data?.batchId}` : `/course/${data?.courseId}/${data?.batchId}`
 
     return (
         <>
-            <NavLink to={`/course/${data?.courseId}/${data?.batchId}`} className="card w-full bg-base-100 shadow-xl">
+            <NavLink to={links} className="card w-full bg-base-100 shadow-xl">
                 <figure><img src={data?.batchImg} alt="batch image" /></figure>
                 <div className="card-body pb-2">
                     <h2 className="card-title">{data?.batchName}</h2>
@@ -17,7 +20,7 @@ const CourseCards = ({ data }) => {
 
                     <div className="card-actions pt-4 flex justify-between items-center">
                         <div className="badge badge-outline">{data?.subjectName}</div>
-                        <div className="font-bold text-emerald-500">৳{data?.price}</div>
+                        {location.pathname != "/student/courses" && <div className="font-bold text-emerald-500">à§³{data?.price}</div>}
                     </div>
 
                     {/* instructor info */}
