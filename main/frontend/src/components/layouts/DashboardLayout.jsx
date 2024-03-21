@@ -24,7 +24,9 @@ const DashboardLayout = () => {
           <NavLink to={user?.role == 1 ? '/instructor/courses' : "/student/courses"} className={linkStyles}>My courses</NavLink>
           {user?.role == 1 && (<NavLink to={'/instructor/create-courses'} className={linkStyles}>Create courses</NavLink>)}
           {user?.role == 1 && (<NavLink to={'/instructor/batch-configure'} className={linkStyles}>Batch configure</NavLink>)}
+          <NavLink to={user?.role == 1 ? "/instructor/payment" : "/student/payment"} className={linkStyles}>payment</NavLink>
           <NavLink to={user?.role == 1 ? '/instructor/account' : "/student/account"} className={linkStyles}>Account</NavLink>
+
         </div>
 
 

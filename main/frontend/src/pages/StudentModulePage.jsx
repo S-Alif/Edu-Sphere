@@ -3,7 +3,7 @@ import { NavLink, useParams } from "react-router-dom";
 import studentStore from "../store/studentStore";
 import Section from "../components/tag-comps/Section";
 import LiveCard from "../components/cards/LiveCard";
-import { formatDate, formatTime } from "../helpers/validators";
+import { compareDateTime, formatDate, formatTime } from "../helpers/validators";
 
 
 const StudentModulePage = () => {
@@ -15,6 +15,9 @@ const StudentModulePage = () => {
   const [lives, setLives] = useState([])
   const [assignment, setAssignment] = useState({})
 
+  let time = compareDateTime(formatDate(assignment?.starts), 'assignment')
+
+  // get data
   useEffect(() => {
     (async () => {
 
@@ -49,7 +52,7 @@ const StudentModulePage = () => {
       {!assignment?.id && <h3>Now assignments found</h3>}
       {
         assignment?.id &&
-        <NavLink className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
+        <NavLink to={(time == "today" || time == "past") && `/student/assignment/${params?.id}/${assignment?.id}`} className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
           <div className="card-body">
             <h3 className="font-semibold pb-3">Module Assignment</h3>
 

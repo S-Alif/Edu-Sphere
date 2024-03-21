@@ -27,6 +27,7 @@ import StudentEnrolledCourse from './pages/StudentEnrolledCourse';
 import StudentModulePage from "./pages/StudentModulePage";
 import LivePage from "./pages/LivePage";
 import AssignmentPage from "./pages/AssignmentPage";
+import StudentPaymentInfoPage from "./pages/StudentPaymentInfoPage";
 
 
 const App = () => {
@@ -76,6 +77,7 @@ const App = () => {
             <Route path="module/:batch/:id" element={<StudentModulePage />} />
             <Route path="live/:module/:id" element={<LivePage />} />
             <Route path="assignment/:module/:id" element={<AssignmentPage />} />
+            <Route path="payment" element={<StudentPaymentInfoPage />} />
           </Route>
         </Route>
       </Route>
