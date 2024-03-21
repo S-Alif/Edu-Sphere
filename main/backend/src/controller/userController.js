@@ -76,3 +76,9 @@ exports.courseEnroll = async (req, res) => {
   let result = await userService.enrollCourse(req)
   res.status(200).json(result);
 }
+
+// fetch student enrolled course
+exports.studentEnrollCourse = async (req, res) => {
+  let result = await userService.fetchEnrollCourse(req)
+  res.status(200).json(result);
+}

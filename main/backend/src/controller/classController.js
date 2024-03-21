@@ -24,6 +24,12 @@ exports.getAssignmentById = async (req, res) => {
   res.status(200).json(result)
 }
 
+// student assignment
+exports.studentAssignment = async (req, res) => {
+  let result = await classes.getAssignmentStudent(req)
+  res.status(200).json(result)
+}
+
 
 
 // create live class

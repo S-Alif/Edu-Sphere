@@ -130,8 +130,19 @@ exports.getLiveId = async (req) => {
 // live class all
 exports.getLives = async (req) => {
   try {
-    let result = await database.execute(`SELECT * FROM live_class WHERE moduleId = "${req.params?.moduleId}"`)
+    let result = await database.execute(`SELECT id, moduleId, topic, description, start, end FROM live_class WHERE moduleId = "${req.params?.moduleId}" ORDER BY start ASC;`)
     return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// assignment get
+exports.getAssignmentStudent = async (req) => {
+  try {
+    let result = await database.execute(`SELECT id, moduleId, starts, ends FROM assignments WHERE moduleId = "${req.params?.moduleId}";`)
+    return { status: 1, code: 200, data: result[0][0] }
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };

@@ -170,4 +170,39 @@ exports.enrollCourse = async (req) => {
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
-} 
+}
+
+
+// fetch student enrolled courses
+exports.fetchEnrollCourse = async (req) => {
+  try {
+
+    let id = req.params?.id
+
+    let query = `SELECT 
+        e.courseId AS courseId,
+        e.batchId AS batchId,
+        c.name AS courseName,
+        c.price AS price,
+        c.forClass AS class,
+        b.name AS batchName,
+        b.courseBatchImg AS batchImg,
+        b.start AS batchEnroll,
+        s.name AS subjectName,
+        i.firstName AS instructorFname,
+        i.lastName AS instructorLname,
+        i.profileImg AS instructorImg
+    FROM enrollment e
+    JOIN course c ON e.courseId = c.id
+    JOIN batch b ON e.batchId = b.id
+    JOIN users i ON c.instructor = i.id
+    JOIN subject s ON c.subject = s.id
+    WHERE e.studentId = '${id}';`
+
+    let result = await database.execute(query)
+    return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
