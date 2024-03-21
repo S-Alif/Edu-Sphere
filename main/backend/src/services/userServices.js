@@ -2,7 +2,7 @@ const database = require('../../database')
 const { v4 } = require('uuid');
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 const { getCurrentDateTime } = require('../helpers/helper');
-const { imageUploader, extractPublicId, imgDeleter } = require('../helpers/ImageUploader');
+const { imageUploader, extractPublicId, imgDeleter, pdfUploader } = require('../helpers/ImageUploader');
 
 
 // register
@@ -252,6 +252,38 @@ exports.studentPayment = async (req) => {
     let result = await database.execute(query)
   
     return { status: 1, code: 200, data: result[0]};
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// isntructor payment
+exports.instructorPayment = async (req) => {
+  try {
+    let id = req.headers?.id;
+    let courseId = req.params?.courseId;
+
+    let query = `SELECT 
+        users.firstName AS stdFname,
+        users.lastName AS stdLname,
+        users.profileImg AS stdImg,
+        course.name AS courseName,
+        batch.name AS batchName,
+        enrollment.paid,
+        enrollment.enrollDate
+    FROM enrollment
+    INNER JOIN users ON enrollment.studentId = users.id
+    INNER JOIN batch ON enrollment.batchId = batch.id
+    INNER JOIN course ON batch.courseId = course.id
+    WHERE course.instructor = '${id}'`;
+
+    if (courseId != 0) {
+      query += ` AND course.id = '${courseId}'`;
+    }
+
+    let result = await database.execute(query);
+
+    return { status: 1, code: 200, data: result[0] };
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }

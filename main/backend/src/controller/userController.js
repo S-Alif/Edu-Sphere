@@ -94,3 +94,9 @@ exports.studentPayInfo = async (req, res) => {
   let result = await userService.studentPayment(req)
   res.status(200).json(result);
 }
+
+// instructor payment info
+exports.instructorPayInfo = async (req, res) => {
+  let result = await userService.instructorPayment(req)
+  res.status(200).json(result);
+}

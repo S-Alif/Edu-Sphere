@@ -54,5 +54,7 @@ router.post('/delete-live/:module/:id', authVerification, classes.deleteLive)
 router.get('/get-live/:moduleId/:id', authVerification, classes.getLiveId)
 router.get('/get-lives/:moduleId', authVerification, classes.getAllLives)
 
+// payment
+router.get('/payment/:courseId', authVerification, user.instructorPayInfo)
 
 module.exports = router
