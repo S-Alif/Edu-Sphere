@@ -6,10 +6,10 @@ const useHandleImage = (callback, maxSizeKB, errorCallback) => {
 
   const handleImage = (e) => {
     if (!e.target.files[0]) return;
-    let uploadedFile = e.target.files[0];
+    const uploadedFile = e.target.files[0];
 
     if ((uploadedFile.size / 1024) > maxSizeKB) {
-      errorCallback("Image is larger than " + (maxSizeKB / 1000) + "MB");
+      errorCallback("File is larger than " + (maxSizeKB / 1000) + "MB");
       return;
     }
 
@@ -18,7 +18,13 @@ const useHandleImage = (callback, maxSizeKB, errorCallback) => {
       setPreview(fileReader.result);
       callback(fileReader.result);
     };
-    fileReader.readAsDataURL(uploadedFile);
+
+    // Check if the file type is image or PDF
+    if (uploadedFile.type.startsWith('image') || uploadedFile.type === 'application/pdf') {
+      fileReader.readAsDataURL(uploadedFile);
+    } else {
+      errorCallback("Unsupported file format");
+    }
   };
 
   return { handleImage, preview };
