@@ -28,6 +28,7 @@ import StudentModulePage from "./pages/StudentModulePage";
 import LivePage from "./pages/LivePage";
 import AssignmentPage from "./pages/AssignmentPage";
 import StudentPaymentInfoPage from "./pages/StudentPaymentInfoPage";
+import InstructorPayment from "./pages/InstructorPayment";
 
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
             <Route path="courses/:id" element={<UpdateCoursePage />} />
             <Route path="modules/:batch/:id" element={<ModuleConfigure />} />
             <Route path="live-class/:module/:id" element={<LiveUpdate />} />
+            <Route path="payment" element={<InstructorPayment />} />
           </Route>
         </Route>
       </Route>

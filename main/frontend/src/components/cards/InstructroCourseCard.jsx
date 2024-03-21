@@ -26,9 +26,9 @@ const InstructroCourseCard = ({ batchData }) => {
         </div>
         {
           (batchData?.batches && batchData?.batches.length > 0) &&
-          batchData?.batches.map((e, index) => (
-            <NavLink to={"/instructor/batch-configure/" + batchData?.id + "/" + e.id} key={index} className={"rounded-lg border-2 border-gray-200 block p-2 hover:border-emerald-400"}>{e.name}</NavLink>
-          ))
+          batchData?.batches.map((e, index) => {
+           return e.id != null &&(<NavLink to={"/instructor/batch-configure/" + batchData?.id + "/" + e.id} key={index} className={"rounded-lg border-2 border-gray-200 block p-2 hover:border-emerald-400"}>{e.name}</NavLink>)
+          })
         }
       </div>
     </div>
