@@ -24,6 +24,9 @@ import CourseDetailPage from "./pages/CourseDetailPage";
 import EnrollPage from "./pages/EnrollPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import StudentEnrolledCourse from './pages/StudentEnrolledCourse';
+import StudentModulePage from "./pages/StudentModulePage";
+import LivePage from "./pages/LivePage";
+import AssignmentPage from "./pages/AssignmentPage";
 
 
 const App = () => {
@@ -69,6 +72,10 @@ const App = () => {
             <Route index element={<StudentDashboard />} />
             <Route path="account" element={<StudentAccountPage />} />
             <Route path="courses" element={<StudentEnrolledCourse />} />
+            <Route path="course/:course/:batch" element={<CourseDetailPage />} />
+            <Route path="module/:batch/:id" element={<StudentModulePage />} />
+            <Route path="live/:module/:id" element={<LivePage />} />
+            <Route path="assignment/:module/:id" element={<AssignmentPage />} />
           </Route>
         </Route>
       </Route>
