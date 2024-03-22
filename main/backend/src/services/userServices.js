@@ -137,7 +137,7 @@ exports.enrollCourse = async (req) => {
     let uid = v4()
     if (!req.body?.courseId || !req.body?.batchId || !req.body?.studentId || !req.body?.paid) return { status: 0, code: 200, data: "Fill all the data" };
 
-    let checkEnroll = await database.execute(`SELECT COUNT(*) as total FROM enrollment WHERE courseId = '${req.body?.courseId}' AND batchId = '${req.body?.batchId}';`)
+    let checkEnroll = await database.execute(`SELECT COUNT(*) as total FROM enrollment WHERE courseId = '${req.body?.courseId}' AND batchId = '${req.body?.batchId}' AND studentId = '${req.body?.studentId}';`)
     let total = checkEnroll[0][0]
 
     if (total?.total != 0) return { status: 0, code: 200, data: "Already enrolled in course" };
