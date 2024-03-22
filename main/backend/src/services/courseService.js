@@ -70,9 +70,36 @@ exports.courseById = async (req) => {
 // get course by instructor
 exports.getCourseByInstructor = async (req) => {
   try {
+    let id = req.params?.id
+
+    let query = `SELECT
+        u.firstName AS instructorFname,
+        u.lastName AS instructorLname,
+        u.profileImg AS instructorImg,
+        s.name AS subjectName,
+        b.name AS batchName,
+        b.courseBatchImg AS batchImg,
+        b.enrollmentEnd AS batchEnroll,
+        c.name AS courseName,
+        c.price AS price,
+        c.forClass AS class,
+        c.id AS courseId,
+        b.id AS batchId
+    FROM batch b
+    JOIN course c ON b.courseId = c.id
+    JOIN users u ON c.instructor = u.id
+    JOIN subject s ON c.subject = s.id
+    WHERE c.published = 1
+        AND c.active = 1
+        AND b.published = 1
+        AND b.enrollmentEnd >= NOW()
+        AND u.id = '${id}';`
+
+      let result = await database.execute(query)
+      return {status: 1, code: 200, data: result[0]}
 
   } catch (error) {
-
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
@@ -157,6 +184,7 @@ exports.getCourseCards = async (req) => {
   }
 }
 
+// course details
 exports.courseForDetail = async (req) => {
   try {
     let id = req.params.id

@@ -116,7 +116,10 @@ exports.profile = async (req) => {
   try {
     let id = req.headers?.id
     let role = req.headers?.role
-
+    
+    if(!id) id = req.params?.id
+    if (role == null) role = req.params?.role
+    
     let query = `SELECT id, firstName, lastName, email, phone, profileImg, about, address, registerDate, updateDate, role FROM users WHERE id = "${id}" AND role = ${role};`
 
     let result = await database.execute(query)

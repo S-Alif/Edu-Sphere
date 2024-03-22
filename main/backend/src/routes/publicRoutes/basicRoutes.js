@@ -31,5 +31,8 @@ router.get('/subjects/:id', subject.getSubByInstructor)
 router.get('/all-course/:course/:class', course.courseCards)
 router.get('/module/:course/:batch', modules.getAllModule)
 
+// instructor public profile
+router.get('/user/:id/:role', user.userProfile)
+router.get('/course-by-instructor/:id', course.courseByInstructor)
 
 module.exports = router

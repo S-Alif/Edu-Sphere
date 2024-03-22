@@ -17,7 +17,6 @@ const authVerification = require('../../middleware/authVerification')
 router.post('/update', authVerification, user.userUpdate)
 router.post('/delete', authVerification, user.userDelete)
 router.get('/user', authVerification, user.userProfile)
-router.get('/user/:id', user.userProfile)
 router.get('/subjects', authVerification, subject.getSubByInstructor)
 
 
