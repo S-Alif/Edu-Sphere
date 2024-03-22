@@ -9,6 +9,7 @@ import { errorAlert } from "../helpers/alertMsg";
 import { formatDate, formatTime } from "../helpers/validators";
 import studentStore from "../store/studentStore";
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const EnrollPage = () => {
 
@@ -33,7 +34,7 @@ const EnrollPage = () => {
 
   // submit the form
   let submitForm = async (data) => {
-    if(fee != parseInt(data.paid)) return errorAlert("pay the required amount")
+    if (fee != parseInt(data.paid)) return errorAlert("pay the required amount")
     let result = await courseEnroll(data)
   }
 
@@ -82,17 +83,17 @@ const EnrollPage = () => {
 
                 <tr className="border border-slate-300 hover">
                   <th>Course fee</th>
-                  <td>৳ {courseData?.coursePrice}</td>
+                  <td><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {courseData?.coursePrice}</td>
                 </tr>
 
                 <tr className="border border-slate-300 hover">
                   <th>Discount</th>
-                  <td>৳ {courseData?.courseDiscount}</td>
+                  <td><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {courseData?.courseDiscount}</td>
                 </tr>
 
                 <tr className="border border-slate-300 hover">
                   <th>total</th>
-                  <td>৳ {fee}</td>
+                  <td><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {fee}</td>
                 </tr>
 
               </tbody>

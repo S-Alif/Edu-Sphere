@@ -29,6 +29,7 @@ import LivePage from "./pages/LivePage";
 import AssignmentPage from "./pages/AssignmentPage";
 import StudentPaymentInfoPage from "./pages/StudentPaymentInfoPage";
 import InstructorPayment from "./pages/InstructorPayment";
+import InstructorProfilePage from "./pages/InstructorProfilePage";
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="about" element={<AboutPage />} />
         <Route path="/all-course" element={<AllCoursesPage />} />
         <Route path="/course/:course/:batch" element={<CourseDetailPage />} />
+        <Route path="/instructor-profile/:id" element={<InstructorProfilePage />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
         {/* enroll student */}

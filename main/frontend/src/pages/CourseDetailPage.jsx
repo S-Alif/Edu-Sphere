@@ -8,6 +8,7 @@ import { formatDate, formatTime } from "../helpers/validators";
 import ModuleCards from "../components/cards/ModuleCards";
 import GridRows from './../components/tag-comps/GridRows';
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 const CourseDetailPage = () => {
     const params = useParams()
@@ -93,7 +94,7 @@ const CourseDetailPage = () => {
                                             </tr>
                                             <tr className="border border-slate-300 hover">
                                                 <th>Price</th>
-                                                <td>à§³ {
+                                                <td><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {
                                                     parseInt(courseData?.courseDiscount) > 0 ?
                                                         (<>{parseInt(courseData?.coursePrice) - parseInt(courseData?.courseDiscount)} <span className="line-through italic pl-4">{courseData?.courseDiscount}</span></>) :
                                                         parseInt(courseData?.coursePrice)
@@ -157,19 +158,16 @@ const CourseDetailPage = () => {
                     {
                         location.pathname.substring(0, 15) != "/student/course" &&
                         <div className="w-full lg:w-1/4 sticky top-0">
-                            <div className="card w-96 bg-base-100 shadow-xl">
-                                <figure><img src={courseData?.instructorProfileImg} alt="Shoes" /></figure>
-                                <div className="card-body">
-                                    <h2 className="card-title">{courseData?.instructorFirstName} {courseData?.instructorLastName}</h2>
-                                    <div className="card-actions">
-                                        <button className="btn bg-emerald-500 text-white hover:bg-emerald-500">see profile</button>
-                                    </div>
+                            <div className="p-5 rounded-lg shadow-md">
+                                <img src={courseData?.instructorProfileImg} alt="Instructor profile img" className="w-40 h-40 rounded-full shadow-lg mx-auto object-cover object-center" />
+                                <h2 className="text-xl text-center pt-5 font-semibold">{courseData?.instructorFirstName} {courseData?.instructorLastName}</h2>
+                                <p className="text-center pt-2">Visit instructor profile for more details</p>
+                                <div className="card-actions justify-center pt-5">
+                                    <NavLink to={"/instructor-profile/" + courseData?.instructorId} className="btn bg-emerald-500 text-white hover:bg-emerald-500">see profile</NavLink>
                                 </div>
                             </div>
                         </div>
                     }
-
-
 
                 </div>
             </Section>

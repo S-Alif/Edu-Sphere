@@ -1,10 +1,12 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { formatDate, formatTime } from "../../helpers/validators";
 
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+
 
 const CourseCards = ({ data }) => {
     const location = useLocation()
-    
+
     let links = location.pathname == "/student/courses" ? `/student/course/${data?.courseId}/${data?.batchId}` : `/course/${data?.courseId}/${data?.batchId}`
 
     return (
@@ -20,7 +22,7 @@ const CourseCards = ({ data }) => {
 
                     <div className="card-actions pt-4 flex justify-between items-center">
                         <div className="badge badge-outline">{data?.subjectName}</div>
-                        {location.pathname != "/student/courses" && <div className="font-bold text-emerald-500">à§³{data?.price}</div>}
+                        {location.pathname != "/student/courses" && <div className="font-bold text-emerald-500"><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {data?.price}</div>}
                     </div>
 
                     {/* instructor info */}
