@@ -26,7 +26,6 @@ const HomePage = () => {
                             <p className='pt-8'>Welcome to Edusphere: Where Learning Knows No Bounds. Experience education reimagined with our interactive platform designed to engage, inspire, and empower. Dive into a world of limitless possibilities, where curiosity meets innovation, and knowledge knows no boundaries. Join our vibrant community of learners and embark on a journey of discovery. Unleash your potential with Edusphere – where the future of learning begins today</p>
 
                             <div className="w-full text-center lg:text-left">
-                                <a href={"#course"} className={"btn md:btn-lg bg-emerald-500 text-white mt-8 hover:bg-emerald-600 shadow-md"}>see course</a>
                                 <a href={"#about"} className={"btn md:btn-lg bg-purple-500 text-white mt-8 hover:bg-purple-600 shadow-md ml-4"}>about us</a>
                             </div>
                         </div>
@@ -136,7 +135,7 @@ const HomePage = () => {
                             <li className='w-full lg:float-left lg:w-1/2 pt-2'>Networking opportunities</li>
                         </ul>
 
-                        <NavLink to={'/instructor-register'} className={"btn btn-wide md:btn-lg bg-emerald-500 text-white hover:bg-emerald-600 shadow-md mt-8"}>become an instructor</NavLink>
+                        <NavLink to={'register'} className={"btn btn-wide md:btn-lg bg-emerald-500 text-white hover:bg-emerald-600 shadow-md mt-8"}>become an instructor</NavLink>
                     </div>
 
                 </GridRows>

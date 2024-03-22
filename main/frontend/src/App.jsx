@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
-import InstuctorRegPage from './pages/InstuctorRegPage';
 import StudentRegPage from './pages/StudentRegPage';
 import MainLayout from './components/layouts/MainLayout';
 import HomePage from "./pages/HomePage";
@@ -30,10 +29,12 @@ import AssignmentPage from "./pages/AssignmentPage";
 import StudentPaymentInfoPage from "./pages/StudentPaymentInfoPage";
 import InstructorPayment from "./pages/InstructorPayment";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
+import ScrollToTop from "./ScrollToTop";
 
 
 const App = () => {
   return (
+    <ScrollToTop>
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
@@ -87,6 +88,8 @@ const App = () => {
       </Route>
 
     </Routes>
+    </ScrollToTop>
+
   );
 };
 
