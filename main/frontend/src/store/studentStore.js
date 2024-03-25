@@ -1,23 +1,22 @@
 import axios from 'axios'
 import { create } from 'zustand'
-import { studentEndpoint } from '../helpers/apiEndpoints'
+import { mainEndpoint, studentEndpoint } from '../helpers/apiEndpoints'
 import { errorAlert, infoAlert, successAlert } from './../helpers/alertMsg'
+import { baseUrl } from './../helpers/apiEndpoints';
 
 const studentStore = create((set) => ({
   // course enroll
   courseEnroll: async (data) => {
     try {
-      infoAlert("enrolling you in course ... please wait")
-
-      let result = await axios.post(studentEndpoint + '/enroll', data, { withCredentials: true })
+      infoAlert("enrolling ... please wait")
+      let result = await axios.post(baseUrl + mainEndpoint + "/payment" + '/invoice-create', data, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
         return errorAlert(result.data?.data)
       }
 
-      successAlert(result.data?.data)
-      return result.data?.status
+      return result.data
 
     } catch (error) {
       return errorAlert("something went wrong")
@@ -156,7 +155,8 @@ const studentStore = create((set) => ({
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
-        return errorAlert(result.data?.data)
+        errorAlert(result.data?.data)
+        return result.data?.status
       }
 
       return result.data?.data

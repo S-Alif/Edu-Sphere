@@ -1,6 +1,6 @@
 // api endpoint
-const baseUrl = "http://localhost:8000"
-const mainEndpoint = "/public"
+export const baseUrl = "http://localhost:8000"
+export const mainEndpoint = "/public"
 
 // export specific endpoints
 export const studentEndpoint = baseUrl + mainEndpoint + "/student"

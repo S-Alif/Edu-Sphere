@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import Section from "../components/tag-comps/Section";
 import basicStore from "../store/basicStore";
@@ -16,6 +16,7 @@ const EnrollPage = () => {
   const params = useParams()
   const [courseData, setCourseData] = useState({})
   const [batch, setBatch] = useState({})
+
   let fee = parseInt(courseData?.courseDiscount) > 0 ? (parseInt(courseData?.coursePrice) - parseInt(courseData?.courseDiscount)) : parseInt(courseData?.coursePrice)
 
   const { courseDetail, batchDetail } = basicStore()
@@ -23,19 +24,20 @@ const EnrollPage = () => {
   const { courseEnroll } = studentStore()
 
   // form values
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+  const { handleSubmit, setValue } = useForm({
     defaultValues: {
       courseId: "",
       batchId: "",
       studentId: "",
-      paid: "",
     }
   })
 
   // submit the form
   let submitForm = async (data) => {
-    if (fee != parseInt(data.paid)) return errorAlert("pay the required amount")
     let result = await courseEnroll(data)
+    if(result?.status == 1){
+      window.location.href = result?.data.GatewayPageURL
+    }
   }
 
   // get data
@@ -81,6 +83,8 @@ const EnrollPage = () => {
             <table className="table">
               <tbody className="text-xl">
 
+                <th colSpan={2} className="text-xl border border-slate-300 text-gray-500">Course payment details</th>
+
                 <tr className="border border-slate-300 hover">
                   <th>Course fee</th>
                   <td><span className="text-sm inline-block"><FaBangladeshiTakaSign /></span> {courseData?.coursePrice}</td>
@@ -101,11 +105,7 @@ const EnrollPage = () => {
 
             {/* payment form */}
             <form action="" className="pt-10" onSubmit={handleSubmit(submitForm)}>
-              <label htmlFor="name" className="font-semibold block">Pay course fee</label>
-              <input type="text" className='mt-4 mb-6 input input-bordered border-emerald-500 w-full' placeholder="Your course fee" {...register("paid", { required: true, maxLength: 5, minLength: 4 })} />
-              {errors?.paid && errorAlert("please type the payable amount")}
-
-              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md w-full">pay fee</button>
+              <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md w-full">Enroll now</button>
             </form>
 
           </div>
@@ -114,9 +114,8 @@ const EnrollPage = () => {
 
         {/* other data */}
         <table className="table mt-16">
-          <thead>
-            <th colSpan={2} className="text-xl border border-slate-300">Essential course details</th>
-          </thead>
+          <th colSpan={2} className="text-xl border border-slate-300">Essential course details</th>
+
           <tbody className="text-[17px]">
             <tr className="border border-slate-300 hover">
               <th>Duration</th>

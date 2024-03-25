@@ -30,6 +30,7 @@ import StudentPaymentInfoPage from "./pages/StudentPaymentInfoPage";
 import InstructorPayment from "./pages/InstructorPayment";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import ScrollToTop from "./ScrollToTop";
+import CourseEnrollConfirm from "./pages/CourseEnrollConfirm";
 
 
 const App = () => {
@@ -51,6 +52,9 @@ const App = () => {
         <Route element={<AuthCheck role={0} />}>
           <Route path="enroll/:course/:batch" element={<EnrollPage />} />
         </Route>
+
+        <Route path="enroll/success" element={<CourseEnrollConfirm />} />
+
       </Route>
 
       {/* protected routes for instructor */}
