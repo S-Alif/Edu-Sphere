@@ -54,6 +54,8 @@ const App = () => {
         </Route>
 
         <Route path="enroll/success" element={<CourseEnrollConfirm />} />
+        <Route path="enroll/failed" element={<CourseEnrollConfirm />} />
+        <Route path="enroll/canceled" element={<CourseEnrollConfirm />} />
 
       </Route>
 
