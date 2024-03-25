@@ -17,13 +17,15 @@ exports.successPayment = async (req, res) => {
 // payment fail
 exports.failPayment = async (req, res) => {
   let result = await invoice.PaymentFailService(req)
-  res.status(200).json(result)
+  const redirectUrl = `http://localhost:5173/enroll/failed`;
+  res.redirect(redirectUrl)
 }
 
 // payment cancel
 exports.cancelPayment = async (req, res) => {
   let result = await invoice.PaymentCancelService(req)
-  res.status(200).json(result)
+  const redirectUrl = `http://localhost:5173/enroll/canceled`;
+  res.redirect(redirectUrl)
 }
 
 // payment ipn
