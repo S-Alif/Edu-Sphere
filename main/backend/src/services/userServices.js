@@ -321,3 +321,24 @@ exports.otpMail = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// otp verify
+exports.otpMailVerify = async (req) => {
+  try {
+    let emailId = req.body?.email
+    let otp = req?.body?.otpCode
+
+    let checKOtpStatus = await database.execute(`SELECT COUNT(*) as total FROM otp WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
+    let total = checKOtpStatus[0][0]
+
+    if(total?.total != 1) return {status: 0, code: 200, data: "Invalid Otp"}
+
+    await database.execute(`UPDATE otp SET verified = 1 WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
+    await database.execute(`UPDATE users SET verified = 1 WHERE email = '${emailId}' AND verified = 0;`)
+
+    return { status: 1, code: 200, data: "Account verified" }
+    
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}

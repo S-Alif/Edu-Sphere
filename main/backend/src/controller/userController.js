@@ -30,8 +30,14 @@ exports.userLogin = async (req, res) => {
   res.status(200).json(result);
 }
 
-// send Mail
+// send otp mail
 exports.mailSend = async (req, res) => {
+  let result = await userService.otpMail(req)
+  res.status(200).json(result);
+}
+
+// verify otp Mail
+exports.verifyOtpMail = async (req, res) => {
   let result = await userService.otpMail(req)
   res.status(200).json(result);
 }
