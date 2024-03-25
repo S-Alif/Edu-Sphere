@@ -3,6 +3,8 @@ const { v4 } = require('uuid');
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
 const { getCurrentDateTime } = require('../helpers/helper');
 const { imageUploader, extractPublicId, imgDeleter, pdfUploader } = require('../helpers/ImageUploader');
+const sendEmail = require('../utility/sendMail');
+const { otp_markup } = require('../utility/markups');
 
 
 // register
@@ -287,6 +289,34 @@ exports.instructorPayment = async (req) => {
     let result = await database.execute(query);
 
     return { status: 1, code: 200, data: result[0] };
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// otp Mail
+exports.otpMail = async (req) => {
+  try {
+    let emailId = req.params?.email
+    let type = req.params?.type
+
+    let checkUser = await database.execute(`SELECT COUNT(*) as total FROM users WHERE email = '${emailId}';`)
+    let total = checkUser[0][0]
+
+    if (total?.total == 0) return { status: 0, code: 200, data: "no user exist" }
+
+    // otp
+    let otp = Math.floor(100000 + Math.random() * 900000);
+    let uid = v4()
+    let otpDbInsertQuery = "INSERT INTO otp (id, otpCode, email) VALUES (?,?,?);"
+    let otpData = [uid, otp, emailId]
+    let insertOtp = await database.execute(otpDbInsertQuery, otpData)
+
+    // mail sending
+    let mail = await sendEmail(emailId, otp_markup(otp), `${type == 0 ? "Please verify your account" : "Verify email for password"}`)
+
+    return { status: 1, code: 200, data: "verification email sent" }
+    
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }

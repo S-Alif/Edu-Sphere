@@ -12,6 +12,7 @@ const modules = require("../../controller/moduleController")
 // login / register
 router.post("/login", user.userLogin)
 router.post("/register", user.userRegister)
+router.post('/send-otp/:email/:type', user.mailSend)
 router.post("/logout", user.userLogout)
 
 // instructor routes

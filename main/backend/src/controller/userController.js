@@ -30,6 +30,12 @@ exports.userLogin = async (req, res) => {
   res.status(200).json(result);
 }
 
+// send Mail
+exports.mailSend = async (req, res) => {
+  let result = await userService.otpMail(req)
+  res.status(200).json(result);
+}
+
 // user logout
 exports.userLogout = async (req, res) => {
   let cookieOption = {
