@@ -46,6 +46,10 @@ router.post('/update-assignment/:module/:id', authVerification, classes.updateAs
 router.post('/delete-assignment/:module/:id', authVerification, classes.deleteAssignment)
 router.get('/get-assignment/:moduleId', authVerification, classes.getAssignmentById)
 
+// submitted assignments
+router.get('/assignment-submits/:id', authVerification, classes.toMarkAssignments)
+router.post('/update-marks/:studentId/:assignmentId', authVerification, classes.markAssignments)
+
 // live class routes
 router.post('/create-live', authVerification, classes.createLive)
 router.post('/update-live/:module/:id', authVerification, classes.updateLive)

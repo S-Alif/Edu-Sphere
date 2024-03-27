@@ -67,3 +67,15 @@ exports.checkStudentAssignment = async (req, res) => {
   let result = await classes.checkAssignmentStudent(req)
   res.status(200).json(result)
 }
+
+// get all assignment - instructor
+exports.toMarkAssignments = async (req, res) => {
+  let result = await classes.getAllAssignment(req)
+  res.status(200).json(result)
+}
+
+// get all assignment - instructor
+exports.markAssignments = async (req, res) => {
+  let result = await classes.assignmentMark(req)
+  res.status(200).json(result)
+}

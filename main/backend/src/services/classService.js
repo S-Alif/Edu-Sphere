@@ -158,3 +158,52 @@ exports.checkAssignmentStudent = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// get all assignment - instructor
+exports.getAllAssignment = async (req) => {
+  try {
+
+    let assignmentId = req.params?.id
+
+    let query = `
+        SELECT
+        u.firstName,
+        u.lastName,
+        u.profileImg,
+        asub.id AS submitId,
+        asub.studentId,
+        asub.assignmentId,
+        asub.sub_assignment,
+        asub.totalMark,
+        asub.remark,
+        asub.date
+    FROM assignment_submits asub
+    JOIN users u ON asub.studentId = u.id
+    WHERE asub.assignmentId = '${assignmentId}'
+    ORDER BY asub.date ASC,
+        asub.totalMark IS NULL,
+        asub.remark IS NULL;`
+
+    let result = await database.execute(query)
+    return {status: 1, code: 200, data: result[0]}
+    
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// mark assignment - instructor
+exports.assignmentMark = async (req) => {
+  try {
+    let assignmentId = req.params?.assignmentId
+    let studentId = req.params?.studentId
+
+    let query = `UPDATE assignment_submits SET totalMark = "${req.body?.totalMark}", remark = "${req.body?.remark}" WHERE assignmentId = '${assignmentId}' AND studentId = '${studentId}';`
+
+    let result = await database.execute(query)
+    return { status: 1, code: 200, data: "mark updated" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
