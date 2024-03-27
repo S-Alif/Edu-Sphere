@@ -6,13 +6,14 @@ import { errorAlert } from '../helpers/alertMsg'
 import { dataValidator } from '../helpers/validators';
 
 import userStore from '../store/userStore';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useHandleImage from '../hooks/useHandleImage';
 
 
 const StudentRegPage = () => {
 
     const navigate = useNavigate()
+    const location = useLocation()
     const { handleImage, preview } = useHandleImage(
         (result) => setFormData({ ...formData, profileImg: result }),
         5000,
@@ -48,7 +49,7 @@ const StudentRegPage = () => {
 
                 if(email == 1){
                     setTimeout(() => {
-                        navigate('/otp-verify', { state:{email: formData.email}, replace: true })
+                        navigate('/otp-verify', { state: {location:location, email:formData.email}, replace: true })
                     }, 2000);
                 }
             }

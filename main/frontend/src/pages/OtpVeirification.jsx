@@ -11,9 +11,10 @@ const OtpVeirification = () => {
   const [otp, setOtp] = useState("")
   const [loader, setLoader] = useState(false)
 
-  const { verifyMail, userProfile, user } = userStore()
+  const { verifyMail, user } = userStore()
 
   let email = location?.state?.email
+  console.log(location, email)
 
 
   // submit form
@@ -24,7 +25,7 @@ const OtpVeirification = () => {
 
     if(result?.status == 1){
 
-      if(user == null){
+      if(user == null && location.state?.location?.pathname != "/register" ){
         setTimeout(() => {
           navigate('/update-pass', { replace: true, state: {email: email} })
         }, 3000)
@@ -32,9 +33,8 @@ const OtpVeirification = () => {
         return
       }
 
-      await userProfile()
       setTimeout(() => {
-          navigate('/', { replace: true })
+          navigate('/login', { replace: true })
       }, 3000)
 
     }
