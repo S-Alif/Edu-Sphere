@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Section from "../components/tag-comps/Section";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { errorAlert } from "../helpers/alertMsg";
 import { useEffect, useState } from "react";
 import instructorStore from "../store/instructorStore";
@@ -73,8 +73,9 @@ const AssignmentForm = ({ moduleId }) => {
         <input type="datetime-local" className='mt-4 mb-6 input input-bordered border-emerald-500 max-w-xl w-full' {...register("ends", { required: true })} />
         {errors?.ends && errorAlert("Please select a valid end date and time")}
 
-        <div className="mt-4 mb-6">
+        <div className="mt-4 mb-6 flex gap-2">
           <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">{flag ? "update" : "create"} assignment</button>
+          {flag && <NavLink to={`/instructor/assignments/${moduleId}/${id}`} className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">submitted assignment</NavLink>}
         </div>
 
       </form>
@@ -162,10 +163,10 @@ const LiveClass = ({ moduleId }) => {
       </div>
 
       {
-        classes.length > 0 && 
-          classes.map((e, index) => (
-            <LiveCard key={index} data={e}/>
-          ))
+        classes.length > 0 &&
+        classes.map((e, index) => (
+          <LiveCard key={index} data={e} />
+        ))
       }
 
     </>

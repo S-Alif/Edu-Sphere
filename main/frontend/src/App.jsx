@@ -34,6 +34,7 @@ import CourseEnrollConfirm from "./pages/CourseEnrollConfirm";
 import OtpVeirification from "./pages/OtpVeirification";
 import IdVerifyPage from "./pages/IdVerifyPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
+import InstructorCheckAssignments from "./pages/InstructorCheckAssignments";
 
 
 const App = () => {
@@ -77,6 +78,7 @@ const App = () => {
             <Route path="courses" element={<MyCoursesPage />} />
             <Route path="courses/:id" element={<UpdateCoursePage />} />
             <Route path="modules/:batch/:id" element={<ModuleConfigure />} />
+            <Route path="assignments/:module/:id" element={<InstructorCheckAssignments />} />
             <Route path="live-class/:module/:id" element={<LiveUpdate />} />
             <Route path="payment" element={<InstructorPayment />} />
           </Route>

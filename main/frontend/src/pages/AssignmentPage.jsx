@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Section from './../components/tag-comps/Section';
 import studentStore from '../store/studentStore';
 import { useParams } from 'react-router-dom';
-import { formatDate, formatTime } from '../helpers/validators';
+import { compareDateTime, formatDate, formatTime } from '../helpers/validators';
 import userStore from './../store/userStore';
 import useHandleImage from '../hooks/useHandleImage';
 import { errorAlert } from '../helpers/alertMsg';
@@ -13,7 +13,7 @@ const AssignmentPage = () => {
   const params = useParams()
   const [assignment, setAssignment] = useState({})
   const [checked, setChecked] = useState({})
-  
+
   const { profile } = userStore()
   const { showAssignemnt, checkAssignment, submitAssignment } = studentStore()
 
@@ -79,7 +79,7 @@ const AssignmentPage = () => {
       <p className='text-xl'><span className='font-bold'>Assignment end : </span> {formatTime(formatDate(assignment?.ends))}</p>
 
       {
-        !checked?.id &&
+        !checked?.id || compareDateTime(formatDate(assignment?.ends)) == "past" &&
         <>
           <p className='pt-8'>Submit your assignment : (<span className='text-red-500 font-bold'>AS PDF</span> max file size 5mb)</p>
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { create } from 'zustand'
 import { basicEndpoint, instructorEndpoint } from '../helpers/apiEndpoints'
-import { errorAlert, infoAlert } from '../helpers/alertMsg'
+import { errorAlert, infoAlert, successAlert } from '../helpers/alertMsg'
 
 const OtherInstructorStore = create((set) => ({
 
@@ -26,7 +26,7 @@ const OtherInstructorStore = create((set) => ({
   // instructor public profile
   instructorPublicProfile: async (id) => {
     try {
-      let result = await axios.get(basicEndpoint + '/user/' + id + "/"+1, { withCredentials: true })
+      let result = await axios.get(basicEndpoint + '/user/' + id + "/" + 1, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
@@ -76,7 +76,47 @@ const OtherInstructorStore = create((set) => ({
       errorAlert("Something went wrong")
       return 0
     }
+  },
+
+  // fetch assignment submits to check
+  fetchAssignmentToCheck: async (assignmentId) => {
+    try {
+      let result = await axios.get(instructorEndpoint + '/assignment-submits/' + assignmentId, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // update assignment marks
+  updateAssignmentMark: async (studentId, assignmentId, data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + '/update-marks/' + studentId + '/' + assignmentId, data, {withCredentials: true})
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.data
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
   }
+
 
 }))
 

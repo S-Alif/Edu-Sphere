@@ -13,7 +13,6 @@ const UserProfile = () => {
   const { subByInstructor } = basicStore()
 
   const [subjects, setSubjects] = useState([])
-  console.log(subjects)
 
   // check if the user is logged in
   if (user == null || (user?.role != 0 && user?.role != 1)) {

@@ -14,7 +14,6 @@ const OtpVeirification = () => {
   const { verifyMail, user } = userStore()
 
   let email = location?.state?.email
-  console.log(location, email)
 
 
   // submit form
@@ -51,7 +50,7 @@ const OtpVeirification = () => {
         <h2 className="font-bold text-3xl">Verify Account</h2>
       </div>
 
-      <p>A email with verification code has been sent to your email account.</p>
+      <p>An email with verification code has been sent to your email account</p>
 
       <form action="" onSubmit={submitForm}>
         <input type="text" name='firstName' id='firstName' className='input input-bordered border-emerald-500 mt-4 mb-6 max-w-lg w-full' value={otp} onChange={(e) => setOtp(e.target.value)} />
