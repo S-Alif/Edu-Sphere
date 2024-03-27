@@ -111,15 +111,93 @@ const userStore = create((set) => ({
   userLogout: () => {
     sessionStorage.clear()
     document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
-    
+
     set({ user: null })
     set({ profile: null })
     successAlert("logout success")
 
-    setTimeout(() => { 
+    setTimeout(() => {
       window.location.replace('/')
     }, 3000)
+  },
+
+  //send mail
+  sendMail: async (data) => {
+    try {
+      let result = await axios.post(basicEndpoint + "/send-otp/", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return 1
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  //send mail
+  verifyMail: async (data) => {
+    try {
+      let result = await axios.post(basicEndpoint + "/verify-otp", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // pass change
+  passChange: async (data) => {
+    try {
+      infoAlert("updating password ... please wait")
+      let result = await axios.post(basicEndpoint + "/pass-change", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // user by email
+  userByemail: async (email) => {
+    try {
+      let result = await axios.get(basicEndpoint + "/user/"+email, {withCredentials: true})
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode) infoAlert(result.data?.errorCode?.error)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data
+      
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
   }
+
 }))
 
 export default userStore

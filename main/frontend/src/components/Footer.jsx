@@ -28,10 +28,10 @@ const Footer = () => {
                         {/* links */}
                         <ul>
                             <li>
-                                <NavLink to={"/"} className={"text-white inline-block hover:text-emerald-400"}>About us</NavLink>
+                                <NavLink to={"/about"} className={"text-white inline-block hover:text-emerald-400"}>About us</NavLink>
                             </li>
                             <li>
-                                <NavLink to={"/"} className={"text-white inline-block mt-3 hover:text-emerald-400"}>Courses</NavLink>
+                                <NavLink to={"/all-course"} className={"text-white inline-block mt-3 hover:text-emerald-400"}>Courses</NavLink>
                             </li>
                             <li>
                                 <NavLink to={"/"} className={"text-white inline-block mt-3 hover:text-emerald-400"}>Terms and conditions</NavLink>
@@ -57,8 +57,12 @@ const Footer = () => {
                 </div>
             </Container>
 
+            <div className="w-full border-t-2 border-dashed mt-12 py-2">
+                <img src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-03.png" alt="payment methods" />
+            </div>
+
             {/* copyright message  */}
-            <div className="w-full border-t-2 border-dashed mt-16">
+            <div className="w-full border-t-2 border-dashed">
                 <p className="text-center text-gray-300 w-full py-4 font-semibold flex justify-center items-center">
                     <span className="pr-1"><FaCopyright /></span> Copyright 2024 <a href="/" className="text-emerald-500 mx-1" >Edusphere</a> | | All Rights Reserved
                 </p>

@@ -31,6 +31,9 @@ import InstructorPayment from "./pages/InstructorPayment";
 import InstructorProfilePage from "./pages/InstructorProfilePage";
 import ScrollToTop from "./ScrollToTop";
 import CourseEnrollConfirm from "./pages/CourseEnrollConfirm";
+import OtpVeirification from "./pages/OtpVeirification";
+import IdVerifyPage from "./pages/IdVerifyPage";
+import ForgotPassPage from "./pages/ForgotPassPage";
 
 
 const App = () => {
@@ -47,6 +50,9 @@ const App = () => {
         <Route path="/course/:course/:batch" element={<CourseDetailPage />} />
         <Route path="/instructor-profile/:id" element={<InstructorProfilePage />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/otp-verify" element={<OtpVeirification />} />
+        <Route path="/email-verify" element={<IdVerifyPage />} />
+        <Route path="/update-pass" element={<ForgotPassPage />} />
 
         {/* enroll student */}
         <Route element={<AuthCheck role={0} />}>

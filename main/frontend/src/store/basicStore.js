@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { create } from 'zustand'
 import { basicEndpoint, instructorEndpoint } from '../helpers/apiEndpoints'
-import { errorAlert, successAlert } from './../helpers/alertMsg';
+import { errorAlert, infoAlert, successAlert } from './../helpers/alertMsg';
 
 
 const basicStore = create((set) => ({
@@ -129,6 +129,26 @@ const basicStore = create((set) => ({
       return result.data?.data
     } catch (error) {
       errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // public pass change
+  publicPassChange: async (data) => {
+    try {
+      infoAlert("updating password ... please wait")
+      let result = await axios.post(basicEndpoint + "/pass-public-change", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("something went wrong")
       return 0
     }
   }

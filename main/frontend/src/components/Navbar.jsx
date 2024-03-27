@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Container from './tag-comps/Container';
 import useSystemTheme from '../hooks/useSystemTheme';
 import userStore from './../store/userStore';
@@ -13,8 +13,9 @@ import { useEffect, useState } from 'react';
 
 const Navbar = () => {
 
+    const navigate = useNavigate()
     const theme = useSystemTheme()
-    const { user, profile, userProfile, userLogout } = userStore()
+    const { user, profile, userProfile, userLogout, sendMail } = userStore()
     const [menu, setMenu] = useState(false)
 
     // get profile data
@@ -27,11 +28,29 @@ const Navbar = () => {
 
     }, [user])
 
+    // send otp
+    const sendOtp = async () => {
+        let email = await sendMail({ email: profile?.email, type: 0 })
+
+        if (email == 1) {
+            setTimeout(() => {
+                navigate('/otp-verify', { state: { email: profile?.email }, replace: true })
+            }, 2000);
+        }
+    }
+
 
     return (
         <>
             {/* top navbar */}
-            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky top-0 z-[200]`}>
+            {
+                user != null && profile?.verified == 0 &&
+                <div className="w-full sticky top-0 h-8 z-[200] bg-white flex items-center justify-center">
+                    <p className='font-bold text-red-400'>Please verify your account</p>
+                    <button type='button' className='btn btn-ghost bg-gray-200 ml-2' onClick={sendOtp}>send email</button>
+                </div>
+            }
+            <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky ${user != null ? (profile?.verified ? "top-0" : "top-6") : "top-0"} z-[200]`}>
                 <Container className={"h-full"}>
                     <div className="flex w-full h-full justify-between items-center">
 
