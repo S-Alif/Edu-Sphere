@@ -1,8 +1,10 @@
 const database = require('../../database')
 const { v4 } = require('uuid');
 const { encryptPass, comparePass } = require('../helpers/passEncryptor');
-const { getCurrentDateTime } = require('../helpers/helper');
+const { getCurrentDateTime, getCurrentDate } = require('../helpers/helper');
 const { imageUploader, extractPublicId, imgDeleter, pdfUploader } = require('../helpers/ImageUploader');
+const sendEmail = require('../utility/sendMail');
+const { otp_markup } = require('../utility/markups');
 
 
 // register
@@ -116,11 +118,11 @@ exports.profile = async (req) => {
   try {
     let id = req.headers?.id
     let role = req.headers?.role
-    
-    if(!id) id = req.params?.id
+
+    if (!id) id = req.params?.id
     if (role == null) role = req.params?.role
-    
-    let query = `SELECT id, firstName, lastName, email, phone, profileImg, about, address, registerDate, updateDate, role FROM users WHERE id = "${id}" AND role = ${role};`
+
+    let query = `SELECT id, firstName, lastName, email, phone, profileImg, about, address, registerDate, updateDate, role, verified FROM users WHERE id = "${id}" AND role = ${role};`
 
     let result = await database.execute(query)
 
@@ -253,8 +255,8 @@ exports.studentPayment = async (req) => {
     WHERE enrollment.studentId = '${id}';`
 
     let result = await database.execute(query)
-  
-    return { status: 1, code: 200, data: result[0]};
+
+    return { status: 1, code: 200, data: result[0] };
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
@@ -287,6 +289,104 @@ exports.instructorPayment = async (req) => {
     let result = await database.execute(query);
 
     return { status: 1, code: 200, data: result[0] };
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// otp Mail
+exports.otpMail = async (req) => {
+  try {
+    let emailId = req.body?.email
+    let type = req.body?.type
+
+    let checkUser = await database.execute(`SELECT COUNT(*) as total FROM users WHERE email = '${emailId}';`)
+    let total = checkUser[0][0]
+
+    if (total?.total == 0) return { status: 0, code: 200, data: "no user exist" }
+
+    // otp
+    let otp = Math.floor(100000 + Math.random() * 900000);
+    let uid = v4()
+    let otpDbInsertQuery = "INSERT INTO otp (id, otpCode, email) VALUES (?,?,?);"
+    let otpData = [uid, otp, emailId]
+    let insertOtp = await database.execute(otpDbInsertQuery, otpData)
+
+    // mail sending
+    let mail = await sendEmail(emailId, otp_markup(otp), `${type == 0 ? "Please verify your account" : "Verify email for password"}`)
+
+    return { status: 1, code: 200, data: "verification email sent" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// otp verify
+exports.otpMailVerify = async (req) => {
+  try {
+    let emailId = req.body?.email
+    let otp = req?.body?.otpCode
+
+    let checKOtpStatus = await database.execute(`SELECT COUNT(*) as total FROM otp WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
+    let total = checKOtpStatus[0][0]
+
+    if (total?.total != 1) return { status: 0, code: 200, data: "Invalid Otp" }
+
+    await database.execute(`UPDATE otp SET verified = 1 WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
+    await database.execute(`UPDATE users SET verified = 1 WHERE email = '${emailId}' AND verified = 0;`)
+
+    return { status: 1, code: 200, data: "Account verified" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// change pass
+exports.changePass = async (req) => {
+  try {
+    let email = req.headers?.email
+    if (!email) email = req.body?.email
+    let currentPass = req.body?.currentPass
+
+    if(currentPass && req.headers?.email){
+      let query = `SELECT pass FROM users WHERE email = '${email}' and active = 1;`;
+      let result = await database.execute(query)
+      let passCompare = await comparePass(result[0][0].pass, currentPass)
+
+      if(passCompare){
+        let newPass = encryptPass(req.body?.newPass)
+        await database.execute(`UPDATE users SET pass = '${newPass}' WHERE email = '${email}' and active = 1;`)
+        await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact use immediately</p>`, "Account password updated")
+        return { status: 1, code: 200, data: "password updated" }
+      }
+
+      return {status: 0, code: 200, data: "current password don't match"}
+    }
+  
+    let newPass = encryptPass(req.body?.newPass)
+    await database.execute(`UPDATE users SET pass = '${newPass}' WHERE email = '${email}' and active = 1;`)
+    await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact use immediately</p>`, "Account password updated")
+    return { status: 1, code: 200, data: "password updated" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+exports.getUserByEmail = async (req) => {
+  try {
+    let email = req.params?.email
+    let query = `SELECT firstName, lastName, profileImg FROM users WHERE email = "${email}";`
+    let result = await database.execute(query)
+
+    if(result[0].length == 0){
+      return { status: 1, code: 200, data: "No user found" }
+    }
+
+    return { status: 1, code: 200, data: result[0][0] }
+
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }

@@ -9,10 +9,20 @@ const user = require("../../controller/userController")
 const batch = require("../../controller/batchController")
 const modules = require("../../controller/moduleController")
 
+const authVerification = require('../../middleware/authVerification')
+
 // login / register
 router.post("/login", user.userLogin)
 router.post("/register", user.userRegister)
+router.post('/send-otp', user.mailSend)
+router.post('/verify-otp', user.verifyOtpMail)
 router.post("/logout", user.userLogout)
+
+router.get('/user/:email', user.userByEmail)
+
+// update pass
+router.post('/pass-change', authVerification, user.userPassUpdate)
+router.post('/pass-public-change', user.userPassUpdate)
 
 // instructor routes
 router.get('/instructors', instructor.getAllInstructors)

@@ -30,6 +30,18 @@ exports.userLogin = async (req, res) => {
   res.status(200).json(result);
 }
 
+// send otp mail
+exports.mailSend = async (req, res) => {
+  let result = await userService.otpMail(req)
+  res.status(200).json(result);
+}
+
+// verify otp Mail
+exports.verifyOtpMail = async (req, res) => {
+  let result = await userService.otpMailVerify(req)
+  res.status(200).json(result);
+}
+
 // user logout
 exports.userLogout = async (req, res) => {
   let cookieOption = {
@@ -43,6 +55,12 @@ exports.userLogout = async (req, res) => {
 // user update
 exports.userUpdate = async (req, res) => {
   let result = await userService.update(req)
+  res.status(200).json(result);
+}
+
+// user password update
+exports.userPassUpdate = async (req, res) => {
+  let result = await userService.changePass(req)
   res.status(200).json(result);
 }
 
@@ -98,5 +116,11 @@ exports.studentPayInfo = async (req, res) => {
 // instructor payment info
 exports.instructorPayInfo = async (req, res) => {
   let result = await userService.instructorPayment(req)
+  res.status(200).json(result);
+}
+
+// user by email
+exports.userByEmail = async (req, res) => {
+  let result = await userService.getUserByEmail(req)
   res.status(200).json(result);
 }
