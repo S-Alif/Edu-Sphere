@@ -18,7 +18,7 @@ const StudentRegPage = () => {
         5000,
         errorAlert
     );
-    const { userRegistration } = userStore()
+    const { userRegistration, sendMail } = userStore()
     const [confirmPass, setConfirmPass] = useState("")
     const [formData, setFormData] = useState({
         firstName: "",
@@ -43,9 +43,14 @@ const StudentRegPage = () => {
         if (validation) {
             let result = await userRegistration(formData)
             if (result == 1) {
-                setTimeout(() => {
-                    navigate('/login', { replace: true })
-                }, 2000);
+                // sending email
+                let email = await sendMail({ email: formData.email, type: 0 })
+
+                if(email == 1){
+                    setTimeout(() => {
+                        navigate('/otp-verify', { state:{email: formData.email}, replace: true })
+                    }, 2000);
+                }
             }
         }
     }

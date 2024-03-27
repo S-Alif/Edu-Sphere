@@ -87,11 +87,11 @@ const LoginPage = () => {
                                 </div>
 
                                 {/* forgot password */}
-                                <div className="flex items-center mb-6 -mt-4 hidden">
+                                <div className="flex items-center mb-6 -mt-4m">
                                     <div className="flex ml-auto">
-                                        <a href="#" className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700">
+                                        <NavLink to={'/email-verify'} className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700">
                                             Forgot Your Password?
-                                        </a>
+                                        </NavLink>
                                     </div>
                                 </div>
 
