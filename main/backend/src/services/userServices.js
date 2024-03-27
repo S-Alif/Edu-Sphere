@@ -297,13 +297,8 @@ exports.instructorPayment = async (req) => {
 // otp Mail
 exports.otpMail = async (req) => {
   try {
-<<<<<<< HEAD
     let emailId = req.body?.email
     let type = req.body?.type
-=======
-    let emailId = req.params?.email
-    let type = req.params?.type
->>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
 
     let checkUser = await database.execute(`SELECT COUNT(*) as total FROM users WHERE email = '${emailId}';`)
     let total = checkUser[0][0]
