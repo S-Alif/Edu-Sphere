@@ -26,7 +26,7 @@ const OtpVeirification = () => {
 
       if(user == null){
         setTimeout(() => {
-          navigate('/update-pass', { replace: true })
+          navigate('/update-pass', { replace: true, state: {email: email} })
         }, 3000)
 
         return

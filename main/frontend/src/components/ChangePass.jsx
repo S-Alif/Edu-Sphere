@@ -16,6 +16,8 @@ const ChangePass = () => {
   const { passChange } = userStore()
   const { publicPassChange } = basicStore()
 
+  let email = location?.state?.email
+
   // form submit
   const formSubmit = async (e) => {
     e.preventDefault()
@@ -24,7 +26,7 @@ const ChangePass = () => {
     if (location.pathname == "/update-pass") {
       //code here
       if (currentPass != newPass) return errorAlert("password don't match")
-      let result = await publicPassChange({ currentPass, newPass })
+      let result = await publicPassChange({ currentPass, newPass, email: email })
       if (result == 1) {
         setCurrentPass("")
         setNewPass("")
