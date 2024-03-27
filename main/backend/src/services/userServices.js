@@ -297,8 +297,13 @@ exports.instructorPayment = async (req) => {
 // otp Mail
 exports.otpMail = async (req) => {
   try {
+<<<<<<< HEAD
     let emailId = req.body?.email
     let type = req.body?.type
+=======
+    let emailId = req.params?.email
+    let type = req.params?.type
+>>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
 
     let checkUser = await database.execute(`SELECT COUNT(*) as total FROM users WHERE email = '${emailId}';`)
     let total = checkUser[0][0]
@@ -316,7 +321,11 @@ exports.otpMail = async (req) => {
     let mail = await sendEmail(emailId, otp_markup(otp), `${type == 0 ? "Please verify your account" : "Verify email for password"}`)
 
     return { status: 1, code: 200, data: "verification email sent" }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
@@ -331,12 +340,17 @@ exports.otpMailVerify = async (req) => {
     let checKOtpStatus = await database.execute(`SELECT COUNT(*) as total FROM otp WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
     let total = checKOtpStatus[0][0]
 
+<<<<<<< HEAD
     if (total?.total != 1) return { status: 0, code: 200, data: "Invalid Otp" }
+=======
+    if(total?.total != 1) return {status: 0, code: 200, data: "Invalid Otp"}
+>>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
 
     await database.execute(`UPDATE otp SET verified = 1 WHERE email = '${emailId}' AND otpCode = '${otp}' AND verified = 0;`)
     await database.execute(`UPDATE users SET verified = 1 WHERE email = '${emailId}' AND verified = 0;`)
 
     return { status: 1, code: 200, data: "Account verified" }
+<<<<<<< HEAD
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
@@ -387,6 +401,9 @@ exports.getUserByEmail = async (req) => {
 
     return { status: 1, code: 200, data: result[0][0] }
 
+=======
+    
+>>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }

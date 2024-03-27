@@ -14,7 +14,11 @@ const authVerification = require('../../middleware/authVerification')
 // login / register
 router.post("/login", user.userLogin)
 router.post("/register", user.userRegister)
+<<<<<<< HEAD
 router.post('/send-otp', user.mailSend)
+=======
+router.post('/send-otp/:email/:type', user.mailSend)
+>>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
 router.post('/verify-otp', user.verifyOtpMail)
 router.post("/logout", user.userLogout)
 
