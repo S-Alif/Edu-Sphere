@@ -322,7 +322,7 @@ exports.otpMail = async (req) => {
 }
 
 // otp verify
-exports.otpMailVerify = async (req) => {
+exports.tpMailVerify = async (req) => {
   try {
     let emailId = req.body?.email
     let otp = req?.body?.otpCode
