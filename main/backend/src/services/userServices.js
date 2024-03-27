@@ -322,7 +322,7 @@ exports.otpMail = async (req) => {
 }
 
 // otp verify
-exports.tpMailVerify = async (req) => {
+exports.otpMailVerify = async (req) => {
   try {
     let emailId = req.body?.email
     let otp = req?.body?.otpCode
@@ -349,24 +349,24 @@ exports.changePass = async (req) => {
     if (!email) email = req.body?.email
     let currentPass = req.body?.currentPass
 
-    if(currentPass && req.headers?.email){
+    if (currentPass && req.headers?.email) {
       let query = `SELECT pass FROM users WHERE email = '${email}' and active = 1;`;
       let result = await database.execute(query)
       let passCompare = await comparePass(result[0][0].pass, currentPass)
 
-      if(passCompare){
+      if (passCompare) {
         let newPass = encryptPass(req.body?.newPass)
         await database.execute(`UPDATE users SET pass = '${newPass}' WHERE email = '${email}' and active = 1;`)
-        await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact use immediately</p>`, "Account password updated")
+        await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact us immediately</p>`, "Account password updated")
         return { status: 1, code: 200, data: "password updated" }
       }
 
-      return {status: 0, code: 200, data: "current password don't match"}
+      return { status: 0, code: 200, data: "current password don't match" }
     }
-  
+
     let newPass = encryptPass(req.body?.newPass)
     await database.execute(`UPDATE users SET pass = '${newPass}' WHERE email = '${email}' and active = 1;`)
-    await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact use immediately</p>`, "Account password updated")
+    await sendEmail(email, `<h1><b>Your password changed at ${getCurrentDate()}. </b></h1> <br> <p>If it is not done by you, please contact us immediately</p>`, "Account password updated")
     return { status: 1, code: 200, data: "password updated" }
 
   } catch (error) {
@@ -380,7 +380,7 @@ exports.getUserByEmail = async (req) => {
     let query = `SELECT firstName, lastName, profileImg FROM users WHERE email = "${email}";`
     let result = await database.execute(query)
 
-    if(result[0].length == 0){
+    if (result[0].length == 0) {
       return { status: 1, code: 200, data: "No user found" }
     }
 
