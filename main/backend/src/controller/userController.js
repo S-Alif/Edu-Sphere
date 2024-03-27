@@ -38,11 +38,7 @@ exports.mailSend = async (req, res) => {
 
 // verify otp Mail
 exports.verifyOtpMail = async (req, res) => {
-<<<<<<< HEAD
   let result = await userService.otpMailVerify(req)
-=======
-  let result = await userService.otpMail(req)
->>>>>>> b1a00d0f64c63e5d0665193873c21ea6ce447796
   res.status(200).json(result);
 }
 
