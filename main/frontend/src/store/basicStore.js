@@ -156,12 +156,27 @@ const basicStore = create((set) => ({
   // get instructor review
   getInstructorReviw: async (id) => {
     try {
-      let result = await axios.post(basicEndpoint + "/instructor-review/"+id, { withCredentials: true })
+      let result = await axios.get(basicEndpoint + "/instructor-review/"+id, { withCredentials: true })
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
         return errorAlert(result.data?.data)
       }
-      return result.data?.data
+      return result.data
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+   // get course review
+  getCourseReview: async (id) => {
+    try {
+      let result = await axios.get(basicEndpoint + "/course-review/" + id, { withCredentials: true })
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+      return result.data
     } catch (error) {
       errorAlert("something went wrong")
       return 0

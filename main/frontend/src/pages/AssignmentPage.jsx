@@ -1,8 +1,3 @@
-import { useEffect, useState } from 'react';
-import Section from './../components/tag-comps/Section';
-import studentStore from '../store/studentStore';
-import { useParams } from 'react-router-dom';
-import { compareDateTime, formatDate, formatTime } from '../helpers/validators';
 import userStore from './../store/userStore';
 import useHandleImage from '../hooks/useHandleImage';
 import { errorAlert } from '../helpers/alertMsg';
@@ -66,7 +61,8 @@ const AssignmentPage = () => {
     })()
   }, [])
 
-
+  let startTime = compareDateTime(formatDate(assignment?.starts), "assignment")
+  let endTime = compareDateTime(formatDate(assignment?.ends), "assignment")
 
   return (
     <Section id={"show-assignment-page"} padding={"py-10"}>
@@ -79,7 +75,7 @@ const AssignmentPage = () => {
       <p className='text-xl'><span className='font-bold'>Assignment end : </span> {formatTime(formatDate(assignment?.ends))}</p>
 
       {
-        !checked?.id || compareDateTime(formatDate(assignment?.ends)) == "past" &&
+        (!checked?.id && (endTime == "future" && startTime == "past")) &&
         <>
           <p className='pt-8'>Submit your assignment : (<span className='text-red-500 font-bold'>AS PDF</span> max file size 5mb)</p>
 
