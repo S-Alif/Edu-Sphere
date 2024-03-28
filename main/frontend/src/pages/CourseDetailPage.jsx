@@ -9,12 +9,14 @@ import ModuleCards from "../components/cards/ModuleCards";
 import GridRows from './../components/tag-comps/GridRows';
 
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
+import userStore from './../store/userStore';
 
 const CourseDetailPage = () => {
     const params = useParams()
     const location = useLocation()
 
     const { courseDetail, batchDetail, getModule } = basicStore()
+    const { profile } = userStore()
 
     const [courseData, setCourseData] = useState({})
     const [batch, setBatch] = useState({})
@@ -107,7 +109,7 @@ const CourseDetailPage = () => {
 
                             {/* enrollment button */}
                             {location.pathname.substring(0, 15) != "/student/course" &&
-                                <NavLink to={`/enroll/${params?.course}/${params?.batch}`} className={"btn bg-emerald-500 hover:bg-emerald-600 text-white mt-8 max-w-xl w-full"}>Enroll now</NavLink>}
+                                <NavLink to={`/enroll/${params?.course}/${params?.batch}`} className={`btn bg-emerald-500 hover:bg-emerald-600 text-white mt-8 max-w-xl w-full`} disabled={profile != null && !profile?.verified} >Enroll now</NavLink>}
 
                             {/* module accordion */}
                             {location.pathname.substring(0, 15) != "/student/course" &&

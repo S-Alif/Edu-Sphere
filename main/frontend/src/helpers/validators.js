@@ -97,13 +97,23 @@ export const compareDateTime = (dateTimeString, eventType) => {
   // Get the difference in milliseconds between the current time and the provided datetime
   const timeDiff = dateTime - now;
 
-  if (eventType === "liveClass" && timeDiff >= -900000 && timeDiff < 0) { // Within 15 minutes (900000 milliseconds) before the current time for live class
-    return "today";
-  } else if (dateTime.toDateString() === now.toDateString()) { // For assignments, return "today" at the exact time
-    return "today";
-  } else if (dateTime > now) {
-    return "future";
-  } else {
+  if (eventType === "liveClass") {
+    // Within 15 minutes (900000 milliseconds) before the current time for live class
+    if (timeDiff >= -900000 && timeDiff < 0) {
+      return "today";
+    }
+  } else if (eventType === "assignment") {
+    // For assignments, return "today" at the exact time
+    if (dateTime.toDateString() === now.toDateString()) {
+      return "today";
+    }
+  }
+
+  // For past events
+  if (timeDiff < 0) {
     return "past";
   }
+
+  // For future events
+  return "future";
 }

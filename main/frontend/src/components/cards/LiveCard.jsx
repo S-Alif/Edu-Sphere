@@ -9,12 +9,12 @@ const LiveCard = ({ data }) => {
   let links = location.pathname.substring(0, 15) != "/student/module" ? `/instructor/live-class/${data?.moduleId}/${data?.id}` : "/student/live/" + params?.id + "/" + data?.id
 
   let time = compareDateTime(formatDate(data?.start), "liveClass")
-  console.log(time)
+  let endTime = compareDateTime(formatDate(data?.end), "liveClass")
 
   return (
     <>
       <NavLink to={location.pathname.substring(0, 15) != "/student/module" ? links :
-        (time == "future" || time == "past") ? "" : links} className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
+        ((time == "future" || time == "past") && endTime != "today") ? "" : links} className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
         <div className="card-body">
           <h3 className="font-semibold pb-3">{data?.topic}</h3>
           <p>{data?.description}</p>
