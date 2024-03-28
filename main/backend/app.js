@@ -15,7 +15,7 @@ const app = express()
 
 // add security
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://edusphere-1.netlify.app",
   credentials: true
 }))
 app.use(cookieParser())
