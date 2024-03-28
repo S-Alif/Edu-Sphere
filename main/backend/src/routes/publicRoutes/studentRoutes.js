@@ -5,6 +5,7 @@ const router = express.Router()
 const student = require('../../controller/studentController')
 const user = require("../../controller/userController")
 const classes = require("../../controller/classController")
+const review = require("../../controller/reviewController")
 
 // auth verification
 const authVerification = require('../../middleware/authVerification')
@@ -28,5 +29,12 @@ router.get('/check-assignment/:assignment/:id', authVerification, classes.checkS
 router.post('/submit-assignment', authVerification, user.AssignmentSubmit)
 
 router.get('/payment', authVerification, user.studentPayInfo)
+
+
+// review routes
+router.post('/instructor-review', authVerification, review.instructorReviewCreate)
+router.post('/site-review', authVerification, review.siteReviewCreate)
+router.post('/course-review', authVerification, review.courseReviewCreate)
+
 
 module.exports = router

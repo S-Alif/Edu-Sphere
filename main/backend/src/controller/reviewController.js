@@ -44,3 +44,25 @@ exports.courseReview = async (req, res) => {
     const result = await review.getCourseReview(req);
     res.status(200).json(result);
 }
+
+
+/*-------------------------------
+    site review
+---------------------------------- */
+// review create
+exports.siteReviewCreate = async (req, res) => {
+    const result = await review.postSiteReview(req);
+    res.status(200).json(result);
+}
+
+// review delete
+exports.siteReviewDelete = async (req, res) => {
+    const result = await review.deleteSiteReview(req);
+    res.status(200).json(result);
+}
+
+// review create
+exports.siteReview = async (req, res) => {
+    const result = await review.getSiteReview(req);
+    res.status(200).json(result);
+}

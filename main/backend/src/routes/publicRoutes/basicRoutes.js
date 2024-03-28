@@ -8,6 +8,7 @@ const course = require("../../controller/courseController")
 const user = require("../../controller/userController")
 const batch = require("../../controller/batchController")
 const modules = require("../../controller/moduleController")
+const review = require("../../controller/reviewController")
 
 const authVerification = require('../../middleware/authVerification')
 
@@ -44,5 +45,10 @@ router.get('/module/:course/:batch', modules.getAllModule)
 // instructor public profile
 router.get('/user/:id/:role', user.userProfile)
 router.get('/course-by-instructor/:id', course.courseByInstructor)
+
+// get reviews
+router.get('/instructor-review/:id', review.instructorReview)
+router.get('/site-review', review.siteReview)
+router.get('/course-review/:id', review.courseReview)
 
 module.exports = router
