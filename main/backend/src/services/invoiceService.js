@@ -2,6 +2,7 @@ const database = require('../../database')
 const { v4 } = require('uuid');
 const { getCurrentDateTime } = require('../helpers/helper');
 const { default: axios } = require('axios');
+const sendEmail = require('../utility/sendMail');
 
 
 // calculate invoice
@@ -130,6 +131,14 @@ exports.PaymentSuccessService = async (req) => {
 
     // update invoice add enroll id
     await database.execute(`UPDATE invoices SET enrollId = '${uid}' WHERE tran_id = '${trxID}';`)
+
+    let userData = await database.execute(`SELECT email FROM users WHERE id = '${invoiceProduct?.userId}';`)
+    let courseData = await database.execute(`SELECT b.name AS batch_name, c.name AS course_name
+                                            FROM batch AS b
+                                            JOIN course AS c ON b.courseId = c.id
+                                            WHERE b.id = '${invoiceProduct?.batchId}';`)
+    
+    await sendEmail(userData[0][0].email, `<p>Thank you for purchasing </p> <br> <p><b>Course : </b> ${courseData[0][0].course_name} <br> <b>Batch : </b> ${courseData[0][0].batch_name}</p> <br> <h5>Happy learning</h5>`, "Course enroll confirm")
 
     return { status: 1, code: 200, data: "Payment success" }
   } catch (e) {
