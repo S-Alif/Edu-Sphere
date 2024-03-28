@@ -10,21 +10,21 @@ exports.createInvoice = async (req, res) => {
 // payment succes
 exports.successPayment = async (req, res) => {
   let result = await invoice.PaymentSuccessService(req)
-  const redirectUrl = `http://localhost:5173/enroll/success`;
+  const redirectUrl = `https://edusphere-1.netlify.app/enroll/success`;
   res.redirect(redirectUrl)
 }
 
 // payment fail
 exports.failPayment = async (req, res) => {
   let result = await invoice.PaymentFailService(req)
-  const redirectUrl = `http://localhost:5173/enroll/failed`;
+  const redirectUrl = `https://edusphere-1.netlify.app/enroll/failed`;
   res.redirect(redirectUrl)
 }
 
 // payment cancel
 exports.cancelPayment = async (req, res) => {
   let result = await invoice.PaymentCancelService(req)
-  const redirectUrl = `http://localhost:5173/enroll/canceled`;
+  const redirectUrl = `https://edusphere-1.netlify.app/enroll/canceled`;
   res.redirect(redirectUrl)
 }
 
