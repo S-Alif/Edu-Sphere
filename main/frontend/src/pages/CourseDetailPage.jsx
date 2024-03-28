@@ -10,6 +10,7 @@ import GridRows from './../components/tag-comps/GridRows';
 
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import userStore from './../store/userStore';
+import ReviewComponent from "../components/ReviewComponent";
 
 const CourseDetailPage = () => {
     const params = useParams()
@@ -173,6 +174,9 @@ const CourseDetailPage = () => {
 
                 </div>
             </Section>
+
+            {/* course review */}
+            <ReviewComponent />
         </>
     );
 };

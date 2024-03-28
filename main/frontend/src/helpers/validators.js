@@ -104,7 +104,7 @@ export const compareDateTime = (dateTimeString, eventType) => {
     }
   } else if (eventType === "assignment") {
     // For assignments, return "today" at the exact time
-    if (dateTime.toDateString() === now.toDateString()) {
+    if (dateTime === now) {
       return "today";
     }
   }
