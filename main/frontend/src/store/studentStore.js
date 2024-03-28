@@ -164,6 +164,23 @@ const studentStore = create((set) => ({
       errorAlert("something went wrong")
       return 0
     }
+  },
+
+  // post instructor review
+  postInstructorReviw: async (data) => {
+    try {
+      let result = await axios.post(studentEndpoint + "/instructor-review", data, { withCredentials: true })
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        return errorAlert(result.data?.data)
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
   }
 
 }))
