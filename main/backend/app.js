@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv').config()
+const path = require('path');
 
 const mainRoute = require('./src/routes/mainRoute')
 const adminRoute = require('./src/routes/adminRoutes')
@@ -13,9 +14,11 @@ const adminRoute = require('./src/routes/adminRoutes')
 // declare app
 const app = express()
 
+app.use('/assignments', express.static(path.join(__dirname, 'src/assignments')));
+
 // add security
 app.use(cors({
-  origin: "https://edusphere-1.netlify.app",
+  origin: "http://localhost:5173",
   credentials: true
 }))
 app.use(cookieParser())

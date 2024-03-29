@@ -61,7 +61,7 @@ exports.pdfUploader = async (pdf) => {
 
     fs.writeFileSync(filePath, binaryData);
 
-    return filePath;
+    return "/assignments/"+fileName;
   } catch (error) {
     return null;
   }
