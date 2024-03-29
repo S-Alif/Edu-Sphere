@@ -14,7 +14,7 @@ const LiveCard = ({ data }) => {
   return (
     <>
       <NavLink to={location.pathname.substring(0, 15) != "/student/module" ? links :
-        ((time == "future" || time == "past") && endTime != "today") ? "" : links} className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
+        (time == "past" && endTime != "future") ? "" : links} className={"card w-full bg-base-100 shadow-xl border-2 border-gray-200 mt-4"}>
         <div className="card-body">
           <h3 className="font-semibold pb-3">{data?.topic}</h3>
           <p>{data?.description}</p>

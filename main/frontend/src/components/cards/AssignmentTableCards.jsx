@@ -44,7 +44,7 @@ const AssignmentTableCards = ({ data, index, flag }) => {
         <p className="font-medium">{data?.firstName} {data?.lastName}</p>
       </td>
       <td>
-        <a href={data?.sub_assignment} className="btn btn-ghost bg-gray-200" target="_blank" rel="noreferrer"><FaEye /></a>
+        <a href={"http://localhost:8000" + data?.sub_assignment} className="btn btn-ghost bg-gray-200" target="_blank" rel="noreferrer"><FaEye /></a>
       </td>
       {(data?.totalMark == null || data?.remark == null) && <td><button className="btn btn-ghost bg-gray-200" onClick={handleOpenPopup}>Update Mark</button></td>}
       {(data?.totalMark || data?.remark) && <td><span className="font-medium">total : </span> {data?.totalMark} <br /> <span className="font-medium">remark : </span> {data?.remark}</td>}
