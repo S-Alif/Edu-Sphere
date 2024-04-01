@@ -14,7 +14,7 @@ const adminRoute = require('./src/routes/adminRoutes')
 // declare app
 const app = express()
 
-app.use('/assignments', express.static(path.join(__dirname, 'src/assignments')));
+app.use('/files', express.static(path.join(__dirname, 'src/files')));
 
 // add security
 app.use(cors({

@@ -75,7 +75,7 @@ exports.pdfUploader = async (fileDataUrl) => {
 
     // Decode base64 data and write the file
     const binaryData = Buffer.from(base64Data, 'base64');
-    const outputDir = path.join(__dirname, "../assignments");
+    const outputDir = path.join(__dirname, "../files");
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir);
     }
@@ -84,7 +84,7 @@ exports.pdfUploader = async (fileDataUrl) => {
     fs.writeFileSync(filePath, binaryData);
 
     // Return the file path
-    return "/assignments/" + fileName;
+    return "/files/" + fileName;
   } catch (error) {
     return null;
   }

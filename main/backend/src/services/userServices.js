@@ -446,12 +446,12 @@ exports.deleteResource = async (req) => {
 
     // delete file from server
     let filePath = await database.execute(`SELECT * FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`)
-    fs.unlinkSync(path.join(__dirname, "../" + filePath[0][0]['material']))
-
+    
     // delete data from database
     let query = `DELETE FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`
     let result = await database.execute(query)
-
+    
+    fs.unlinkSync(path.join(__dirname, "../" + filePath[0][0]['material']))
 
     return { status: 1, code: 200, data: "resource deleted" }
 
