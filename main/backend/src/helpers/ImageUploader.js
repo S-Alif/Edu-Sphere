@@ -47,22 +47,45 @@ exports.imageUploader = async (image) => {
 }
 
 // pdf uploader
-exports.pdfUploader = async (pdf) => {
+exports.pdfUploader = async (fileDataUrl) => {
   try {
-    const base64Data = pdf.replace(/^data:application\/pdf;base64,/, '');
-    const binaryData = Buffer.from(base64Data, 'base64');
-    let output = path.join(__dirname, "../assignments")
-
-    if (!fs.existsSync(output)) {
-      fs.mkdirSync(output)
+    // Extract the MIME type from the data URL
+    const matches = fileDataUrl.match(/^data:application\/(?:pdf|vnd\.openxmlformats-officedocument\.(?:wordprocessingml\.document|presentationml\.presentation)|msword|vnd\.ms-powerpoint);base64/);
+    if (!matches) {
+      return null
     }
-    const fileName = `assignment_${Date.now()}.pdf`;
-    const filePath = path.join(output, fileName);
 
+    let fileExtension = '';
+    if (fileDataUrl.includes('application/pdf')) {
+      fileExtension = 'pdf';
+    } else if (fileDataUrl.includes('vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+      fileExtension = 'docx';
+    } else if (fileDataUrl.includes('vnd.openxmlformats-officedocument.presentationml.presentation')) {
+      fileExtension = 'pptx';
+    } else if (fileDataUrl.includes('application/msword')) {
+      fileExtension = 'doc';
+    } else if (fileDataUrl.includes('vnd.ms-powerpoint')) {
+      fileExtension = 'ppt';
+    } else {
+      return null
+    }
+
+    // Remove the data URL prefix
+    const base64Data = fileDataUrl.replace(/^data:application\/(?:pdf|vnd\.openxmlformats-officedocument\.(?:wordprocessingml\.document|presentationml\.presentation)|msword|vnd\.ms-powerpoint);base64,/, '');
+
+    // Decode base64 data and write the file
+    const binaryData = Buffer.from(base64Data, 'base64');
+    const outputDir = path.join(__dirname, "../assignments");
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir);
+    }
+    const fileName = `file_${Date.now()}.${fileExtension}`;
+    const filePath = path.join(outputDir, fileName);
     fs.writeFileSync(filePath, binaryData);
 
-    return "/assignments/"+fileName;
+    // Return the file path
+    return "/assignments/" + fileName;
   } catch (error) {
     return null;
   }
-}
+};

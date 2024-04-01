@@ -6,6 +6,9 @@ const { imageUploader, extractPublicId, imgDeleter, pdfUploader } = require('../
 const sendEmail = require('../utility/sendMail');
 const { otp_markup } = require('../utility/markups');
 
+const fs = require('fs')
+const path = require('path')
+
 
 // register
 exports.register = async (req) => {
@@ -388,5 +391,127 @@ exports.getUserByEmail = async (req) => {
 
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// resourse upload
+exports.resourseUpload = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+    if (!req.body.name || !req.body.file) return { status: 0, code: 200, data: "fill all the data" }
+
+    let fileUrl = await pdfUploader(req.body.file)
+    if (!fileUrl) return { status: 0, code: 200, data: "could not upload resource" }
+
+    let query = `INSERT INTO course_materials (id, instructorId, material_name, material) VALUES (?,?,?,?);`
+    let data = [v4(), req.headers.id, req.body?.name, fileUrl]
+
+    let result = await database.execute(query, data)
+
+    return { status: 1, code: 200, data: "resource uploaded" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
+  }
+}
+
+// get resources
+exports.findResource = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+
+    let id = req.headers?.id
+
+    let query = `SELECT * FROM course_materials WHERE instructorId = '${id}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
+  }
+}
+
+// delete resource
+exports.deleteResource = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+
+    let instructorId = req.headers?.id
+
+    // check in modules
+    let checks = await database.execute(`SELECT COUNT(*) as total FROM shared_materials WHERE id = '${req.params.id}';`)
+
+    if (checks[0][0].total > 0) return { status: 0, code: 200, data: `resource is shared in ${checks[0][0].total} modules` }
+
+    // delete file from server
+    let filePath = await database.execute(`SELECT * FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`)
+    fs.unlinkSync(path.join(__dirname, "../" + filePath[0][0]['material']))
+
+    // delete data from database
+    let query = `DELETE FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`
+    let result = await database.execute(query)
+
+
+    return { status: 1, code: 200, data: "resource deleted" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
+  }
+}
+
+// add to module
+exports.addResourseToModule = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+
+    let moduleId = req.params?.module
+    let materialId = req.params?.material
+
+    // delete data from database
+    let query = `INSERT INTO shared_materials (id, materialId, moduleId) VALUES ('${v4()}', '${materialId}', '${moduleId}');`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: "resource added to module" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
+  }
+}
+
+// remove from module
+exports.removeResourseFromModule = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+
+    let moduleId = req.params?.module
+    let materialId = req.params?.material
+
+    // delete data from database
+    let query = `DELETE FROM shared_materials WHERE materialId = '${materialId}' AND moduleId = '${moduleId}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: "resource removed from module" }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
+  }
+}
+
+// module resources
+exports.moduleResources = async (req) => {
+  try {
+    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
+
+    let moduleId = req.params?.module
+
+    // delete data from database
+    let query = `SELECT * FROM shared_materials WHERE moduleId = '${moduleId}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error }
   }
 }

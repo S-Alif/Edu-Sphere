@@ -124,3 +124,39 @@ exports.userByEmail = async (req, res) => {
   let result = await userService.getUserByEmail(req)
   res.status(200).json(result);
 }
+
+// upload resource
+exports.uploadResource = async (req, res) => {
+  let result = await userService.resourseUpload(req)
+  res.status(200).json(result);
+}
+
+// get resource
+exports.getResource = async (req, res) => {
+  let result = await userService.findResource(req)
+  res.status(200).json(result);
+}
+
+// delete resource
+exports.resourceDelete = async (req, res) => {
+  let result = await userService.deleteResource(req)
+  res.status(200).json(result);
+}
+
+// add resource to module
+exports.addToModule = async (req, res) => {
+  let result = await userService.addResourseToModule(req)
+  res.status(200).json(result);
+}
+
+// remove resource to module
+exports.removeFromModule = async (req, res) => {
+  let result = await userService.removeResourseFromModule(req)
+  res.status(200).json(result);
+}
+
+// module resource
+exports.getModuleResource = async (req, res) => {
+  let result = await userService.moduleResources(req)
+  res.status(200).json(result);
+}
