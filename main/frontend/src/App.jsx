@@ -35,6 +35,7 @@ import OtpVeirification from "./pages/OtpVeirification";
 import IdVerifyPage from "./pages/IdVerifyPage";
 import ForgotPassPage from "./pages/ForgotPassPage";
 import InstructorCheckAssignments from "./pages/InstructorCheckAssignments";
+import InstructorResourseUpload from "./pages/InstructorResourseUpload";
 
 
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
             <Route path="assignments/:module/:id" element={<InstructorCheckAssignments />} />
             <Route path="live-class/:module/:id" element={<LiveUpdate />} />
             <Route path="payment" element={<InstructorPayment />} />
+            <Route path="resource" element={<InstructorResourseUpload />} />
           </Route>
         </Route>
       </Route>

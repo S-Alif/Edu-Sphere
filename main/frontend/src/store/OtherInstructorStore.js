@@ -100,7 +100,7 @@ const OtherInstructorStore = create((set) => ({
   // update assignment marks
   updateAssignmentMark: async (studentId, assignmentId, data) => {
     try {
-      let result = await axios.post(instructorEndpoint + '/update-marks/' + studentId + '/' + assignmentId, data, {withCredentials: true})
+      let result = await axios.post(instructorEndpoint + '/update-marks/' + studentId + '/' + assignmentId, data, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
@@ -115,8 +115,125 @@ const OtherInstructorStore = create((set) => ({
       errorAlert("Something went wrong")
       return 0
     }
-  }
+  },
 
+  // resource upload
+  resourceUpload: async (data) => {
+    try {
+      let result = await axios.post(instructorEndpoint + '/resourse-upload', data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // resource get
+  resourceGet: async () => {
+    try {
+      let result = await axios.get(instructorEndpoint + '/resources', { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+      console.log(result.data?.data)
+      return result.data?.data
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // resource delete
+  resourceDelete: async (id) => {
+    try {
+      let result = await axios.get(instructorEndpoint + '/delete-resources/' + id, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // resource shared
+  resourceShare: async (moduleId, materialId) => {
+    try {
+      let result = await axios.post(instructorEndpoint + '/add-to-module/' + moduleId + "/" + materialId, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // resource shared
+  resourceRemove: async (moduleId, materialId) => {
+    try {
+      let result = await axios.post(instructorEndpoint + '/remove-from-module/' + moduleId + "/" + materialId, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // get resource shared
+  getResource: async (moduleId) => {
+    try {
+      let result = await axios.post(instructorEndpoint + '/module-resource/' + moduleId, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  }
 
 }))
 

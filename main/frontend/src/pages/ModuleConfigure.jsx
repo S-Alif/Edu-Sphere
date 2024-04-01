@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import instructorStore from "../store/instructorStore";
 import { formatDate } from "../helpers/validators";
 import LiveCard from "../components/cards/LiveCard";
+import OtherInstructorStore from "../store/OtherInstructorStore";
 
 
 // assignment form
@@ -173,6 +174,42 @@ const LiveClass = ({ moduleId }) => {
   );
 }
 
+// resource to module
+const Resouces = ({ moduleId }) => {
+
+  const { getResource, resourceGet } = OtherInstructorStore()
+
+  const [resource, setResource] = useState("")
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      let result = await resourceGet()
+      if (result == 0) return
+      setData(result)
+    })()
+  }, [])
+  console.log(data)
+
+  return (
+    <>
+      {/* title */}
+      <div className="title pt-10 pb-4 mb-7 border-b-2 border-b-emerald-300">
+        <h2 className="font-bold text-3xl">Add resource</h2>
+      </div>
+
+      <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full">
+        <option value={""}>Choose a material</option>
+        {
+          data.length > 0 &&
+          data.map((e, index) => (
+            <option value={e.id} key={index}>{e.material_name}</option>
+          ))
+        }
+      </select>
+    </>
+  )
+}
 
 // main module configure function
 const ModuleConfigure = () => {
@@ -194,6 +231,7 @@ const ModuleConfigure = () => {
     await updateModule(params?.batch, params?.id, data)
   }
 
+  // module form
   useEffect(() => {
     (async () => {
       let result = await getModuleById(params?.batch, params?.id)
@@ -244,6 +282,9 @@ const ModuleConfigure = () => {
 
         </form>
       </div>
+
+      {/* resource module */}
+      <Resouces moduleId={params?.id} />
 
       {/* title */}
       <div className="title pt-10 pb-4 mb-7 border-b-2 border-b-emerald-300">
