@@ -32,6 +32,7 @@ router.post('/create-batch', authVerification, batch.batchCreate)
 router.post('/update-batch/:course/:id', authVerification, batch.batchUpdate)
 router.get('/get-batch', authVerification, batch.getBatchByInstructor)
 router.get('/batch/:course/:id', authVerification, batch.getBatchById)
+router.get('/batch/:course', authVerification, batch.batchByCourse)
 
 // module routes
 router.post('/create-module', authVerification, modules.moduleCreate)
@@ -66,7 +67,7 @@ router.get('/resources', authVerification, user.getResource)
 router.get('/delete-resources/:id', authVerification, user.resourceDelete)
 
 // resource add to module
-router.post('/add-to-module/:module/:material', authVerification, user.addToModule)
+router.get('/add-to-module/:module/:material', authVerification, user.addToModule)
 router.post('/remove-from-module/:module/:material', authVerification, user.removeFromModule)
 router.get('/module-resource/:module', authVerification, user.getModuleResource)
 

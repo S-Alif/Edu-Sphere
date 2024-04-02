@@ -440,17 +440,17 @@ exports.deleteResource = async (req) => {
     let instructorId = req.headers?.id
 
     // check in modules
-    let checks = await database.execute(`SELECT COUNT(*) as total FROM shared_materials WHERE id = '${req.params.id}';`)
+    let checks = await database.execute(`SELECT COUNT(*) as total FROM shared_materials WHERE materialId = '${req.params.id}';`)
 
     if (checks[0][0].total > 0) return { status: 0, code: 200, data: `resource is shared in ${checks[0][0].total} modules` }
 
     // delete file from server
     let filePath = await database.execute(`SELECT * FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`)
-    
+
     // delete data from database
     let query = `DELETE FROM course_materials WHERE instructorId = '${instructorId}' AND id = '${req.params.id}';`
     let result = await database.execute(query)
-    
+
     fs.unlinkSync(path.join(__dirname, "../" + filePath[0][0]['material']))
 
     return { status: 1, code: 200, data: "resource deleted" }
@@ -467,6 +467,10 @@ exports.addResourseToModule = async (req) => {
 
     let moduleId = req.params?.module
     let materialId = req.params?.material
+
+    let checks = await database.execute(`SELECT COUNT(*) as total FROM shared_materials WHERE materialId = '${materialId}' AND moduleId = '${moduleId}';`)
+
+    if (checks[0][0].total == 1) return { status: 0, code: 200, data: "resource already added" }
 
     // delete data from database
     let query = `INSERT INTO shared_materials (id, materialId, moduleId) VALUES ('${v4()}', '${materialId}', '${moduleId}');`
@@ -501,12 +505,14 @@ exports.removeResourseFromModule = async (req) => {
 // module resources
 exports.moduleResources = async (req) => {
   try {
-    if (req.headers.role != 1) return { status: 0, code: 200, data: "No permission" }
-
     let moduleId = req.params?.module
 
     // delete data from database
-    let query = `SELECT * FROM shared_materials WHERE moduleId = '${moduleId}';`
+    let query = `SELECT course_materials.*
+    FROM course_materials
+    JOIN shared_materials ON course_materials.id = shared_materials.materialId
+    WHERE shared_materials.moduleId = '${moduleId}';`
+
     let result = await database.execute(query)
 
     return { status: 1, code: 200, data: result[0] }

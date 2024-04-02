@@ -30,3 +30,8 @@ exports.getBatch = async (req, res) => {
   let result = await batch.batchId(req)
   res.status(200).json(result)
 }
+
+exports.batchByCourse = async (req, res) => {
+  let result = await batch.batchCourse(req)
+  res.status(200).json(result)
+}

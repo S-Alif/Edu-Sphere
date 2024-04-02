@@ -132,3 +132,18 @@ exports.batchId = async (req) => {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
+
+// batch by course
+exports.batchCourse = async (req) => {
+  try {
+    let course = req.params?.course
+
+    let query = `SELECT id, name, published FROM batch WHERE courseId = '${course}';`
+    let result = await database.execute(query)
+
+    return { status: 1, code: 200, data: result[0] }
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
