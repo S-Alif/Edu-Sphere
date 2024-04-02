@@ -15,6 +15,7 @@ exports.cookieMaker = (data) => {
 // datetime format
 exports.getCurrentDateTime = () => {
   const currentDate = new Date()
+  currentDate.setHours(currentDate.getHours() + 6);
   const sqlDateTime = currentDate.toISOString().slice(0, 19).replace('T', ' ')
   return sqlDateTime
 }
