@@ -7,6 +7,7 @@ import instructorStore from "../store/instructorStore";
 import { formatDate } from "../helpers/validators";
 import LiveCard from "../components/cards/LiveCard";
 import OtherInstructorStore from "../store/OtherInstructorStore";
+import ResourceCard from './../components/cards/ResourceCard';
 
 
 // assignment form
@@ -177,11 +178,14 @@ const LiveClass = ({ moduleId }) => {
 // resource to module
 const Resouces = ({ moduleId }) => {
 
-  const { getResource, resourceGet } = OtherInstructorStore()
+  const { getResource, resourceGet, resourceShare } = OtherInstructorStore()
 
   const [resource, setResource] = useState("")
   const [data, setData] = useState([])
+  const [materials, setMaterials] = useState([])
+  const [flag, setFlag] = useState(false)
 
+  // get resource data
   useEffect(() => {
     (async () => {
       let result = await resourceGet()
@@ -189,7 +193,25 @@ const Resouces = ({ moduleId }) => {
       setData(result)
     })()
   }, [])
-  console.log(data)
+
+  // get the added resources
+  useEffect(() => {
+    (async () => {
+      let result = await getResource(moduleId)
+      if (result == 0) return
+      setMaterials(result)
+      setFlag(false)
+    })()
+  }, [flag])
+
+  // add resource
+  const addResource = async () => {
+    if(resource.trim() == "") return
+    let result = await resourceShare(moduleId, resource)
+    if(result == 0) return
+    setFlag(true)
+  }
+
 
   return (
     <>
@@ -198,15 +220,48 @@ const Resouces = ({ moduleId }) => {
         <h2 className="font-bold text-3xl">Add resource</h2>
       </div>
 
-      <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full">
-        <option value={""}>Choose a material</option>
-        {
-          data.length > 0 &&
-          data.map((e, index) => (
-            <option value={e.id} key={index}>{e.material_name}</option>
-          ))
-        }
-      </select>
+      {/* resource select option */}
+      <div className="pb-12">
+        <select className="select border-emerald-400 mt-4 mb-6 max-w-xl w-full" value={resource} onChange={(e) => setResource(e.target.value)}>
+          <option value={""}>Choose a material</option>
+          {
+            data.length > 0 &&
+            data.map((e, index) => (
+              <option value={e.id} key={index}>{e.material_name}</option>
+            ))
+          }
+        </select>
+
+        <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md block" onClick={addResource}>add material</button>
+      </div>
+
+      {materials.length == 0 && <h2 className='font-semibold w-full text-center py-2 bg-gray-200'>No resouce found</h2>}
+
+      {/* show resource table */}
+      {
+        materials.length > 0 &&
+        <div className='overflow-x-auto'>
+          <table className="table">
+            {/* head */}
+            <thead>
+              <tr>
+                <th></th>
+                <th>Resource name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {
+                materials.map((e, index) => (
+                  <ResourceCard data={e} index={index + 1} key={index} flag={setFlag} />
+                ))
+              }
+
+            </tbody>
+          </table>
+        </div>
+      }
     </>
   )
 }

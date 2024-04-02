@@ -5,6 +5,24 @@ import { errorAlert, infoAlert, successAlert } from '../helpers/alertMsg'
 
 const OtherInstructorStore = create((set) => ({
 
+  // get bacth by course
+  batchByCourse: async (courseId) => {
+    try {
+      let result = await axios.get(instructorEndpoint + '/batch/' + courseId, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data?.data
+    } catch (error) {
+      errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
   // instructor payment
   instructorPay: async (courseID) => {
     try {
@@ -45,7 +63,6 @@ const OtherInstructorStore = create((set) => ({
   subByInstructorPublic: async (id) => {
     try {
       let result = await axios.get(basicEndpoint + '/subjects/' + id, { withCredentials: true })
-      console.log(result.data?.data)
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
@@ -147,7 +164,7 @@ const OtherInstructorStore = create((set) => ({
         errorAlert(result.data?.data)
         return 0
       }
-      console.log(result.data?.data)
+
       return result.data?.data
 
     } catch (error) {
@@ -179,7 +196,7 @@ const OtherInstructorStore = create((set) => ({
   // resource shared
   resourceShare: async (moduleId, materialId) => {
     try {
-      let result = await axios.post(instructorEndpoint + '/add-to-module/' + moduleId + "/" + materialId, { withCredentials: true })
+      let result = await axios.get(instructorEndpoint + '/add-to-module/' + moduleId + "/" + materialId, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)
@@ -219,7 +236,7 @@ const OtherInstructorStore = create((set) => ({
   // get resource shared
   getResource: async (moduleId) => {
     try {
-      let result = await axios.post(instructorEndpoint + '/module-resource/' + moduleId, { withCredentials: true })
+      let result = await axios.get(instructorEndpoint + '/module-resource/' + moduleId, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)

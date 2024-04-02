@@ -12,9 +12,14 @@ import { FaStar } from "react-icons/fa6";
 
 const ReviewComponent = () => {
 
+  const { postInstructorReviw, postCourseReview } = studentStore()
+  const { profile, user } = userStore()
+  const { getInstructorReviw, getCourseReview } = basicStore()
+  
   const params = useParams()
   const location = useLocation()
-  let id = params?.id || params?.course
+  let id = params?.id || params?.course || profile?.id
+
   const [rating, setRating] = useState("")
   const [review, setReview] = useState({
     postId: "",
@@ -23,9 +28,6 @@ const ReviewComponent = () => {
   })
   const [data, setData] = useState([])
 
-  const { postInstructorReviw, postCourseReview } = studentStore()
-  const { profile, user } = userStore()
-  const { getInstructorReviw, getCourseReview } = basicStore()
 
   // change rating
   let changeRate = (e) => {
@@ -38,8 +40,8 @@ const ReviewComponent = () => {
       setReview({ ...review, ['postId']: id })
 
       // instructor review
-      if (location.pathname.substring(0, 19) == "/instructor-profile") {
-        let reviews = await getInstructorReviw(params?.id)
+      if (location.pathname.substring(0, 19) == "/instructor-profile" || location.pathname == "/instructor") {
+        let reviews = await getInstructorReviw(params?.id || profile?.id)
         if (reviews?.status == 1) {
           setRating(reviews?.data?.avg)
           setData(reviews?.data?.data)

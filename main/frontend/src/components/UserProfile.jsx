@@ -4,6 +4,7 @@ import userStore from "../store/userStore";
 import avatar from '../assets/imgs/avatar-1577909_640.png'
 import { useEffect, useState } from "react";
 import basicStore from "../store/basicStore";
+import { formatDate, formatTime } from "../helpers/validators";
 
 const UserProfile = () => {
 
@@ -72,11 +73,11 @@ const UserProfile = () => {
                 }
                 <tr className="hover">
                   <th>Register date</th>
-                  <td>{profile?.registerDate.substr(0, 10)}</td>
+                  <td>{formatTime(formatDate(profile?.registerDate))}</td>
                 </tr>
                 <tr className="hover">
                   <th>Update date</th>
-                  <td>{profile?.updateDate.substr(0, 10)}</td>
+                  <td>{formatTime(formatDate(profile?.updateDate))}</td>
                 </tr>
               </tbody>
             </table>

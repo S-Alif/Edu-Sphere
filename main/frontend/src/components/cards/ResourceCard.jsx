@@ -1,10 +1,13 @@
 import { FaDownload, FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import OtherInstructorStore from "../../store/OtherInstructorStore";
+import { useLocation } from "react-router-dom";
 
 const ResourceCard = ({ data, index, flag }) => {
 
   const { resourceDelete } = OtherInstructorStore()
+
+  const location = useLocation()
 
   // delete
   const deleteResource = async () => {
@@ -31,7 +34,7 @@ const ResourceCard = ({ data, index, flag }) => {
       <td>{data?.material_name}</td>
       <td className="flex gap-2">
         <a href={"http://localhost:8000" + data?.material} className="btn btn-ghost bg-gray-200" target="_blank" rel="noreferrer"><FaDownload /></a>
-        <button className="btn btn-error text-white" onClick={deleteResource}><FaTrashCan /></button>
+        {location.pathname == "/instructor/resource" && <button className="btn btn-error text-white" onClick={deleteResource}><FaTrashCan /></button>}
       </td>
     </tr>
   );

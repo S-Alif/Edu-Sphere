@@ -78,7 +78,7 @@ const InstructorResourseUpload = () => {
 
         {/* file upload form */}
         <form className='pt-6' onSubmit={submitFile}>
-          <input type="text" name='name' id='name' className='mt-4 mb-6 input input-bordered input-success max-w-xl w-full' value={fileName} required onChange={(e) => setFileName(e.target.value)} placeholder="Type resourse name" />
+          <input type="text" name='name' id='name' className='mt-4 mb-3 input input-bordered input-success max-w-xl w-full block' value={fileName} required onChange={(e) => setFileName(e.target.value)} placeholder="Type resourse name" />
           <input type="file" name='resource' id='resource' className='mt-4 mb-6 file-input file-input-bordered file-input-success max-w-xl w-full' accept='.pdf, .doc, .docx, .ppt, .pptx' required onChange={handleFileChange} />
           <div className="mb-6">
             <button type='submit' className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">upload resource</button>
