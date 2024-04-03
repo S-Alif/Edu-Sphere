@@ -2,13 +2,13 @@
 import { useState } from 'react';
 import userStore from '../store/userStore';
 import { NavLink, useNavigate } from 'react-router-dom';
-import PageHeader from './../components/PageHeader';
-import Section from './../components/tag-comps/Section';
 
 // icons
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { IoMdLock } from "react-icons/io";
 import { FaRegArrowAltCircleRight, FaRegEye } from "react-icons/fa";
+import PageHeader from './../component/PageHeader';
+import Section from './../component/tag-comps/Section';
 
 
 const LoginPage = () => {
@@ -34,12 +34,7 @@ const LoginPage = () => {
 
             // navigate to profile
             setTimeout(() => {
-                if (result?.data?.role == 1) {
-                    navigate("/instructor", { replace: true })
-                }
-                else {
-                    navigate("/student", { replace: true })
-                }
+                navigate("/dashboard", { replace: true })
             }, 3000)
 
             return setDisabler(true)

@@ -1,4 +1,5 @@
-import { errorAlert } from "./alertMsg"
+import { errorAlert } from "./alertMsg";
+
 
 
 // email validation
@@ -14,7 +15,7 @@ const validatePhone = (Phone) => {
 };
 
 //register validator
-export const dataValidator = (data, confirmPass, location) => {
+export const dataValidator = (data, confirmPass) => {
 
   if (data['firstName'].trim() == "" || data['lastName'].trim() == "") {
     return errorAlert("Names can't be empty")

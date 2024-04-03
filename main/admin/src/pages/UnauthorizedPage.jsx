@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import Section from "../components/tag-comps/Section";
+import Section from './../component/tag-comps/Section';
 
 
 const UnauthorizedPage = () => {

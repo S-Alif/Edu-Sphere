@@ -13,9 +13,9 @@ const MainLayout = () => {
             {/* children */}
             <div>
                 <Outlet />
-                <Toaster visibleToasts={5} richColors={true} closeButton={true} />
             </div>
 
+            <Toaster visibleToasts={5} richColors={true} closeButton={true} />
         </section>
     );
 };

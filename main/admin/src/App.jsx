@@ -11,6 +11,7 @@ import InstructorProfile from './pages/InstructorProfile';
 import AuthCheck from './component/AuthCheck';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import Payment from './pages/Payment';
+import OtpVeirification from './pages/OtpVeirification';
 
 
 const App = () => {
@@ -20,9 +21,10 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/otp-verify" element={<OtpVeirification />} />
 
         {/* protected routes */}
-        <Route element={<AuthCheck />}>
+        <Route element={<AuthCheck role={11} />}>
           <Route element={<MainLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
