@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.dashboard-sidebar a.active {
+  @apply bg-emerald-500;
+  @apply text-white;
+}
