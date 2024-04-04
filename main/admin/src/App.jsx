@@ -12,6 +12,7 @@ import AuthCheck from './component/AuthCheck';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import Payment from './pages/Payment';
 import OtpVeirification from './pages/OtpVeirification';
+import Subjects from './pages/Subjects';
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/instructors" element={<AllInstructor />} />
             <Route path="/instructors/:id" element={<InstructorProfile />} />
+            <Route path="/subjects" element={<Subjects />} />
             <Route path="/payment" element={<Payment />} />
           </Route>
         </Route>

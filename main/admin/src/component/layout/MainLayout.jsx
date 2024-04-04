@@ -1,17 +1,32 @@
 import { Toaster } from "sonner";
 import Sidebar from "../Sidebar";
 import { Outlet } from 'react-router-dom';
+import userStore from "../../store/userStore";
+import { useEffect } from "react";
 
 
 const MainLayout = () => {
+
+    const { user, userProfile } = userStore()
+
+    // get profile data
+    useEffect(() => {
+        (async () => {
+            if (user?.role == 11) {
+                await userProfile()
+            }
+        })()
+
+    }, [user])
+
     return (
-        <section className="w-100 min-h-screen flex gap-3">
+        <section className="w-100 min-h-screen flex">
 
             {/* side bar */}
             <div><Sidebar /></div>
-            
+
             {/* children */}
-            <div>
+            <div className="flex-grow">
                 <Outlet />
             </div>
 

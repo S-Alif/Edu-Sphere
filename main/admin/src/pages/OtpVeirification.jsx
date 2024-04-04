@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import userStore from "../store/userStore";
 import Section from "../component/tag-comps/Section";
+import { Toaster } from "sonner";
 
 
 const OtpVeirification = () => {
@@ -56,6 +57,8 @@ const OtpVeirification = () => {
         <input type="text" name='firstName' id='firstName' className='input input-bordered border-emerald-500 mt-4 mb-6 max-w-lg w-full' value={otp} onChange={(e) => setOtp(e.target.value)} />
         <button type='submit' className='btn btn-success bg-emerald-500 text-white max-w-sm w-full flex items-center'>Verify otp {loader && <span className="loading loading-spinner loading-sm"></span>}</button>
       </form>
+
+      <Toaster visibleToasts={5} richColors={true} closeButton={true} />
 
     </Section>
   );

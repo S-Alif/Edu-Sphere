@@ -1,12 +1,11 @@
 import axios from 'axios'
 import { create } from 'zustand'
-import { basicEndpoint } from '../helpers/apiEndpoints'
+import { adminEndpoint, basicEndpoint } from '../helpers/apiEndpoints'
 import { errorAlert, infoAlert, successAlert } from './../helpers/alertMsg';
 
 const userStore = create((set) => ({
   user: JSON.parse(sessionStorage.getItem("user")) || null,
   profile: null,
-
 
   // user login
   userLogin: async (data) => {
@@ -47,6 +46,25 @@ const userStore = create((set) => ({
 
     } catch (error) {
       errorAlert("Something went wrong")
+      return 0
+    }
+  },
+
+  // user profile
+  userProfile: async () => {
+    try {
+      let profileData = await axios.get(adminEndpoint + "/user", { withCredentials: true })
+
+      // check response
+      if (profileData.data['status'] == 1) {
+        set({ profile: profileData.data['data'] })
+      }
+      else {
+        errorAlert(profileData.data['data'])
+        return 0
+      }
+    } catch (error) {
+      errorAlert("something went wrong")
       return 0
     }
   },

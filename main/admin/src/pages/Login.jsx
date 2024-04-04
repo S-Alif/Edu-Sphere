@@ -9,6 +9,7 @@ import { IoMdLock } from "react-icons/io";
 import { FaRegArrowAltCircleRight, FaRegEye } from "react-icons/fa";
 import PageHeader from './../component/PageHeader';
 import Section from './../component/tag-comps/Section';
+import { Toaster } from 'sonner';
 
 
 const LoginPage = () => {
@@ -110,6 +111,8 @@ const LoginPage = () => {
                     </div>
                 </div>
             </Section>
+
+            <Toaster visibleToasts={5} richColors={true} closeButton={true} />
         </>
     );
 };
