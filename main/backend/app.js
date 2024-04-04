@@ -18,18 +18,18 @@ app.use('/files', express.static(path.join(__dirname, 'src/files')));
 
 // add security
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://localhost:5174"],
   credentials: true
 }))
 app.use(cookieParser())
 app.use(helmet())
 app.use(hpp())
 
-app.use(express.json({limit: "6mb"}))
-app.use(express.urlencoded({extended: true}))
+app.use(express.json({ limit: "6mb" }))
+app.use(express.urlencoded({ extended: true }))
 
 // rate limiting
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10000});
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10000 });
 app.use(limiter);
 
 // route connection

@@ -99,11 +99,57 @@ exports.delete = async (req) => {
 }
 
 // get all instructors
-exports.instructors = async () => {
+exports.instructors = async (req) => {
   try {
 
-  } catch (error) {
+    let filter = req.params?.filter
 
+    let query = `
+      SELECT 
+        u.id AS instructor_id,
+        u.firstName AS first_name,
+        u.lastName AS last_name,
+        u.email AS email,
+        u.phone AS phone,
+        u.profileImg AS profile_image,
+        u.registerDate AS register_date,
+        u.verified AS verified
+      FROM 
+        users u
+      LEFT JOIN 
+        instructor_approved ia ON u.id = ia.instructorId
+      WHERE 
+        u.role = 1 `;
+
+    if (filter === "notApproved") {
+      query += ` AND ia.approved = 0`;
+    }
+    if (filter === "active") {
+      query += ` AND u.active = 1`;
+    }
+    if (filter === "inActive") {
+      query += ` AND u.active = 0`;
+    }
+
+    query += ` ORDER BY u.registerDate ASC`
+
+    let result = await database.execute(query)
+    return { status: 1, code: 200, data: result[0] };
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// approve instructor
+exports.approveInstructor = async (req) => {
+  try {
+    let instructorId = req.params?.id
+    let result = await database.execute(`UPDATE instructor_approved SET approved = 1 WHERE instructorId = '${instructorId}';`)
+    return { status: 1, code: 200, data: "Instructor approved" };
+
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
@@ -111,19 +157,20 @@ exports.instructors = async () => {
 exports.instructorById = async (req) => {
   try {
 
-  } catch (error) {
 
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
 
 // user profile
 exports.profile = async (req) => {
   try {
-    let id = req.headers?.id
-    let role = req.headers?.role
+    let id = req?.params?.id
+    let role = req?.params?.role
 
-    if (!id) id = req.params?.id
-    if (role == null) role = req.params?.role
+    if (!id) id = req.headers?.id
+    if (role == null) role = req.headers?.role
 
     let query = `SELECT id, firstName, lastName, email, phone, profileImg, about, address, registerDate, updateDate, role, verified FROM users WHERE id = "${id}" AND role = ${role};`
 

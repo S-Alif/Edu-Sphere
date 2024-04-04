@@ -59,3 +59,9 @@ exports.forCourseDetail = async (req, res) => {
     let result = await course.courseForDetail(req)
     res.status(200).json(result);
 }
+
+// course by instructor for admin
+exports.courseByInstructor_admin = async (req, res) => {
+    let result = await course.getCourseByInstructor_admin(req)
+    res.status(200).json(result);
+}

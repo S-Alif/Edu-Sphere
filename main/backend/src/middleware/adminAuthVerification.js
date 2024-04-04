@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
         return
       }
       else {
-        if (decoded['role'] == "11") {
+        if (decoded['role'] == 11) {
           req.headers.email = decoded['email']
           req.headers.id = decoded['id']
           req.headers.role = decoded['role']

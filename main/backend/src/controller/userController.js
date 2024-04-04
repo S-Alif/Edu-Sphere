@@ -76,6 +76,12 @@ exports.getInstructors = async (req, res) => {
   res.status(200).json(result);
 }
 
+// approve instructors
+exports.instructorApproval = async (req, res) => {
+  let result = await userService.approveInstructor(req)
+  res.status(200).json(result);
+}
+
 // instructor by id
 exports.getInstructorsById = async (req, res) => {
   let result = await userService.delete(req)
