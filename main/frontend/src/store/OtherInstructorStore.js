@@ -216,7 +216,7 @@ const OtherInstructorStore = create((set) => ({
   // resource shared
   resourceRemove: async (moduleId, materialId) => {
     try {
-      let result = await axios.post(instructorEndpoint + '/remove-from-module/' + moduleId + "/" + materialId, { withCredentials: true })
+      let result = await axios.get(instructorEndpoint + '/remove-from-module/' + moduleId + "/" + materialId, { withCredentials: true })
 
       if (result.data?.status == 0) {
         if (result.data?.errorCode?.code) infoAlert(result.data.errorCode.code)

@@ -94,6 +94,17 @@ const InstructorProfilePage = () => {
 
         </div>
 
+        {/* profile eduction */}
+        {profile?.education &&
+          <div className="mt-10 p-5 shadow-lg">
+            <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Qualification and current status</h3>
+
+            <div className="whitespace-pre-wrap">{profile?.education}</div>
+            <div className="pt-3"><b>Current job : </b> {profile?.currentStats}</div>
+
+          </div>
+        }
+
         {/* profile about */}
         {profile?.about != "" && profile?.about &&
           <div className="mt-5 p-5 rounded-lg shadow-lg">

@@ -6,7 +6,7 @@ import userStore from "../../store/userStore";
 const DashboardLayout = () => {
 
   const [menuToggle, setMenuToggle] = useState(false)
-  const { user } = userStore()
+  const { user, profile } = userStore()
 
   const linkStyles = "py-4 hover:bg-emerald-200 font-semibold transition duration-500 wi-full flex justify-center items-center"
 
@@ -22,9 +22,9 @@ const DashboardLayout = () => {
         <div className={`w-80 h-[calc(100vh-80px)] pt-9 fixed z-10 lg:sticky top-20 bg-gray-300 ${menuToggle ? 'lg:block' : 'hidden lg:block'}`}>
           <NavLink to={user?.role == 1 ? '/instructor' : "/student"} end className={linkStyles}>Dashboard</NavLink>
           <NavLink to={user?.role == 1 ? '/instructor/courses' : "/student/courses"} className={linkStyles}>My courses</NavLink>
-          {user?.role == 1 && (<NavLink to={'/instructor/create-courses'} className={linkStyles}>Create courses</NavLink>)}
-          {user?.role == 1 && (<NavLink to={'/instructor/batch-configure'} className={linkStyles}>Batch configure</NavLink>)}
-          {user?.role == 1 && (<NavLink to={'/instructor/resource'} className={linkStyles}>Upload resourse</NavLink>)}
+          {user?.role == 1 && profile?.approved == 1 && (<NavLink to={'/instructor/create-courses'} className={linkStyles}>Create courses</NavLink>)}
+          {user?.role == 1 && profile?.approved == 1 && (<NavLink to={'/instructor/batch-configure'} className={linkStyles}>Batch configure</NavLink>)}
+          {user?.role == 1 && profile?.approved == 1 && (<NavLink to={'/instructor/resource'} className={linkStyles}>Upload resourse</NavLink>)}
           <NavLink to={user?.role == 1 ? "/instructor/payment" : "/student/payment"} className={linkStyles}>payment</NavLink>
           <NavLink to={user?.role == 1 ? '/instructor/account' : "/student/account"} className={linkStyles}>Account</NavLink>
 

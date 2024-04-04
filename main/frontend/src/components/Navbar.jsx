@@ -50,6 +50,7 @@ const Navbar = () => {
                     <button type='button' className='btn btn-ghost bg-gray-200 ml-2' onClick={sendOtp}>send email</button>
                 </div>
             }
+            {profile?.role == 1 && !profile?.approved && <h3 className='w-100 text-center bg-yellow-500 sticky top-0 z-[200]'>Please wait untill your account in approved to access all our features</h3>}
             <div className={`navbar-top h-20 ${theme ? "bg-slate-900" : "bg-slate-200"} sticky ${user != null ? (profile?.verified ? "top-0" : "top-6") : "top-0"} z-[200]`}>
                 <Container className={"h-full"}>
                     <div className="flex w-full h-full justify-between items-center">

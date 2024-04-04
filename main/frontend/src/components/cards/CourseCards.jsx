@@ -12,7 +12,7 @@ const CourseCards = ({ data }) => {
     return (
         <>
             <NavLink to={links} className="card w-full bg-base-100 shadow-xl">
-                <figure><img src={data?.batchImg} alt="batch image" /></figure>
+                <figure className="aspect-video"><img src={data?.batchImg} alt="batch image" /></figure>
                 <div className="card-body pb-2">
                     <h2 className="card-title">{data?.batchName}</h2>
 

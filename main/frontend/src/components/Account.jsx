@@ -1,6 +1,6 @@
 import Section from './tag-comps/Section';
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import userStore from './../store/userStore';
 import { errorAlert } from '../helpers/alertMsg';
 import useHandleImage from '../hooks/useHandleImage';
@@ -10,10 +10,10 @@ import ChangePass from './ChangePass';
 const Account = () => {
 
   const { profile, userUpdate, userProfile } = userStore()
-  
+
 
   // form values
-  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -22,11 +22,13 @@ const Account = () => {
       profileImg: "",
       about: "",
       address: "",
+      education: "",
+      currentStats: "",
       newProfileImg: ""
     }
   })
 
-  const { handleImage, preview } = useHandleImage(
+  const { handleImage } = useHandleImage(
     (result) => setValue("newProfileImg", result),
     5000,
     errorAlert
@@ -52,6 +54,11 @@ const Account = () => {
       setValue("profileImg", profile?.profileImg)
       setValue("about", profile?.about)
       setValue("address", profile?.address)
+
+      if(profile?.role == 1){
+        setValue("education", profile?.education)
+        setValue("currentStats", profile?.currentStats)
+      }
 
     })()
 
@@ -104,8 +111,23 @@ const Account = () => {
 
             {/* about yourself */}
             <label htmlFor="detail" className="font-semibold block">About yourself</label>
-            <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={10} placeholder="About Yourself in 500 characters" {...register("about", { required: true, minLength: 150, maxLength: 2000 })} />
+            <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={5} placeholder="About Yourself in 500 characters" {...register("about", { required: true, minLength: 150, maxLength: 500 })} />
             {errors?.detail && errorAlert("Detail should be of 150-500 characters")}
+
+            {
+              profile?.role == 1 &&
+              <>
+                {/* education */}
+                <label htmlFor="education" className="font-semibold block">Your education</label>
+                <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={5} placeholder="About your education in 500 characters" {...register("education", { required: true, minLength: 80, maxLength: 500 })} />
+                {errors?.education && errorAlert("About your education in 80-500 characters")}
+
+                {/* current status */}
+                <label htmlFor="currentStats" className="font-semibold block">Current job</label>
+                <textarea className="textarea textarea-success mt-4 mb-6 border-emerald-500 max-w-xl w-full" rows={5} placeholder="About your current job in 500 characters" {...register("currentStats", { required: true, minLength: 20, maxLength: 500 })} />
+                {errors?.currentStats && errorAlert("About your current job 20-500 characters")}
+              </>
+            }
 
             <div className="mt-4 mb-6">
               <button className="btn bg-emerald-400 hover:bg-emerald-500 duration-300 text-white text-xl rounded-md">Update profile</button>
@@ -119,7 +141,7 @@ const Account = () => {
 
       {/* pass word form */}
       <ChangePass />
-      
+
     </>
   );
 };
