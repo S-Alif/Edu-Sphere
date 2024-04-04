@@ -17,6 +17,7 @@ const adminAuth = require('../middleware/adminAuthVerification')
 
 // basic routes
 router.get('/user', adminAuth, user.userProfile)
+router.post('/update', adminAuth, user.userUpdate)
 
 // instructor
 router.get('/instructors/:filter', adminAuth, user.getInstructors)
@@ -28,6 +29,8 @@ router.get('/instructors/course/:id', adminAuth, course.courseByInstructor_admin
 router.get('/instructors/subjects/:id', adminAuth, subject.getSubByInstructor)
 router.get('/instructors/reviews/:id', adminAuth, review.instructorReview)
 router.get('/instructors/:id/:role', adminAuth, user.userProfile)
+
+router.post('/notify/:email', adminAuth, admin.sendNotification)
 
 //Admin modify Route
 router.use('/modify', modifyRoutes)

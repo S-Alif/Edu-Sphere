@@ -2,6 +2,7 @@ const database = require('../../database')
 const { v4 } = require('uuid')
 const { encryptPass, comparePass } = require('../helpers/passEncryptor')
 const { getCurrentDate } = require('../helpers/helper')
+const sendEmail = require('../utility/sendMail')
 
 
 // chart data
@@ -29,6 +30,22 @@ exports.chartData = async (req) => {
     return { status: 1, code: 200, data: {students: result[0], instructors: result2[0]} };
 
 
+  } catch (error) {
+    return { status: 0, code: 200, data: "something went wrong", errorCode: error };
+  }
+}
+
+// notify instructor
+exports.notify = async (req) => {
+  try {
+    let email = req.params?.email
+    let subject = req.body?.subject
+    let text = req.body?.text
+
+    await sendEmail(email, text, subject)
+
+    return { status: 1, code: 200, data: "Email sent" };
+    
   } catch (error) {
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }

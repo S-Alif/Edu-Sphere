@@ -68,7 +68,7 @@ router.get('/delete-resources/:id', authVerification, user.resourceDelete)
 
 // resource add to module
 router.get('/add-to-module/:module/:material', authVerification, user.addToModule)
-router.post('/remove-from-module/:module/:material', authVerification, user.removeFromModule)
+router.get('/remove-from-module/:module/:material', authVerification, user.removeFromModule)
 router.get('/module-resource/:module', authVerification, user.getModuleResource)
 
 module.exports = router

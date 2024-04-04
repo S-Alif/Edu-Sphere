@@ -26,8 +26,11 @@ exports.register = async (req) => {
     if (!imageUrl) return { status: 0, code: 200, data: "something went wrong" };
 
     let data = [uid, req.body.firstName, req.body.lastName, req.body.email, enPass, req.body.phone, imageUrl, date, date, parseInt(req.body.role)];
-
     let result = await database.execute(query, data)
+
+    if (parseInt(req.body.role) == 1) {
+      let result2 = await database.execute(`INSERT INTO instructor_approved (id, instructorId) VALUES ('${v4()}', '${uid}');`)
+    }
 
     return { status: 1, code: 200, data: "account created" }
 
@@ -79,12 +82,16 @@ exports.update = async (req) => {
 
     let query = `UPDATE users SET firstName = ?, lastName = ?, phone = ?, profileImg = ?, updateDate = ?, about = ?, address = ? WHERE id = '${req.headers?.id}' and active = 1;`
     let data = [req.body.firstName, req.body.lastName, req.body.phone, req.body.profileImg, getCurrentDateTime(), req.body?.about, req.body.address];
-
     let result = await database.execute(query, data)
+
+    if (req.headers?.role == 1) {
+      let result2 = await database.execute(`UPDATE instructor_approved SET education = '${req.body?.education}', currentStats = '${req.body?.currentStats}' WHERE instructorId = '${req.headers?.id}';`)
+    }
 
     return { status: 1, code: 200, data: "account updated" }
 
   } catch (error) {
+    console.log(error)
     return { status: 0, code: 200, data: "something went wrong", errorCode: error };
   }
 }
@@ -146,6 +153,12 @@ exports.approveInstructor = async (req) => {
   try {
     let instructorId = req.params?.id
     let result = await database.execute(`UPDATE instructor_approved SET approved = 1 WHERE instructorId = '${instructorId}';`)
+
+    let result2 = await database.execute(`SELECT email, firstName, lastName FROM users WHERE id = '${instructorId}';`)
+    let data = result2[0][0]
+
+    await sendEmail(data.email, `<h3>${data?.firstName} ${data?.lastName}</h3> <br> <p>Your account was approved. Please check your dashboard to see all the features</p>`, "Account approved")
+
     return { status: 1, code: 200, data: "Instructor approved" };
 
   } catch (error) {
@@ -173,8 +186,14 @@ exports.profile = async (req) => {
     if (role == null) role = req.headers?.role
 
     let query = `SELECT id, firstName, lastName, email, phone, profileImg, about, address, registerDate, updateDate, role, verified FROM users WHERE id = "${id}" AND role = ${role};`
-
     let result = await database.execute(query)
+
+    if(role == 1){
+      let result2 = await database.execute(`SELECT education, currentStats, approved FROM instructor_approved WHERE instructorId = '${id}';`)
+      result[0][0].education = result2[0][0].education
+      result[0][0].currentStats = result2[0][0].currentStats
+      result[0][0].approved = result2[0][0].approved
+    }
 
     return { status: 1, code: 200, data: result[0][0] }
 
