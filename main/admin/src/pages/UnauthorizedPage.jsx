@@ -10,8 +10,7 @@ const UnauthorizedPage = () => {
       <div className="text-center w-full h-[inherit]">
         <h1 className="text-7xl pb-10">Un-authorized</h1>
         <div className="flex gap-3 justify-center">
-          <NavLink to={"/"} className={"btn btn-square btn-neutral w-full max-w-28"} replace={true}>Go to home</NavLink>
-          <NavLink to={"/login"} className={"btn btn-square btn-neutral w-full max-w-28"} replace={true}>Login</NavLink>
+          <NavLink to={"/"} className={"btn btn-square btn-neutral w-full max-w-28"} replace={true}>Login</NavLink>
         </div>
       </div>
 
