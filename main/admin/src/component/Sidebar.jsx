@@ -6,10 +6,10 @@ import userStore from './../store/userStore';
 const Sidebar = () => {
 
   const [menuToggle, setMenuToggle] = useState(false)
-  const { profile } = userStore()
+  const { profile, userLogout } = userStore()
 
 
-  const linkStyles = "py-4 hover:bg-emerald-200 font-semibold transition duration-500 wi-full flex justify-center items-center"
+  const linkStyles = "py-4 hover:bg-emerald-200 font-semibold transition duration-500 w-full flex justify-center items-center"
 
   return (
     <>
@@ -35,7 +35,8 @@ const Sidebar = () => {
           <NavLink to={"/dashboard"} end className={linkStyles}>Dashboard</NavLink>
           <NavLink to={"/instructors"} className={linkStyles}>Instructors</NavLink>
           <NavLink to={"/subjects"} className={linkStyles}>Subjects</NavLink>
-          <NavLink to={"/payment"} className={linkStyles}>Payments</NavLink>
+          {/* <NavLink to={"/payment"} className={linkStyles}>Payments</NavLink> */}
+          <button className={linkStyles} onClick={userLogout}>logout</button>
         </div>
 
       </div>

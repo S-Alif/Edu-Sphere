@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import Section from './../component/tag-comps/Section';
+import { Toaster } from "sonner";
 
 
 const UnauthorizedPage = () => {
@@ -13,6 +14,8 @@ const UnauthorizedPage = () => {
           <NavLink to={"/login"} className={"btn btn-square btn-neutral w-full max-w-28"} replace={true}>Login</NavLink>
         </div>
       </div>
+
+      <Toaster visibleToasts={5} richColors={true} closeButton={true} />
     </Section>
   );
 };

@@ -10,7 +10,7 @@ const SubjectCard = ({ data, index, flag }) => {
   // update subjects
   const update = async () => {
     const { value: formValues } = await Swal.fire({
-      title: "Update marks",
+      title: "Update subjects",
       html: `
     <input id="swal-input1" class="swal2-input" value="${data?.name}">
     <input id="swal-input2" class="swal2-input" value="${data?.code}">`,

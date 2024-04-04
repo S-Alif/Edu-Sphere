@@ -7,10 +7,12 @@ import InstructorStore from './../store/InstructorStore';
 import { useParams } from 'react-router-dom';
 import CourseCard from '../component/cards/CourseCard';
 import GridRows from './../component/tag-comps/GridRows';
-
-
-import { FaStar } from "react-icons/fa6";
 import ReviewCards from './../component/cards/ReviewCards';
+
+
+import { FaStar, FaPaperPlane } from "react-icons/fa6";
+import Swal from 'sweetalert2';
+import OtherStore from '../store/OtherStore';
 
 
 const InstructorProfile = () => {
@@ -23,7 +25,7 @@ const InstructorProfile = () => {
     const [data, setData] = useState([])
 
     const { getInstructorById, subByInstructor, instructorCourses, instructorReviews } = InstructorStore()
-
+    const { sendNotifyMail } = OtherStore()
 
     // get datas
     useEffect(() => {
@@ -54,9 +56,49 @@ const InstructorProfile = () => {
         })()
     }, [])
 
+    // update subjects
+    const notifyEmail = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: "Notify instructor",
+            html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Email subject">
+        <input id="swal-input2" class="swal2-input" placeholder="Email text">`,
+            showConfirmButton: true,
+            confirmButtonColor: "rgb(16 185 129)",
+            confirmButtonText: "send mail",
+            focusConfirm: false,
+            preConfirm: () => {
+                return [
+                    document.getElementById("swal-input1").value,
+                    document.getElementById("swal-input2").value
+                ];
+            }
+        });
+
+        if (formValues) {
+            if (formValues[0] == "" || formValues[1] == "") return Swal.fire({ icon: "error", text: "Fill all the data", confirmButtonColor: "rgb(225 29 72)" })
+            let result = await sendNotifyMail(profile?.email, {subject: formValues[0], text: formValues[1]})
+            if (result == 1) {
+                Swal.fire({
+                    icon: "success",
+                    title: "email sent",
+                    confirmButtonColor: "rgb(16 185 129)",
+                })
+            }
+        }
+    }
+
+
+
+
 
     return (
         <Section>
+
+            <div className="fixed right-7 z-[100]">
+                <button className='btn btn-success text-xl text-white' onClick={notifyEmail}><FaPaperPlane /></button>
+            </div>
+
             {/* title */}
             <div className="title pb-4 mb-7 border-b-2 border-b-emerald-300">
                 <h2 className="font-bold text-3xl">Instructor profile</h2>
@@ -105,6 +147,17 @@ const InstructorProfile = () => {
                 </div>
 
             </div>
+
+            {/* qualification and current status */}
+            {profile?.education &&
+                <div className="mt-10 p-5 shadow-lg">
+                    <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Qualification and current status</h3>
+
+                    <div className="whitespace-pre-wrap">{profile?.education}</div>
+                    <div className="pt-3"><b>Current job : </b> {profile?.currentStats}</div>
+
+                </div>
+            }
 
             {/* subjects */}
             {subjects.length != 0 &&

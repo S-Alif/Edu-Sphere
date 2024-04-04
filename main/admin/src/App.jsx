@@ -13,6 +13,8 @@ import UnauthorizedPage from './pages/UnauthorizedPage';
 import Payment from './pages/Payment';
 import OtpVeirification from './pages/OtpVeirification';
 import Subjects from './pages/Subjects';
+import IdVerifyPage from './pages/IdVerifyPage';
+import ForgotPassPage from './pages/ForgotPassPage';
 
 
 const App = () => {
@@ -22,7 +24,9 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/email-verify" element={<IdVerifyPage />} />
         <Route path="/otp-verify" element={<OtpVeirification />} />
+        <Route path="/update-pass" element={<ForgotPassPage />} />
 
         {/* protected routes */}
         <Route element={<AuthCheck role={11} />}>

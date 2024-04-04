@@ -12,8 +12,6 @@ const Dashboard = () => {
     const [stdChart, setStdChart] = useState([])
     const [insChart, setInsChart] = useState([])
 
-    console.log(stdChart, insChart)
-
     // get data
     useEffect(() => {
 

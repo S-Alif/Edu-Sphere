@@ -50,6 +50,33 @@ const userStore = create((set) => ({
     }
   },
 
+  // user update
+  userUpdate: async (data) => {
+    try {
+      infoAlert("Updating account ... please wait")
+      var profileData = await axios.post(adminEndpoint + "/update", data, { withCredentials: true })
+
+      if (profileData.data['code'] == 401) {
+        sessionStorage.clear()
+        window.location.replace("/")
+      }
+
+      // check response
+      if (profileData.data['status'] == 1) {
+        successAlert(profileData.data['data'])
+        return 1
+      }
+      else {
+        errorAlert(profileData.data['data'])
+        return 0
+      }
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
   // user profile
   userProfile: async () => {
     try {
@@ -77,10 +104,7 @@ const userStore = create((set) => ({
     set({ user: null })
     set({ profile: null })
     successAlert("logout success")
-
-    setTimeout(() => {
-      window.location.replace('/')
-    }, 3000)
+    window.location.replace('/')
   },
 
   //send mail
@@ -120,6 +144,65 @@ const userStore = create((set) => ({
       return 0
     }
   },
+
+  // public pass change
+  publicPassChange: async (data) => {
+    try {
+      infoAlert("updating password ... please wait")
+      let result = await axios.post(basicEndpoint + "/pass-public-change", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // pass change
+  passChange: async (data) => {
+    try {
+      infoAlert("updating password ... please wait")
+      let result = await axios.post(basicEndpoint + "/pass-change", data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      successAlert(result.data?.data)
+      return result.data?.status
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  },
+
+  // user by email
+  userByemail: async (email) => {
+    try {
+      let result = await axios.get(basicEndpoint + "/user/" + email, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        if (result.data?.errorCode) infoAlert(result.data?.errorCode?.error)
+        errorAlert(result.data?.data)
+        return 0
+      }
+
+      return result.data
+
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  }
 
 }))
 

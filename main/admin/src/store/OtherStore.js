@@ -89,6 +89,23 @@ const OtherStore = create((set) => ({
     }
   },
 
+  //mail notify
+  sendNotifyMail: async (email, data) => {
+    try {
+      let result = await axios.post(adminEndpoint + "/notify/"+email, data, { withCredentials: true })
+
+      if (result.data?.status == 0) {
+        errorAlert(result.data?.data)
+        return 0
+      }
+      successAlert(result.data?.data)
+      return result.data?.status
+    } catch (error) {
+      errorAlert("something went wrong")
+      return 0
+    }
+  }
+
 }))
 
 export default OtherStore
