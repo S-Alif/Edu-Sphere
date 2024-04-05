@@ -87,13 +87,16 @@ const UserProfile = () => {
       </div>
 
       {/* qualification and current status */}
-      <div className="mt-10 p-5 shadow-lg">
-        <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Qualification and current status</h3>
+      {
+        profile?.role == 1 && profile?.education &&
+        <div className="mt-10 p-5 shadow-lg">
+          <h3 className="font-bold border-b-2 border-b-gray-200 text-xl mb-4 pb-2">Qualification and current status</h3>
 
-        <div className="whitespace-pre-wrap">{profile?.education}</div>
-        <div className="pt-3"><b>Current job : </b> {profile?.currentStats}</div>
+          <div className="whitespace-pre-wrap">{profile?.education}</div>
+          <div className="pt-3"><b>Current job : </b> {profile?.currentStats}</div>
 
-      </div>
+        </div>
+      }
 
       {/* subjects */}
       {subjects.length != 0 && profile?.role == 1 &&

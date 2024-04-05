@@ -11,7 +11,6 @@ const LiveCard = ({ data }) => {
   let time = compareDateTime(formatDate(data?.start), "liveClass")
   let endTime = compareDateTime(formatDate(data?.end), "liveClass")
 
-  console.log(time, endTime, data?.topic)
 
   return (
     <>
